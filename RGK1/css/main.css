@@ -1,0 +1,83 @@
+.navColor
+{
+	background:#0269c2;
+}
+.menuActiv
+{
+	background:#FFFFFF;
+	color:#000000;
+}
+li.menuActiv hover
+{
+	color:#000000;
+}
+.col-lg-6,.col-lg-12
+{
+	padding-left:0;
+	padding-right:0;
+}
+.panel-heading
+{
+	border-top-left-radius:0px;
+    border-top-right-radius:0px;
+}
+.panelSide
+{
+	height:250px;
+	overflow-y:auto;
+
+}
+.lienD
+{
+	text-decoration:underline;
+	color:#1C5ABB;
+}
+.lienD :hover
+{
+	color:#BB1B4D;
+}
+#mainPage
+{
+	padding-left:250px;
+}
+
+
+#side
+{
+    z-index: 1000;
+    position: fixed;
+    left: 250px;
+    width: 0;
+    height: 100%;
+    margin-left: -250px;
+    overflow-y: auto;
+    background-color:#f1f1f1 !important;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+	width:250px;
+
+}
+
+
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
