@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AURA — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --bg: #faf8f5; --cream: #f0ece4; --sand: #e8e0d4; --border: #ddd5c8; --accent: #c9521e; --text: #1a1510; --muted: #9a8f82; --surface: #ffffff; --positive: #2a7a4b; --negative: #b33030; --sidebar-w: 240px; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); font-family: 'Instrument Sans', sans-serif; color: var(--text); min-height: 100vh; display: flex; }
+
+  /* SIDEBAR */
+  .sidebar { width: var(--sidebar-w); background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; position: fixed; top: 0; left: 0; height: 100vh; z-index: 50; }
+  .sidebar-logo { padding: 24px 20px; border-bottom: 1px solid var(--border); }
+  .logo-mark { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 400; color: var(--text); letter-spacing: .1em; }
+  .sidebar-nav { flex: 1; padding: 16px 12px; overflow-y: auto; }
+  .nav-section { margin-bottom: 24px; }
+  .nav-section-label { font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); padding: 0 8px; margin-bottom: 6px; }
+  .nav-link { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 8px; font-size: 13px; color: var(--muted); text-decoration: none; cursor: pointer; transition: color .15s, background .15s; }
+  .nav-link:hover { color: var(--text); background: var(--cream); }
+  .nav-link.active { color: var(--accent); background: rgba(201,82,30,.07); font-weight: 500; }
+  .nav-link .icon { width: 18px; text-align: center; font-size: 14px; }
+  .nav-link .count { margin-left: auto; background: var(--cream); border: 1px solid var(--border); font-size: 10px; padding: 1px 7px; border-radius: 10px; font-family: monospace; color: var(--muted); }
+  .nav-link.active .count { background: rgba(201,82,30,.1); border-color: rgba(201,82,30,.2); color: var(--accent); }
+  .sidebar-footer { padding: 16px 12px; border-top: 1px solid var(--border); }
+  .user-row { display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 8px; cursor: pointer; transition: background .15s; }
+  .user-row:hover { background: var(--cream); }
+  .user-av { width: 32px; height: 32px; border-radius: 8px; background: var(--text); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: var(--bg); }
+  .user-info .u-name { font-size: 13px; font-weight: 500; }
+  .user-info .u-role { font-size: 11px; color: var(--muted); }
+  .logout-btn { margin-left: auto; font-size: 16px; color: var(--muted); background: none; border: none; cursor: pointer; }
+
+  /* CONTENT */
+  .content { margin-left: var(--sidebar-w); flex: 1; display: flex; flex-direction: column; }
+  .topbar { background: var(--surface); border-bottom: 1px solid var(--border); height: 56px; display: flex; align-items: center; padding: 0 28px; gap: 16px; position: sticky; top: 0; z-index: 40; }
+  .topbar-search { display: flex; align-items: center; gap: 8px; background: var(--cream); border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px; flex: 1; max-width: 320px; }
+  .topbar-search input { background: none; border: none; outline: none; font-family: 'Instrument Sans', sans-serif; font-size: 13px; color: var(--text); flex: 1; }
+  .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+  .notif-btn { width: 32px; height: 32px; border-radius: 8px; background: var(--cream); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; font-size: 15px; }
+  .notif-dot { position: absolute; top: 6px; right: 6px; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+  .main { padding: 28px; }
+  .page-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 28px; }
+  .page-title { font-family: 'Fraunces', serif; font-size: 24px; font-weight: 400; }
+  .page-sub { font-size: 13px; color: var(--muted); margin-top: 3px; }
+
+  .btn { padding: 9px 18px; border-radius: 9px; font-family: 'Instrument Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; border: none; transition: opacity .15s; }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { opacity: .88; }
+  .btn-ghost { background: var(--surface); border: 1.5px solid var(--border); color: var(--text); }
+  .btn-ghost:hover { border-color: var(--muted); }
+
+  /* STATS */
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+  .stat-label { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
+  .stat-value { font-size: 28px; font-family: 'Fraunces', serif; font-weight: 400; }
+  .stat-delta { font-size: 12px; margin-top: 6px; }
+  .up { color: var(--positive); }
+  .down { color: var(--negative); }
+
+  /* GRID */
+  .grid-2 { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; }
+  .card-head { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .card-title { font-size: 13px; font-weight: 600; }
+  .card-body { padding: 20px; }
+
+  /* BAR CHART */
+  .bar-chart { display: flex; align-items: flex-end; gap: 8px; height: 100px; }
+  .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .bar-val { flex: 1; width: 100%; border-radius: 4px 4px 0 0; background: var(--cream); transition: background .2s; cursor: pointer; }
+  .bar-val:hover { background: var(--accent); opacity: .6; }
+  .bar-val.hi { background: var(--accent); }
+  .bar-lbl { font-size: 10px; color: var(--muted); }
+
+  /* RECENT LIST */
+  .list-item { display: flex; align-items: center; gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--border); }
+  .list-item:last-child { border-bottom: none; }
+  .li-avatar { width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: var(--surface); flex-shrink: 0; }
+  .li-name { font-size: 13px; font-weight: 500; }
+  .li-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .li-amount { margin-left: auto; font-size: 13px; font-weight: 600; }
+
+  /* TABLE */
+  .table-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  table { width: 100%; border-collapse: collapse; }
+  th { padding: 11px 16px; text-align: left; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; border-bottom: 1px solid var(--border); font-weight: 500; }
+  td { padding: 13px 16px; font-size: 13px; border-bottom: 1px solid var(--sand); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--cream); }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 500; }
+  .badge-green { background: rgba(42,122,75,.1); color: var(--positive); }
+  .badge-orange { background: rgba(201,82,30,.1); color: var(--accent); }
+  .badge-gray { background: var(--cream); color: var(--muted); border: 1px solid var(--border); }
+
+  /* MODAL */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(26,21,16,.5); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(3px); }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; width: 460px; animation: fadeUp .2s ease; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+  .modal-title { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 400; }
+  .close-btn { width: 28px; height: 28px; border-radius: 7px; background: var(--cream); border: 1px solid var(--border); color: var(--muted); cursor: pointer; font-size: 14px; }
+  .field { margin-bottom: 16px; }
+  label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+  input, select, textarea { width: 100%; background: var(--cream); border: 1.5px solid var(--border); border-radius: 9px; padding: 10px 14px; color: var(--text); font-family: 'Instrument Sans', sans-serif; font-size: 13px; outline: none; transition: border-color .2s; }
+  input:focus, select:focus { border-color: var(--accent); }
+  select option { background: var(--surface); }
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 24px; }
+
+  .toast { position: fixed; bottom: 24px; right: 24px; background: var(--text); color: var(--bg); border-radius: 10px; padding: 12px 18px; font-size: 13px; z-index: 2000; display: none; align-items: center; gap: 10px; animation: slideIn .3s ease; }
+  .toast.show { display: flex; }
+  @keyframes slideIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">AURA</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">
+      <div class="nav-section-label">Principal</div>
+      <div class="nav-link active"><span class="icon">⊞</span> Dashboard</div>
+      <div class="nav-link"><span class="icon">📊</span> Analytique</div>
+      <a href="sidebar-users.html" class="nav-link"><span class="icon">👥</span> Utilisateurs <span class="count">4.8k</span></a>
+      <div class="nav-link"><span class="icon">📦</span> Commandes <span class="count">24</span></div>
+      <div class="nav-link"><span class="icon">💬</span> Messages <span class="count">7</span></div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Contenu</div>
+      <div class="nav-link"><span class="icon">📝</span> Articles</div>
+      <div class="nav-link"><span class="icon">🖼</span> Médias</div>
+      <div class="nav-link"><span class="icon">🏷</span> Catégories</div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Système</div>
+      <div class="nav-link"><span class="icon">⚙</span> Paramètres</div>
+      <div class="nav-link"><span class="icon">🔒</span> Sécurité</div>
+      <div class="nav-link"><span class="icon">📋</span> Journaux</div>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="user-row" onclick="document.getElementById('profileModal').classList.add('open')">
+      <div class="user-av">AD</div>
+      <div class="user-info">
+        <div class="u-name">Admin Dupont</div>
+        <div class="u-role">Super Admin</div>
+      </div>
+      <button class="logout-btn" title="Déconnexion" onclick="window.location='login.html'">→</button>
+    </div>
+  </div>
+</aside>
+
+<!-- CONTENT -->
+<div class="content">
+  <div class="topbar">
+    <div class="topbar-search">
+      <span style="color:var(--muted);font-size:13px">🔍</span>
+      <input type="text" placeholder="Rechercher...">
+    </div>
+    <div class="topbar-right">
+      <div class="notif-btn">🔔<div class="notif-dot"></div></div>
+      <button class="btn btn-ghost" style="font-size:12px;padding:7px 14px">17 mars 2026</button>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Vue d'ensemble</div>
+        <div class="page-sub">Bienvenue, Admin. Voici ce qui se passe aujourd'hui.</div>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button class="btn btn-ghost">Exporter</button>
+        <button class="btn btn-primary" onclick="document.getElementById('newModal').classList.add('open')">+ Créer</button>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-label">Chiffre d'affaires</div>
+        <div class="stat-value">€48 210</div>
+        <div class="stat-delta up">↑ 12% ce mois</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Nouvelles commandes</div>
+        <div class="stat-value">284</div>
+        <div class="stat-delta up">↑ 6% cette semaine</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Nouveaux clients</div>
+        <div class="stat-value">1 203</div>
+        <div class="stat-delta down">↓ 2% cette semaine</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Taux de rétention</div>
+        <div class="stat-value">87%</div>
+        <div class="stat-delta up">↑ 3% vs dernier mois</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <!-- BAR CHART -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Revenus hebdomadaires</span>
+          <select style="width:auto;padding:4px 10px;font-size:12px;background:var(--cream);border-color:var(--border)"><option>Ce mois</option><option>Trimestre</option></select>
+        </div>
+        <div class="card-body">
+          <div class="bar-chart">
+            <div class="bar-col"><div class="bar-val" style="height:55%"></div><div class="bar-lbl">S1</div></div>
+            <div class="bar-col"><div class="bar-val" style="height:70%"></div><div class="bar-lbl">S2</div></div>
+            <div class="bar-col"><div class="bar-val" style="height:48%"></div><div class="bar-lbl">S3</div></div>
+            <div class="bar-col"><div class="bar-val hi" style="height:90%"></div><div class="bar-lbl">S4</div></div>
+            <div class="bar-col"><div class="bar-val" style="height:63%"></div><div class="bar-lbl">S5</div></div>
+            <div class="bar-col"><div class="bar-val" style="height:80%"></div><div class="bar-lbl">S6</div></div>
+            <div class="bar-col"><div class="bar-val" style="height:72%"></div><div class="bar-lbl">S7</div></div>
+          </div>
+        </div>
+      </div>
+      <!-- RECENT -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Dernières transactions</span>
+        </div>
+        <div class="card-body" style="padding-top:4px">
+          <div class="list-item">
+            <div class="li-avatar" style="background:#c9521e">MD</div>
+            <div><div class="li-name">Marie Dupont</div><div class="li-sub">Plan Pro · il y a 5 min</div></div>
+            <div class="li-amount" style="color:var(--positive)">+€49</div>
+          </div>
+          <div class="list-item">
+            <div class="li-avatar" style="background:#8b5e3c">LM</div>
+            <div><div class="li-name">Lucas Martin</div><div class="li-sub">Plan Enterprise · il y a 1h</div></div>
+            <div class="li-amount" style="color:var(--positive)">+€299</div>
+          </div>
+          <div class="list-item">
+            <div class="li-avatar" style="background:#2a7a4b">SB</div>
+            <div><div class="li-name">Sophie Bernard</div><div class="li-sub">Remboursement · il y a 2h</div></div>
+            <div class="li-amount" style="color:var(--negative)">−€49</div>
+          </div>
+          <div class="list-item">
+            <div class="li-avatar" style="background:#1a1510">TP</div>
+            <div><div class="li-name">Thomas Petit</div><div class="li-sub">Plan Pro · il y a 3h</div></div>
+            <div class="li-amount" style="color:var(--positive)">+€49</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-card">
+      <div class="card-head">
+        <span class="card-title">Dernières commandes</span>
+        <a href="sidebar-users.html" style="font-size:12px;color:var(--accent);text-decoration:none">Voir tout →</a>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Client</th>
+            <th>Produit</th>
+            <th>Montant</th>
+            <th>Statut</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="color:var(--muted);font-family:monospace;font-size:12px">#8821</td><td>Marie Dupont</td><td>Plan Pro</td><td style="font-weight:600">€49</td><td><span class="badge badge-green">Payé</span></td><td style="color:var(--muted);font-size:12px">17 mars, 14:32</td></tr>
+          <tr><td style="color:var(--muted);font-family:monospace;font-size:12px">#8820</td><td>Lucas Martin</td><td>Plan Enterprise</td><td style="font-weight:600">€299</td><td><span class="badge badge-green">Payé</span></td><td style="color:var(--muted);font-size:12px">17 mars, 13:11</td></tr>
+          <tr><td style="color:var(--muted);font-family:monospace;font-size:12px">#8819</td><td>Thomas Petit</td><td>Plan Pro</td><td style="font-weight:600">€49</td><td><span class="badge badge-orange">En attente</span></td><td style="color:var(--muted);font-size:12px">17 mars, 11:02</td></tr>
+          <tr><td style="color:var(--muted);font-family:monospace;font-size:12px">#8818</td><td>Sophie Bernard</td><td>Remboursement Pro</td><td style="font-weight:600">−€49</td><td><span class="badge badge-gray">Remboursé</span></td><td style="color:var(--muted);font-size:12px">17 mars, 09:45</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE MODAL -->
+<div class="modal-overlay" id="profileModal">
+  <div class="modal">
+    <div class="modal-head">
+      <span class="modal-title">Mon profil</span>
+      <button class="close-btn" onclick="closeM('profileModal')">✕</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;padding:16px;background:var(--cream);border-radius:10px">
+      <div style="width:48px;height:48px;border-radius:10px;background:var(--text);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;color:var(--bg)">AD</div>
+      <div>
+        <div style="font-weight:600">Admin Dupont</div>
+        <div style="font-size:12px;color:var(--muted)">admin@aura.fr · Super Admin</div>
+      </div>
+    </div>
+    <div class="field"><label>Nom complet</label><input type="text" value="Admin Dupont"></div>
+    <div class="field"><label>Email</label><input type="email" value="admin@aura.fr"></div>
+    <div class="field"><label>Rôle</label><select><option selected>Super Admin</option><option>Admin</option></select></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeM('profileModal')">Fermer</button>
+      <button class="btn btn-primary" onclick="closeM('profileModal');showT('✓ Profil mis à jour')">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- NEW MODAL -->
+<div class="modal-overlay" id="newModal">
+  <div class="modal">
+    <div class="modal-head">
+      <span class="modal-title">Créer un élément</span>
+      <button class="close-btn" onclick="closeM('newModal')">✕</button>
+    </div>
+    <div class="field"><label>Titre</label><input type="text" placeholder="Nom de l'élément"></div>
+    <div class="field"><label>Type</label><select><option>Article</option><option>Commande</option><option>Utilisateur</option></select></div>
+    <div class="field"><label>Description</label><textarea rows="3" placeholder="Description..."></textarea></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeM('newModal')">Annuler</button>
+      <button class="btn btn-primary" onclick="closeM('newModal');showT('✓ Élément créé')">Créer</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+function closeM(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => { if(e.target === o) o.classList.remove('open'); }));
+function showT(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }
+</script>
+</body>
+</html>

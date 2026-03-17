@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUS — Utilisateurs</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root { --bg: #0a0a0f; --surface: #111118; --surface2: #16161f; --border: #1e1e2e; --accent: #6ee7b7; --accent2: #818cf8; --text: #e2e8f0; --muted: #64748b; --positive: #34d399; --negative: #f87171; --warning: #fbbf24; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--text); min-height: 100vh; }
+  .topbar { background: var(--surface); border-bottom: 1px solid var(--border); height: 56px; display: flex; align-items: center; padding: 0 24px; position: sticky; top: 0; z-index: 100; gap: 32px; }
+  .logo { display: flex; align-items: center; gap: 8px; }
+  .logo-icon { width: 28px; height: 28px; border-radius: 6px; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-size: 11px; color: #0a0a0f; font-weight: 500; }
+  .logo-text { font-family: 'DM Mono', monospace; letter-spacing: .1em; font-size: 13px; font-weight: 500; }
+  .nav { display: flex; gap: 2px; flex: 1; }
+  .nav-item { position: relative; }
+  .nav-link { display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 7px; font-size: 13px; color: var(--muted); text-decoration: none; transition: color .15s, background .15s; cursor: pointer; }
+  .nav-link:hover, .nav-link.active { color: var(--text); background: var(--surface2); }
+  .nav-link .arrow { font-size: 10px; transition: transform .2s; }
+  .nav-item:hover .arrow { transform: rotate(180deg); }
+  .dropdown { position: absolute; top: calc(100% + 8px); left: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; min-width: 180px; opacity: 0; pointer-events: none; transform: translateY(-6px); transition: opacity .15s, transform .15s; z-index: 200; padding: 6px; }
+  .nav-item:hover .dropdown { opacity: 1; pointer-events: all; transform: translateY(0); }
+  .dd-item { display: block; padding: 9px 14px; border-radius: 7px; font-size: 13px; color: var(--muted); text-decoration: none; transition: color .15s, background .15s; }
+  .dd-item:hover { color: var(--text); background: var(--surface2); }
+  .nav-right { display: flex; align-items: center; gap: 12px; }
+  .avatar { width: 32px; height: 32px; border-radius: 8px; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #0a0a0f; cursor: pointer; }
+  .main { padding: 32px; max-width: 1280px; margin: 0 auto; }
+  .page-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; }
+  .page-title { font-size: 22px; font-weight: 600; }
+  .page-sub { font-size: 13px; color: var(--muted); margin-top: 3px; }
+  .btn { padding: 9px 18px; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; border: none; transition: opacity .15s; }
+  .btn-primary { background: var(--accent); color: #0a0a0f; }
+  .btn-primary:hover { opacity: .85; }
+  .btn-ghost { background: var(--surface); border: 1px solid var(--border); color: var(--text); }
+  .btn-ghost:hover { border-color: var(--muted); }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 500; }
+  .badge-green { background: rgba(52,211,153,.12); color: var(--positive); }
+  .badge-yellow { background: rgba(251,191,36,.12); color: var(--warning); }
+  .badge-red { background: rgba(248,113,113,.12); color: var(--negative); }
+  .badge-blue { background: rgba(129,140,248,.12); color: var(--accent2); }
+  .badge-gray { background: rgba(100,116,139,.12); color: var(--muted); }
+
+  /* FILTERS */
+  .filters { display: flex; gap: 12px; margin-bottom: 20px; align-items: center; }
+  .search-wrap { position: relative; flex: 1; max-width: 320px; }
+  .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 14px; pointer-events: none; }
+  .search-input { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 9px 14px 9px 36px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13px; outline: none; transition: border-color .2s; }
+  .search-input:focus { border-color: var(--accent); }
+  .filter-btn { display: flex; align-items: center; gap: 6px; padding: 9px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; font-size: 13px; color: var(--muted); cursor: pointer; font-family: 'DM Sans', sans-serif; transition: color .15s, border-color .15s; }
+  .filter-btn:hover { color: var(--text); border-color: var(--muted); }
+  .filter-btn.active { color: var(--accent); border-color: var(--accent); background: rgba(110,231,183,.05); }
+  .spacer { flex: 1; }
+
+  /* TABLE */
+  .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .table-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--border); }
+  .table-info { font-size: 13px; color: var(--muted); }
+  table { width: 100%; border-collapse: collapse; }
+  th { padding: 11px 16px; text-align: left; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; border-bottom: 1px solid var(--border); font-weight: 500; user-select: none; cursor: pointer; }
+  th:hover { color: var(--text); }
+  td { padding: 14px 16px; font-size: 13px; border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--surface2); }
+  .user-cell { display: flex; align-items: center; gap: 12px; }
+  .user-avatar { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #0a0a0f; flex-shrink: 0; }
+  .user-name { font-weight: 500; }
+  .user-email { font-size: 11px; color: var(--muted); margin-top: 1px; font-family: 'DM Mono', monospace; }
+  .actions-cell { display: flex; gap: 6px; opacity: 0; transition: opacity .15s; }
+  tr:hover .actions-cell { opacity: 1; }
+  .icon-btn { width: 28px; height: 28px; border-radius: 6px; background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 13px; color: var(--muted); transition: color .15s; }
+  .icon-btn:hover { color: var(--text); }
+  .checkbox { width: 16px; height: 16px; accent-color: var(--accent); cursor: pointer; }
+
+  /* PAGINATION */
+  .pagination { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-top: 1px solid var(--border); }
+  .page-info { font-size: 12px; color: var(--muted); font-family: 'DM Mono', monospace; }
+  .page-btns { display: flex; gap: 4px; }
+  .page-btn { width: 32px; height: 32px; border-radius: 7px; background: var(--surface); border: 1px solid var(--border); color: var(--muted); font-size: 13px; cursor: pointer; transition: color .15s; display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; }
+  .page-btn:hover { color: var(--text); }
+  .page-btn.active { background: var(--accent); color: #0a0a0f; border-color: var(--accent); }
+
+  /* MODAL */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.7); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; width: 440px; animation: fadeUp .2s ease; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+  .modal-title { font-size: 16px; font-weight: 600; }
+  .close-btn { width: 28px; height: 28px; border-radius: 6px; background: var(--surface2); border: none; color: var(--muted); cursor: pointer; font-size: 14px; }
+  .close-btn:hover { color: var(--text); }
+  .field { margin-bottom: 16px; }
+  label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: .04em; }
+  input, select { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13px; outline: none; transition: border-color .2s; }
+  input:focus, select:focus { border-color: var(--accent); }
+  select option { background: var(--bg); }
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 24px; }
+
+  .toast { position: fixed; bottom: 24px; right: 24px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 18px; font-size: 13px; z-index: 2000; display: none; align-items: center; gap: 10px; animation: slideIn .3s ease; box-shadow: 0 8px 32px rgba(0,0,0,.4); }
+  .toast.show { display: flex; }
+  @keyframes slideIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+<nav class="topbar">
+  <div class="logo">
+    <div class="logo-icon">NX</div>
+    <span class="logo-text">NEXUS</span>
+  </div>
+  <div class="nav">
+    <a href="dashboard.html" class="nav-link">Vue d'ensemble</a>
+    <div class="nav-item">
+      <div class="nav-link">Analytique <span class="arrow">▾</span></div>
+      <div class="dropdown">
+        <a href="#" class="dd-item">Rapports</a>
+        <a href="#" class="dd-item">Performance</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <div class="nav-link active">Utilisateurs <span class="arrow">▾</span></div>
+      <div class="dropdown">
+        <a href="users.html" class="dd-item">Liste des utilisateurs</a>
+        <a href="#" class="dd-item">Rôles &amp; Permissions</a>
+        <a href="#" class="dd-item">Invitations</a>
+      </div>
+    </div>
+    <a href="#" class="nav-link">Paramètres</a>
+  </div>
+  <div class="nav-right">
+    <div class="avatar" onclick="window.location='profile.html'">AD</div>
+  </div>
+</nav>
+
+<div class="main">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Utilisateurs</div>
+      <div class="page-sub">4 832 utilisateurs enregistrés · 127 actifs aujourd'hui</div>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-ghost">Exporter CSV</button>
+      <button class="btn btn-primary" onclick="document.getElementById('addUserModal').classList.add('open')">+ Ajouter un utilisateur</button>
+    </div>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="filters">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" type="text" placeholder="Rechercher un utilisateur...">
+    </div>
+    <button class="filter-btn active">Tous</button>
+    <button class="filter-btn">Actifs</button>
+    <button class="filter-btn">Inactifs</button>
+    <button class="filter-btn">Suspendus</button>
+    <div class="spacer"></div>
+    <button class="filter-btn">⇅ Trier</button>
+    <button class="filter-btn">⚙ Colonnes</button>
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-wrap">
+    <div class="table-header">
+      <span class="table-info">Affichage 1–10 sur 4 832</span>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-ghost" style="font-size:12px;padding:6px 12px;color:var(--muted)" onclick="showToast('🗑 0 éléments sélectionnés')">Actions groupées</button>
+      </div>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:40px"><input type="checkbox" class="checkbox"></th>
+          <th>Utilisateur ↕</th>
+          <th>Rôle</th>
+          <th>Statut</th>
+          <th>Dernière connexion</th>
+          <th>Inscrit le</th>
+          <th>Plan</th>
+          <th style="width:80px"></th>
+        </tr>
+      </thead>
+      <tbody id="userTable"></tbody>
+    </table>
+    <div class="pagination">
+      <span class="page-info">Page 1 / 484</span>
+      <div class="page-btns">
+        <button class="page-btn">‹</button>
+        <button class="page-btn active">1</button>
+        <button class="page-btn">2</button>
+        <button class="page-btn">3</button>
+        <span style="color:var(--muted);font-size:13px;padding:0 4px">…</span>
+        <button class="page-btn">484</button>
+        <button class="page-btn">›</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD USER MODAL -->
+<div class="modal-overlay" id="addUserModal">
+  <div class="modal">
+    <div class="modal-head">
+      <span class="modal-title">Ajouter un utilisateur</span>
+      <button class="close-btn" onclick="closeModal('addUserModal')">✕</button>
+    </div>
+    <div class="field"><label>Prénom & Nom</label><input type="text" placeholder="Marie Dupont"></div>
+    <div class="field"><label>Email</label><input type="email" placeholder="marie@exemple.fr"></div>
+    <div class="field"><label>Rôle</label><select><option>Utilisateur</option><option>Éditeur</option><option>Admin</option><option>Super Admin</option></select></div>
+    <div class="field"><label>Plan</label><select><option>Free</option><option>Pro</option><option>Enterprise</option></select></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('addUserModal')">Annuler</button>
+      <button class="btn btn-primary" onclick="closeModal('addUserModal');showToast('✓ Invitation envoyée')">Envoyer l'invitation</button>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT USER MODAL -->
+<div class="modal-overlay" id="editUserModal">
+  <div class="modal">
+    <div class="modal-head">
+      <span class="modal-title" id="editUserName">Modifier l'utilisateur</span>
+      <button class="close-btn" onclick="closeModal('editUserModal')">✕</button>
+    </div>
+    <div class="field"><label>Nom complet</label><input type="text" id="editName"></div>
+    <div class="field"><label>Email</label><input type="email" id="editEmail"></div>
+    <div class="field"><label>Rôle</label><select><option>Utilisateur</option><option>Éditeur</option><option>Admin</option></select></div>
+    <div class="field"><label>Statut</label><select><option>Actif</option><option>Inactif</option><option>Suspendu</option></select></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('editUserModal')">Annuler</button>
+      <button class="btn btn-primary" onclick="closeModal('editUserModal');showToast('✓ Utilisateur mis à jour')">Sauvegarder</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const users = [
+  { name: "Marie Dupont", email: "marie.dupont@email.fr", role: "Admin", status: "Actif", last: "Il y a 3 min", joined: "12 jan. 2024", plan: "Pro", color: "#818cf8" },
+  { name: "Lucas Martin", email: "l.martin@corp.com", role: "Utilisateur", status: "Actif", last: "Il y a 1h", joined: "3 fév. 2024", plan: "Free", color: "#6ee7b7" },
+  { name: "Sophie Bernard", email: "sbernard@gmail.com", role: "Éditeur", status: "Inactif", last: "Il y a 5j", joined: "28 nov. 2023", plan: "Pro", color: "#fbbf24" },
+  { name: "Thomas Petit", email: "thomas.p@startup.io", role: "Admin", status: "Actif", last: "Il y a 2h", joined: "7 oct. 2023", plan: "Enterprise", color: "#f87171" },
+  { name: "Emma Leroy", email: "e.leroy@design.co", role: "Éditeur", status: "Actif", last: "Il y a 30 min", joined: "15 mars 2024", plan: "Pro", color: "#818cf8" },
+  { name: "Hugo Moreau", email: "hugo.m@dev.fr", role: "Utilisateur", status: "Suspendu", last: "Il y a 3 sem.", joined: "1 sept. 2023", plan: "Free", color: "#64748b" },
+  { name: "Camille Dubois", email: "cdubois@agency.fr", role: "Utilisateur", status: "Actif", last: "Il y a 4h", joined: "22 jan. 2025", plan: "Free", color: "#6ee7b7" },
+  { name: "Paul Simon", email: "paul.simon@corp.eu", role: "Super Admin", status: "Actif", last: "Il y a 10 min", joined: "5 mars 2023", plan: "Enterprise", color: "#6ee7b7" },
+  { name: "Lucie Lambert", email: "l.lambert@media.fr", role: "Éditeur", status: "Inactif", last: "Il y a 2 sem.", joined: "11 avr. 2024", plan: "Pro", color: "#fbbf24" },
+  { name: "Nicolas Durand", email: "n.durand@fin.com", role: "Utilisateur", status: "Actif", last: "Hier", joined: "30 juil. 2024", plan: "Free", color: "#818cf8" },
+];
+const statusMap = { "Actif": "badge-green", "Inactif": "badge-gray", "Suspendu": "badge-red" };
+const roleMap = { "Super Admin": "badge-blue", "Admin": "badge-blue", "Éditeur": "badge-yellow", "Utilisateur": "badge-gray" };
+const planMap = { "Enterprise": "badge-blue", "Pro": "badge-green", "Free": "badge-gray" };
+const tbody = document.getElementById('userTable');
+users.forEach(u => {
+  const initials = u.name.split(' ').map(n => n[0]).join('');
+  tbody.innerHTML += `<tr>
+    <td><input type="checkbox" class="checkbox"></td>
+    <td><div class="user-cell">
+      <div class="user-avatar" style="background:${u.color}">${initials}</div>
+      <div><div class="user-name">${u.name}</div><div class="user-email">${u.email}</div></div>
+    </div></td>
+    <td><span class="badge ${roleMap[u.role]}">${u.role}</span></td>
+    <td><span class="badge ${statusMap[u.status]}">${u.status}</span></td>
+    <td style="color:var(--muted);font-size:12px;font-family:'DM Mono',monospace">${u.last}</td>
+    <td style="color:var(--muted);font-size:12px">${u.joined}</td>
+    <td><span class="badge ${planMap[u.plan]}">${u.plan}</span></td>
+    <td><div class="actions-cell">
+      <div class="icon-btn" onclick="openEdit('${u.name}','${u.email}')">✏️</div>
+      <div class="icon-btn" onclick="showToast('⚠ Utilisateur suspendu')">🚫</div>
+    </div></td>
+  </tr>`;
+});
+function openEdit(name, email) {
+  document.getElementById('editUserName').textContent = name;
+  document.getElementById('editName').value = name;
+  document.getElementById('editEmail').value = email;
+  document.getElementById('editUserModal').classList.add('open');
+}
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => { if(e.target === o) o.classList.remove('open'); }));
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>

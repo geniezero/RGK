@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUS — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #16161f;
+    --border: #1e1e2e;
+    --accent: #6ee7b7;
+    --accent2: #818cf8;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --positive: #34d399;
+    --negative: #f87171;
+    --warning: #fbbf24;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--text); min-height: 100vh; }
+
+  /* TOP NAV */
+  .topbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    height: 56px;
+    display: flex; align-items: center;
+    padding: 0 24px;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .logo { display: flex; align-items: center; gap: 8px; margin-right: 32px; }
+  .logo-icon { width: 28px; height: 28px; border-radius: 6px; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-size: 11px; color: #0a0a0f; font-weight: 500; }
+  .logo-text { font-family: 'DM Mono', monospace; letter-spacing: .1em; font-size: 13px; font-weight: 500; }
+
+  /* NAV ITEMS */
+  .nav { display: flex; gap: 2px; flex: 1; }
+  .nav-item { position: relative; }
+  .nav-link {
+    display: flex; align-items: center; gap: 6px;
+    padding: 6px 14px; border-radius: 7px;
+    font-size: 13px; color: var(--muted); text-decoration: none;
+    transition: color .15s, background .15s; cursor: pointer; user-select: none;
+    white-space: nowrap;
+  }
+  .nav-link:hover, .nav-link.active { color: var(--text); background: var(--surface2); }
+  .nav-link .arrow { font-size: 10px; transition: transform .2s; }
+  .nav-item:hover .arrow { transform: rotate(180deg); }
+
+  /* DROPDOWN */
+  .dropdown {
+    position: absolute; top: calc(100% + 8px); left: 0;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+    min-width: 180px; opacity: 0; pointer-events: none; transform: translateY(-6px);
+    transition: opacity .15s, transform .15s; z-index: 200;
+    padding: 6px;
+  }
+  .nav-item:hover .dropdown { opacity: 1; pointer-events: all; transform: translateY(0); }
+  .dd-item {
+    display: block; padding: 9px 14px; border-radius: 7px;
+    font-size: 13px; color: var(--muted); text-decoration: none;
+    transition: color .15s, background .15s;
+  }
+  .dd-item:hover { color: var(--text); background: var(--surface2); }
+  .dd-divider { height: 1px; background: var(--border); margin: 4px 0; }
+  .dd-badge { float: right; background: var(--accent2); color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 10px; font-family: 'DM Mono', monospace; }
+
+  /* RIGHT NAV */
+  .nav-right { display: flex; align-items: center; gap: 12px; }
+  .notif-btn {
+    position: relative; width: 32px; height: 32px; border-radius: 8px;
+    background: var(--surface2); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+    color: var(--muted); transition: color .15s;
+  }
+  .notif-btn:hover { color: var(--text); }
+  .notif-dot { position: absolute; top: 6px; right: 6px; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); border: 1px solid var(--surface); }
+  .avatar {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 600; color: #0a0a0f; cursor: pointer;
+  }
+
+  /* MAIN */
+  .main { padding: 32px; max-width: 1280px; margin: 0 auto; }
+
+  /* PAGE HEADER */
+  .page-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 28px; }
+  .page-title { font-size: 22px; font-weight: 600; }
+  .page-sub { font-size: 13px; color: var(--muted); margin-top: 3px; }
+  .btn { padding: 9px 18px; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; border: none; transition: opacity .15s; }
+  .btn-primary { background: var(--accent); color: #0a0a0f; }
+  .btn-primary:hover { opacity: .85; }
+  .btn-ghost { background: var(--surface); border: 1px solid var(--border); color: var(--text); }
+  .btn-ghost:hover { border-color: var(--muted); }
+
+  /* STATS */
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+  .stat-label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 10px; }
+  .stat-value { font-size: 28px; font-weight: 600; font-family: 'DM Mono', monospace; letter-spacing: -.02em; }
+  .stat-delta { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; margin-top: 8px; padding: 3px 8px; border-radius: 20px; }
+  .delta-up { background: rgba(52,211,153,.1); color: var(--positive); }
+  .delta-down { background: rgba(248,113,113,.1); color: var(--negative); }
+
+  /* GRID */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; }
+  .card-head { display: flex; justify-content: space-between; align-items: center; padding: 18px 20px; border-bottom: 1px solid var(--border); }
+  .card-title { font-size: 13px; font-weight: 600; }
+  .card-body { padding: 20px; }
+
+  /* MINI CHART */
+  .sparkline { display: flex; align-items: flex-end; gap: 4px; height: 56px; }
+  .bar { flex: 1; background: var(--border); border-radius: 3px; transition: background .2s; }
+  .bar:hover { background: var(--accent); }
+  .bar.active { background: var(--accent2); }
+
+  /* ACTIVITY */
+  .activity-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .activity-item:last-child { border-bottom: none; }
+  .activity-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+  .activity-text { font-size: 13px; }
+  .activity-time { font-size: 11px; color: var(--muted); margin-top: 2px; font-family: 'DM Mono', monospace; }
+
+  /* TABLE */
+  .table-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; }
+  table { width: 100%; border-collapse: collapse; }
+  th { padding: 12px 16px; text-align: left; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; border-bottom: 1px solid var(--border); font-weight: 500; }
+  td { padding: 13px 16px; font-size: 13px; border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--surface2); }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 500; }
+  .badge-green { background: rgba(52,211,153,.12); color: var(--positive); }
+  .badge-yellow { background: rgba(251,191,36,.12); color: var(--warning); }
+  .badge-red { background: rgba(248,113,113,.12); color: var(--negative); }
+  .badge-blue { background: rgba(129,140,248,.12); color: var(--accent2); }
+
+  /* MODAL */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.7); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; width: 480px; animation: fadeUp .2s ease; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+  .modal-title { font-size: 16px; font-weight: 600; }
+  .close-btn { width: 28px; height: 28px; border-radius: 6px; background: var(--surface2); border: none; color: var(--muted); cursor: pointer; font-size: 14px; }
+  .close-btn:hover { color: var(--text); }
+  .field { margin-bottom: 16px; }
+  label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; letter-spacing: .04em; text-transform: uppercase; }
+  input, select, textarea {
+    width: 100%; background: var(--bg); border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px 14px; color: var(--text);
+    font-family: 'DM Sans', sans-serif; font-size: 13px; outline: none; transition: border-color .2s;
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--accent); }
+  select option { background: var(--bg); }
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 24px; }
+
+  .tag { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; padding: 3px 8px; border-radius: 5px; background: rgba(129,140,248,.1); color: var(--accent2); }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<nav class="topbar">
+  <div class="logo">
+    <div class="logo-icon">NX</div>
+    <span class="logo-text">NEXUS</span>
+  </div>
+  <div class="nav">
+    <div class="nav-item">
+      <div class="nav-link active">Vue d'ensemble</div>
+    </div>
+    <div class="nav-item">
+      <div class="nav-link">Analytique <span class="arrow">▾</span></div>
+      <div class="dropdown">
+        <a href="#" class="dd-item">Rapport en temps réel</a>
+        <a href="#" class="dd-item">Performance <span class="dd-badge">NEW</span></a>
+        <a href="#" class="dd-item">Entonnoirs</a>
+        <div class="dd-divider"></div>
+        <a href="#" class="dd-item">Exporter les données</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <div class="nav-link">Utilisateurs <span class="arrow">▾</span></div>
+      <div class="dropdown">
+        <a href="users.html" class="dd-item">Liste des utilisateurs</a>
+        <a href="#" class="dd-item">Rôles &amp; Permissions</a>
+        <a href="#" class="dd-item">Invitations</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <div class="nav-link">Contenu <span class="arrow">▾</span></div>
+      <div class="dropdown">
+        <a href="#" class="dd-item">Articles</a>
+        <a href="#" class="dd-item">Médias</a>
+        <a href="#" class="dd-item">Catégories</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <div class="nav-link">Paramètres</div>
+    </div>
+  </div>
+  <div class="nav-right">
+    <div class="notif-btn">🔔<div class="notif-dot"></div></div>
+    <div class="avatar" onclick="document.getElementById('profileModal').classList.add('open')">AD</div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Dashboard</div>
+      <div class="page-sub">Mardi 17 mars 2026 · Bonjour, Admin 👋</div>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-ghost">Exporter</button>
+      <button class="btn btn-primary" onclick="document.getElementById('newProjectModal').classList.add('open')">+ Nouveau projet</button>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-label">Utilisateurs actifs</div>
+      <div class="stat-value">12,483</div>
+      <div class="stat-delta delta-up">↑ 8.3%</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Revenus (mois)</div>
+      <div class="stat-value">€48,210</div>
+      <div class="stat-delta delta-up">↑ 12.1%</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Taux de conversion</div>
+      <div class="stat-value">3.74%</div>
+      <div class="stat-delta delta-down">↓ 0.4%</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Tickets ouverts</div>
+      <div class="stat-value">24</div>
+      <div class="stat-delta delta-up" style="background:rgba(251,191,36,.1);color:var(--warning)">⚡ Urgent: 3</div>
+    </div>
+  </div>
+
+  <!-- CHARTS ROW -->
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">Sessions par jour</span>
+        <span class="tag">7 derniers jours</span>
+      </div>
+      <div class="card-body">
+        <div class="sparkline">
+          <div class="bar" style="height:40%"></div>
+          <div class="bar" style="height:60%"></div>
+          <div class="bar" style="height:45%"></div>
+          <div class="bar" style="height:80%"></div>
+          <div class="bar" style="height:55%"></div>
+          <div class="bar active" style="height:95%"></div>
+          <div class="bar" style="height:70%"></div>
+          <div class="bar" style="height:85%"></div>
+          <div class="bar" style="height:65%"></div>
+          <div class="bar" style="height:90%"></div>
+          <div class="bar" style="height:78%"></div>
+          <div class="bar" style="height:100%"></div>
+          <div class="bar" style="height:88%"></div>
+          <div class="bar active" style="height:72%"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:8px;font-family:'DM Mono',monospace">
+          <span>11 mars</span><span>17 mars</span>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">Activité récente</span>
+        <a href="#" style="font-size:12px;color:var(--accent);text-decoration:none">Tout voir</a>
+      </div>
+      <div class="card-body" style="padding-top:0">
+        <div class="activity-item">
+          <div class="activity-dot" style="background:var(--accent)"></div>
+          <div>
+            <div class="activity-text">Nouvel utilisateur inscrit — <strong>Marie Dupont</strong></div>
+            <div class="activity-time">Il y a 3 min</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-dot" style="background:var(--accent2)"></div>
+          <div>
+            <div class="activity-text">Paiement reçu — <strong>€1,240</strong> · Commande #8821</div>
+            <div class="activity-time">Il y a 14 min</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-dot" style="background:var(--warning)"></div>
+          <div>
+            <div class="activity-text">Ticket urgent ouvert — Problème API</div>
+            <div class="activity-time">Il y a 27 min</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-dot" style="background:var(--muted)"></div>
+          <div>
+            <div class="activity-text">Déploiement effectué — <strong>v2.4.1</strong></div>
+            <div class="activity-time">Il y a 1h</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-card">
+    <div class="card-head">
+      <span class="card-title">Projets récents</span>
+      <button class="btn btn-ghost" style="padding:6px 12px;font-size:12px">Voir tous</button>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Projet</th>
+          <th>Équipe</th>
+          <th>Statut</th>
+          <th>Progression</th>
+          <th>Échéance</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Refonte site web</strong></td>
+          <td>Design · Dev</td>
+          <td><span class="badge badge-green">Actif</span></td>
+          <td><div style="background:var(--border);border-radius:4px;height:4px;width:120px"><div style="background:var(--accent);height:4px;border-radius:4px;width:78%"></div></div></td>
+          <td style="color:var(--muted);font-family:'DM Mono',monospace;font-size:12px">30 mars</td>
+          <td><button class="btn btn-ghost" style="padding:5px 12px;font-size:12px">Voir</button></td>
+        </tr>
+        <tr>
+          <td><strong>Migration base de données</strong></td>
+          <td>Backend</td>
+          <td><span class="badge badge-yellow">En attente</span></td>
+          <td><div style="background:var(--border);border-radius:4px;height:4px;width:120px"><div style="background:var(--warning);height:4px;border-radius:4px;width:35%"></div></div></td>
+          <td style="color:var(--muted);font-family:'DM Mono',monospace;font-size:12px">15 avr.</td>
+          <td><button class="btn btn-ghost" style="padding:5px 12px;font-size:12px">Voir</button></td>
+        </tr>
+        <tr>
+          <td><strong>App mobile v3</strong></td>
+          <td>Mobile · QA</td>
+          <td><span class="badge badge-blue">En cours</span></td>
+          <td><div style="background:var(--border);border-radius:4px;height:4px;width:120px"><div style="background:var(--accent2);height:4px;border-radius:4px;width:60%"></div></div></td>
+          <td style="color:var(--muted);font-family:'DM Mono',monospace;font-size:12px">1 mai</td>
+          <td><button class="btn btn-ghost" style="padding:5px 12px;font-size:12px">Voir</button></td>
+        </tr>
+        <tr>
+          <td><strong>Audit sécurité</strong></td>
+          <td>Sécurité</td>
+          <td><span class="badge badge-red">Bloqué</span></td>
+          <td><div style="background:var(--border);border-radius:4px;height:4px;width:120px"><div style="background:var(--negative);height:4px;border-radius:4px;width:20%"></div></div></td>
+          <td style="color:var(--muted);font-family:'DM Mono',monospace;font-size:12px">22 mars</td>
+          <td><button class="btn btn-ghost" style="padding:5px 12px;font-size:12px">Voir</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- PROFILE MODAL -->
+<div class="modal-overlay" id="profileModal">
+  <div class="modal">
+    <div class="modal-head">
+      <span class="modal-title">Mon profil</span>
+      <button class="close-btn" onclick="document.getElementById('profileModal').classList.remove('open')">✕</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;padding:16px;background:var(--bg);border-radius:10px">
+      <div style="width:52px;height:52px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:600;color:#0a0a0f">AD</div>
+      <div>
+        <div style="font-weight:600">Admin Dupont</div>
+        <div style="font-size:12px;color:var(--muted)">admin@nexus.io</div>
+        <div style="margin-top:4px"><span class="badge badge-blue">Super Admin</span></div>
+      </div>
+    </div>
+    <div class="field"><label>Nom complet</label><input type="text" value="Admin Dupont"></div>
+    <div class="field"><label>Email</label><input type="email" value="admin@nexus.io"></div>
+    <div class="field"><label>Rôle</label><select><option selected>Super Admin</option><option>Admin</option><option>Éditeur</option></select></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="document.getElementById('profileModal').classList.remove('open')">Annuler</button>
+      <button class="btn btn-primary">Sauvegarder</button>
+    </div>
+  </div>
+</div>
+
+<!-- NEW PROJECT MODAL -->
+<div class="modal-overlay" id="newProjectModal">
+  <div class="modal">
+    <div class="modal-head">
+      <span class="modal-title">Nouveau projet</span>
+      <button class="close-btn" onclick="document.getElementById('newProjectModal').classList.remove('open')">✕</button>
+    </div>
+    <div class="field"><label>Nom du projet</label><input type="text" placeholder="Ex: Refonte landing page"></div>
+    <div class="field"><label>Description</label><textarea rows="3" placeholder="Décrivez le projet..."></textarea></div>
+    <div class="field"><label>Équipe</label><select><option>Design</option><option>Backend</option><option>Mobile</option><option>Full Stack</option></select></div>
+    <div class="field"><label>Échéance</label><input type="date"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="document.getElementById('newProjectModal').classList.remove('open')">Annuler</button>
+      <button class="btn btn-primary">Créer le projet</button>
+    </div>
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('.modal-overlay').forEach(o => {
+  o.addEventListener('click', e => { if(e.target === o) o.classList.remove('open'); });
+});
+</script>
+</body>
+</html>

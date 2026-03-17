@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AURA — Utilisateurs</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --bg: #faf8f5; --cream: #f0ece4; --sand: #e8e0d4; --border: #ddd5c8; --accent: #c9521e; --text: #1a1510; --muted: #9a8f82; --surface: #ffffff; --positive: #2a7a4b; --negative: #b33030; --sidebar-w: 240px; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); font-family: 'Instrument Sans', sans-serif; color: var(--text); min-height: 100vh; display: flex; }
+  .sidebar { width: var(--sidebar-w); background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; position: fixed; top: 0; left: 0; height: 100vh; z-index: 50; }
+  .sidebar-logo { padding: 24px 20px; border-bottom: 1px solid var(--border); }
+  .logo-mark { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 400; color: var(--text); letter-spacing: .1em; }
+  .sidebar-nav { flex: 1; padding: 16px 12px; }
+  .nav-section { margin-bottom: 24px; }
+  .nav-section-label { font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); padding: 0 8px; margin-bottom: 6px; }
+  .nav-link { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 8px; font-size: 13px; color: var(--muted); text-decoration: none; cursor: pointer; transition: color .15s, background .15s; }
+  .nav-link:hover { color: var(--text); background: var(--cream); }
+  .nav-link.active { color: var(--accent); background: rgba(201,82,30,.07); font-weight: 500; }
+  .nav-link .icon { width: 18px; text-align: center; font-size: 14px; }
+  .nav-link .count { margin-left: auto; background: var(--cream); border: 1px solid var(--border); font-size: 10px; padding: 1px 7px; border-radius: 10px; font-family: monospace; color: var(--muted); }
+  .nav-link.active .count { background: rgba(201,82,30,.1); border-color: rgba(201,82,30,.2); color: var(--accent); }
+  .sidebar-footer { padding: 16px 12px; border-top: 1px solid var(--border); }
+  .user-row { display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 8px; }
+  .user-av { width: 32px; height: 32px; border-radius: 8px; background: var(--text); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: var(--bg); }
+  .user-info .u-name { font-size: 13px; font-weight: 500; }
+  .user-info .u-role { font-size: 11px; color: var(--muted); }
+  .content { margin-left: var(--sidebar-w); flex: 1; }
+  .topbar { background: var(--surface); border-bottom: 1px solid var(--border); height: 56px; display: flex; align-items: center; padding: 0 28px; gap: 16px; position: sticky; top: 0; z-index: 40; }
+  .topbar-search { display: flex; align-items: center; gap: 8px; background: var(--cream); border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px; flex: 1; max-width: 320px; }
+  .topbar-search input { background: none; border: none; outline: none; font-family: 'Instrument Sans', sans-serif; font-size: 13px; color: var(--text); flex: 1; }
+  .topbar-right { margin-left: auto; }
+  .main { padding: 28px; }
+  .page-title { font-family: 'Fraunces', serif; font-size: 24px; font-weight: 400; margin-bottom: 4px; }
+  .page-sub { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+  .btn { padding: 9px 18px; border-radius: 9px; font-family: 'Instrument Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; border: none; transition: opacity .15s; }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { opacity: .88; }
+  .btn-ghost { background: var(--surface); border: 1.5px solid var(--border); color: var(--text); }
+  .btn-ghost:hover { border-color: var(--muted); }
+  .btn-danger { background: rgba(179,48,48,.08); color: var(--negative); border: 1.5px solid rgba(179,48,48,.2); }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 500; }
+  .badge-green { background: rgba(42,122,75,.1); color: var(--positive); }
+  .badge-orange { background: rgba(201,82,30,.1); color: var(--accent); }
+  .badge-gray { background: var(--cream); color: var(--muted); border: 1px solid var(--border); }
+  .badge-blue { background: rgba(37,99,235,.1); color: #2563eb; }
+  .badge-red { background: rgba(179,48,48,.1); color: var(--negative); }
+
+  /* TOOLBAR */
+  .toolbar { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .filter-tab { padding: 7px 14px; border-radius: 7px; font-size: 13px; color: var(--muted); cursor: pointer; transition: all .15s; border: 1px solid transparent; }
+  .filter-tab:hover { color: var(--text); background: var(--cream); }
+  .filter-tab.active { color: var(--accent); background: rgba(201,82,30,.07); border-color: rgba(201,82,30,.2); font-weight: 500; }
+  .spacer { flex: 1; }
+
+  /* TABLE */
+  .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+  .table-info-bar { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-bottom: 1px solid var(--border); }
+  .tib-left { font-size: 13px; color: var(--muted); }
+  table { width: 100%; border-collapse: collapse; }
+  th { padding: 11px 16px; text-align: left; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; border-bottom: 1px solid var(--border); font-weight: 500; cursor: pointer; user-select: none; }
+  th:hover { color: var(--text); }
+  td { padding: 13px 16px; font-size: 13px; border-bottom: 1px solid var(--sand); vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--cream); }
+  .user-cell { display: flex; align-items: center; gap: 12px; }
+  .u-av { width: 34px; height: 34px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #fff; flex-shrink: 0; }
+  .u-name { font-weight: 500; font-size: 13px; }
+  .u-email { font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .row-actions { display: flex; gap: 6px; opacity: 0; transition: opacity .15s; }
+  tr:hover .row-actions { opacity: 1; }
+  .icon-btn { width: 28px; height: 28px; border-radius: 7px; background: var(--cream); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 13px; transition: border-color .15s; }
+  .icon-btn:hover { border-color: var(--muted); }
+
+  /* PAGINATION */
+  .pagination { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-top: 1px solid var(--border); }
+  .pg-info { font-size: 12px; color: var(--muted); }
+  .pg-btns { display: flex; gap: 4px; }
+  .pg-btn { width: 32px; height: 32px; border-radius: 8px; background: var(--cream); border: 1px solid var(--border); color: var(--muted); font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+  .pg-btn:hover { color: var(--text); }
+  .pg-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  /* MODAL */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(26,21,16,.5); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(3px); }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; width: 420px; animation: fadeUp .2s ease; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+  .modal-title { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 400; }
+  .close-btn { width: 28px; height: 28px; border-radius: 7px; background: var(--cream); border: 1px solid var(--border); color: var(--muted); cursor: pointer; font-size: 14px; }
+  .field { margin-bottom: 16px; }
+  label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+  input, select { width: 100%; background: var(--cream); border: 1.5px solid var(--border); border-radius: 9px; padding: 10px 14px; color: var(--text); font-family: 'Instrument Sans', sans-serif; font-size: 13px; outline: none; transition: border-color .2s; }
+  input:focus, select:focus { border-color: var(--accent); }
+  select option { background: var(--surface); }
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 24px; }
+
+  .toast { position: fixed; bottom: 24px; right: 24px; background: var(--text); color: var(--bg); border-radius: 10px; padding: 12px 18px; font-size: 13px; z-index: 2000; display: none; align-items: center; animation: slideIn .3s ease; }
+  .toast.show { display: flex; }
+  @keyframes slideIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="sidebar-logo"><div class="logo-mark">AURA</div></div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">
+      <div class="nav-section-label">Principal</div>
+      <a href="sidebar-dashboard.html" class="nav-link"><span class="icon">⊞</span> Dashboard</a>
+      <div class="nav-link"><span class="icon">📊</span> Analytique</div>
+      <div class="nav-link active"><span class="icon">👥</span> Utilisateurs <span class="count">4.8k</span></div>
+      <div class="nav-link"><span class="icon">📦</span> Commandes <span class="count">24</span></div>
+      <div class="nav-link"><span class="icon">💬</span> Messages <span class="count">7</span></div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Contenu</div>
+      <div class="nav-link"><span class="icon">📝</span> Articles</div>
+      <div class="nav-link"><span class="icon">🖼</span> Médias</div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Système</div>
+      <div class="nav-link"><span class="icon">⚙</span> Paramètres</div>
+      <div class="nav-link"><span class="icon">🔒</span> Sécurité</div>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="user-row">
+      <div class="user-av">AD</div>
+      <div class="user-info"><div class="u-name">Admin Dupont</div><div class="u-role">Super Admin</div></div>
+    </div>
+  </div>
+</aside>
+
+<div class="content">
+  <div class="topbar">
+    <div class="topbar-search">
+      <span style="color:var(--muted);font-size:13px">🔍</span>
+      <input type="text" placeholder="Rechercher un utilisateur...">
+    </div>
+    <div class="topbar-right" style="display:flex;gap:8px">
+      <button class="btn btn-ghost" style="font-size:12px;padding:7px 14px">Exporter CSV</button>
+      <button class="btn btn-primary" style="font-size:12px;padding:7px 14px" onclick="showM('addModal')">+ Ajouter</button>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="page-title">Utilisateurs</div>
+    <div class="page-sub">4 832 comptes enregistrés · 127 actifs aujourd'hui</div>
+
+    <div class="toolbar">
+      <div class="filter-tab active">Tous</div>
+      <div class="filter-tab">Actifs</div>
+      <div class="filter-tab">Inactifs</div>
+      <div class="filter-tab">Suspendus</div>
+      <div class="spacer"></div>
+      <button class="btn btn-ghost" style="font-size:12px;padding:7px 14px">⇅ Trier</button>
+      <button class="btn btn-ghost" style="font-size:12px;padding:7px 14px">⚙ Filtres</button>
+    </div>
+
+    <div class="table-wrap">
+      <div class="table-info-bar">
+        <span class="tib-left">10 résultats affichés sur 4 832</span>
+        <button class="btn btn-ghost" style="font-size:12px;padding:6px 12px;color:var(--muted)">Actions groupées</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th><input type="checkbox" style="accent-color:var(--accent)"></th>
+            <th>Utilisateur ↕</th>
+            <th>Rôle</th>
+            <th>Statut</th>
+            <th>Plan</th>
+            <th>Dernière connexion</th>
+            <th>Inscrit le</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+      <div class="pagination">
+        <span class="pg-info">Page 1 sur 484</span>
+        <div class="pg-btns">
+          <button class="pg-btn">‹</button>
+          <button class="pg-btn active">1</button>
+          <button class="pg-btn">2</button>
+          <button class="pg-btn">3</button>
+          <span style="color:var(--muted);padding:0 4px">…</span>
+          <button class="pg-btn">484</button>
+          <button class="pg-btn">›</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD MODAL -->
+<div class="modal-overlay" id="addModal">
+  <div class="modal">
+    <div class="modal-head"><span class="modal-title">Ajouter un utilisateur</span><button class="close-btn" onclick="closeM('addModal')">✕</button></div>
+    <div class="field"><label>Nom complet</label><input type="text" placeholder="Jean Dupont"></div>
+    <div class="field"><label>Email</label><input type="email" placeholder="jean@exemple.fr"></div>
+    <div class="field"><label>Rôle</label><select><option>Utilisateur</option><option>Éditeur</option><option>Admin</option></select></div>
+    <div class="field"><label>Plan</label><select><option>Free</option><option>Pro</option><option>Enterprise</option></select></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeM('addModal')">Annuler</button>
+      <button class="btn btn-primary" onclick="closeM('addModal');showT('✓ Invitation envoyée')">Inviter</button>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <div class="modal-head"><span class="modal-title" id="editTitle">Modifier</span><button class="close-btn" onclick="closeM('editModal')">✕</button></div>
+    <div class="field"><label>Nom</label><input type="text" id="editName"></div>
+    <div class="field"><label>Email</label><input type="email" id="editEmail"></div>
+    <div class="field"><label>Rôle</label><select><option>Utilisateur</option><option>Éditeur</option><option>Admin</option></select></div>
+    <div class="field"><label>Statut</label><select><option>Actif</option><option>Inactif</option><option>Suspendu</option></select></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeM('editModal')">Annuler</button>
+      <button class="btn btn-primary" onclick="closeM('editModal');showT('✓ Utilisateur mis à jour')">Sauvegarder</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const users = [
+  { name: "Marie Dupont", email: "marie@email.fr", role: "Admin", status: "Actif", plan: "Pro", last: "Il y a 5 min", joined: "12 jan. 2024", color: "#c9521e" },
+  { name: "Lucas Martin", email: "l.martin@corp.com", role: "Utilisateur", status: "Actif", plan: "Free", last: "Il y a 1h", joined: "3 fév. 2024", color: "#8b5e3c" },
+  { name: "Sophie Bernard", email: "sbernard@gmail.com", role: "Éditeur", status: "Inactif", plan: "Pro", last: "Il y a 5j", joined: "28 nov. 2023", color: "#2a7a4b" },
+  { name: "Thomas Petit", email: "thomas.p@startup.io", role: "Admin", status: "Actif", plan: "Enterprise", last: "Il y a 2h", joined: "7 oct. 2023", color: "#b33030" },
+  { name: "Emma Leroy", email: "e.leroy@design.co", role: "Éditeur", status: "Actif", plan: "Pro", last: "Il y a 30 min", joined: "15 mars 2024", color: "#7c3aed" },
+  { name: "Hugo Moreau", email: "hugo.m@dev.fr", role: "Utilisateur", status: "Suspendu", plan: "Free", last: "Il y a 3 sem.", joined: "1 sept. 2023", color: "#9a8f82" },
+  { name: "Camille Dubois", email: "cdubois@agency.fr", role: "Utilisateur", status: "Actif", plan: "Free", last: "Il y a 4h", joined: "22 jan. 2025", color: "#0369a1" },
+  { name: "Paul Simon", email: "paul.simon@corp.eu", role: "Super Admin", status: "Actif", plan: "Enterprise", last: "Il y a 10 min", joined: "5 mars 2023", color: "#1a1510" },
+  { name: "Lucie Lambert", email: "l.lambert@media.fr", role: "Éditeur", status: "Inactif", plan: "Pro", last: "Il y a 2 sem.", joined: "11 avr. 2024", color: "#c9521e" },
+  { name: "Nicolas Durand", email: "n.durand@fin.com", role: "Utilisateur", status: "Actif", plan: "Free", last: "Hier", joined: "30 juil. 2024", color: "#8b5e3c" },
+];
+const sMap = { "Actif": "badge-green", "Inactif": "badge-gray", "Suspendu": "badge-red" };
+const rMap = { "Super Admin": "badge-blue", "Admin": "badge-blue", "Éditeur": "badge-orange", "Utilisateur": "badge-gray" };
+const pMap = { "Enterprise": "badge-blue", "Pro": "badge-orange", "Free": "badge-gray" };
+const tbody = document.getElementById('tbody');
+users.forEach(u => {
+  const i = u.name.split(' ').map(n=>n[0]).join('');
+  tbody.innerHTML += `<tr>
+    <td><input type="checkbox" style="accent-color:var(--accent)"></td>
+    <td><div class="user-cell">
+      <div class="u-av" style="background:${u.color}">${i}</div>
+      <div><div class="u-name">${u.name}</div><div class="u-email">${u.email}</div></div>
+    </div></td>
+    <td><span class="badge ${rMap[u.role]}">${u.role}</span></td>
+    <td><span class="badge ${sMap[u.status]}">${u.status}</span></td>
+    <td><span class="badge ${pMap[u.plan]}">${u.plan}</span></td>
+    <td style="color:var(--muted);font-size:12px">${u.last}</td>
+    <td style="color:var(--muted);font-size:12px">${u.joined}</td>
+    <td><div class="row-actions">
+      <div class="icon-btn" onclick="openEdit('${u.name}','${u.email}')">✏️</div>
+      <div class="icon-btn" onclick="showT('Utilisateur suspendu')">🚫</div>
+    </div></td>
+  </tr>`;
+});
+function openEdit(name, email) {
+  document.getElementById('editTitle').textContent = name;
+  document.getElementById('editName').value = name;
+  document.getElementById('editEmail').value = email;
+  showM('editModal');
+}
+function showM(id) { document.getElementById(id).classList.add('open'); }
+function closeM(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => { if(e.target === o) o.classList.remove('open'); }));
+function showT(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }
+</script>
+</body>
+</html>
