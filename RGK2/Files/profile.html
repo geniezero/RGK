@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AdminPanel — Profil</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="admin-custom.css">
+  <style>
+    /* Minimal extras for profile page */
+    .profile-header-banner {
+      height: 120px;
+      background: linear-gradient(135deg, var(--accent) 0%, #2e59d9 100%);
+      border-radius: .5rem .5rem 0 0;
+    }
+    .profile-avatar-wrap {
+      margin-top: -40px;
+      position: relative;
+      z-index: 1;
+    }
+    .profile-avatar {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 4px solid #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; font-weight: 700; color: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,.15);
+    }
+    .card-section-title {
+      font-size: .7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--accent);
+      border-bottom: 1px solid #e3e6f0;
+      padding-bottom: .5rem;
+      margin-bottom: 1rem;
+    }
+    .toggle-row { display: flex; align-items: center; justify-content: space-between; padding: .65rem 0; border-bottom: 1px solid #f0f2f8; }
+    .toggle-row:last-child { border-bottom: none; }
+    .custom-switch .custom-control-label::before { border-color: #d1d3e2; }
+    .custom-switch input:checked ~ .custom-control-label::before { background: var(--accent); border-color: var(--accent); }
+    .session-item { display: flex; align-items: center; justify-content: space-between; padding: .75rem; background: #f8f9fc; border: 1px solid #e3e6f0; border-radius: .35rem; margin-bottom: .5rem; }
+    .session-item:last-child { margin-bottom: 0; }
+  </style>
+</head>
+<body>
+<div id="wrapper">
+
+  <!-- SIDEBAR -->
+  <nav id="sidebar">
+    <a href="dashboard.html" class="sidebar-brand">
+      <i class="fas fa-shield-alt brand-icon"></i>AdminPanel
+    </a>
+    <div class="sidebar-nav">
+      <div class="sidebar-heading">Principal</div>
+      <div class="nav-item-sidebar"><a href="dashboard.html" class="nav-link-sidebar"><i class="fas fa-tachometer-alt nav-icon"></i>Dashboard</a></div>
+      <div class="nav-item-sidebar"><a href="#" class="nav-link-sidebar"><i class="fas fa-chart-bar nav-icon"></i>Analytique</a></div>
+      <div class="nav-item-sidebar"><a href="users.html" class="nav-link-sidebar"><i class="fas fa-users nav-icon"></i>Utilisateurs<span class="badge badge-pill badge-primary ml-auto">4.8k</span></a></div>
+      <div class="nav-item-sidebar"><a href="#" class="nav-link-sidebar"><i class="fas fa-shopping-cart nav-icon"></i>Commandes</a></div>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-heading">Compte</div>
+      <div class="nav-item-sidebar"><a href="profile.html" class="nav-link-sidebar active"><i class="fas fa-user-circle nav-icon"></i>Mon profil</a></div>
+      <div class="nav-item-sidebar"><a href="#" class="nav-link-sidebar"><i class="fas fa-cog nav-icon"></i>Paramètres</a></div>
+      <div class="nav-item-sidebar"><a href="#" class="nav-link-sidebar"><i class="fas fa-lock nav-icon"></i>Sécurité</a></div>
+    </div>
+    <div class="sidebar-footer">
+      <div class="avatar-sm" style="background:var(--accent)">AD</div>
+      <div><div class="user-name">Admin Dupont</div><div class="user-role">Super Admin</div></div>
+    </div>
+  </nav>
+
+  <!-- CONTENT -->
+  <div id="content">
+    <div class="topbar">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-transparent mb-0 p-0" style="font-size:.8rem">
+          <li class="breadcrumb-item"><a href="dashboard.html" class="text-muted">Dashboard</a></li>
+          <li class="breadcrumb-item active text-muted">Profil</li>
+        </ol>
+      </nav>
+      <div class="topbar-right">
+        <button class="topbar-icon-btn"><i class="fas fa-bell"></i><span class="badge-notif"></span></button>
+        <div class="topbar-divider"></div>
+        <span class="topbar-username d-none d-md-inline mr-2">Admin Dupont</span>
+        <div class="topbar-avatar">AD</div>
+        <button class="topbar-icon-btn ml-1" onclick="window.location='login.html'"><i class="fas fa-sign-out-alt"></i></button>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <h1 class="page-title">Mon profil</h1>
+      <p class="page-subtitle">Gérez vos informations personnelles et préférences de sécurité.</p>
+
+      <div class="row">
+        <!-- LEFT: Profile card -->
+        <div class="col-xl-4 mb-4">
+          <div class="card">
+            <div class="profile-header-banner"></div>
+            <div class="card-body text-center pt-0">
+              <div class="profile-avatar-wrap d-flex justify-content-center">
+                <div class="profile-avatar">AD</div>
+              </div>
+              <h5 class="font-weight-bold mt-3 mb-0">Admin Dupont</h5>
+              <p class="text-muted small mb-2">admin@exemple.fr</p>
+              <div class="mb-3">
+                <span class="badge badge-primary-soft px-2 py-1 rounded-pill">Super Admin</span>
+                <span class="badge badge-success-soft px-2 py-1 rounded-pill ml-1">En ligne</span>
+              </div>
+              <hr>
+              <div class="row text-center">
+                <div class="col-4">
+                  <div class="font-weight-bold">4.8k</div>
+                  <small class="text-muted">Utilisateurs</small>
+                </div>
+                <div class="col-4">
+                  <div class="font-weight-bold">284</div>
+                  <small class="text-muted">Commandes</small>
+                </div>
+                <div class="col-4">
+                  <div class="font-weight-bold">12</div>
+                  <small class="text-muted">Projets</small>
+                </div>
+              </div>
+              <hr>
+              <div class="d-grid gap-2">
+                <button class="btn btn-outline-primary btn-sm btn-block mb-2" data-toggle="modal" data-target="#pwdModal">
+                  <i class="fas fa-key mr-1"></i>Changer le mot de passe
+                </button>
+                <button class="btn btn-outline-danger btn-sm btn-block" data-toggle="modal" data-target="#deleteModal">
+                  <i class="fas fa-trash mr-1"></i>Supprimer le compte
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Forms -->
+        <div class="col-xl-8">
+
+          <!-- Personal info -->
+          <div class="card mb-4">
+            <div class="card-body">
+              <p class="card-section-title"><i class="fas fa-user mr-2"></i>Informations personnelles</p>
+              <form>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label class="small font-weight-bold">Prénom</label>
+                    <input type="text" class="form-control" value="Admin">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label class="small font-weight-bold">Nom</label>
+                    <input type="text" class="form-control" value="Dupont">
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label class="small font-weight-bold">Adresse email</label>
+                    <input type="email" class="form-control" value="admin@exemple.fr">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label class="small font-weight-bold">Téléphone</label>
+                    <input type="tel" class="form-control" value="+33 6 12 34 56 78">
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label class="small font-weight-bold">Langue</label>
+                    <select class="form-control">
+                      <option selected>Français</option>
+                      <option>English</option>
+                      <option>Español</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label class="small font-weight-bold">Fuseau horaire</label>
+                    <select class="form-control">
+                      <option selected>Europe/Paris (UTC+1)</option>
+                      <option>UTC</option>
+                      <option>America/New_York</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group mb-0">
+                  <label class="small font-weight-bold">Bio</label>
+                  <textarea class="form-control" rows="2" placeholder="Quelques mots sur vous..."></textarea>
+                </div>
+              </form>
+            </div>
+            <div class="card-footer bg-white text-right">
+              <button class="btn btn-secondary btn-sm mr-2">Annuler</button>
+              <button class="btn btn-primary btn-sm" onclick="showToast('✓ Profil enregistré avec succès')">
+                <i class="fas fa-save mr-1"></i>Enregistrer
+              </button>
+            </div>
+          </div>
+
+          <!-- Security -->
+          <div class="card mb-4">
+            <div class="card-body">
+              <p class="card-section-title"><i class="fas fa-shield-alt mr-2"></i>Sécurité &amp; Accès</p>
+
+              <div class="toggle-row">
+                <div>
+                  <div class="font-weight-bold" style="font-size:.9rem">Authentification à deux facteurs</div>
+                  <small class="text-muted">Sécurisez votre compte avec un code OTP</small>
+                </div>
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="twofa" checked>
+                  <label class="custom-control-label" for="twofa"></label>
+                </div>
+              </div>
+
+              <div class="toggle-row">
+                <div>
+                  <div class="font-weight-bold" style="font-size:.9rem">Alertes de connexion par email</div>
+                  <small class="text-muted">Recevoir une alerte à chaque nouvelle connexion</small>
+                </div>
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="loginAlerts">
+                  <label class="custom-control-label" for="loginAlerts"></label>
+                </div>
+              </div>
+
+              <div class="toggle-row">
+                <div>
+                  <div class="font-weight-bold" style="font-size:.9rem">Sessions actives</div>
+                  <small class="text-muted">3 appareils actuellement connectés</small>
+                </div>
+                <button class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#sessionsModal">
+                  Gérer
+                </button>
+              </div>
+
+              <div class="toggle-row">
+                <div>
+                  <div class="font-weight-bold" style="font-size:.9rem">Journal d'activité</div>
+                  <small class="text-muted">Historique de toutes vos actions admin</small>
+                </div>
+                <button class="btn btn-outline-secondary btn-sm">Voir</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Notifications -->
+          <div class="card mb-4">
+            <div class="card-body">
+              <p class="card-section-title"><i class="fas fa-bell mr-2"></i>Préférences de notification</p>
+              <div class="toggle-row">
+                <div>
+                  <div class="font-weight-bold" style="font-size:.9rem">Nouveaux utilisateurs</div>
+                  <small class="text-muted">M'avertir de chaque nouvelle inscription</small>
+                </div>
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="notif1" checked>
+                  <label class="custom-control-label" for="notif1"></label>
+                </div>
+              </div>
+              <div class="toggle-row">
+                <div>
+                  <div class="font-weight-bold" style="font-size:.9rem">Nouvelles commandes</div>
+                  <small class="text-muted">Notification instantanée par email</small>
+                </div>
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="notif2" checked>
+                  <label class="custom-control-label" for="notif2"></label>
+                </div>
+              </div>
+              <div class="toggle-row">
+                <div>
+                  <div class="font-weight-bold" style="font-size:.9rem">Rapport hebdomadaire</div>
+                  <small class="text-muted">Résumé envoyé chaque lundi</small>
+                </div>
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="notif3">
+                  <label class="custom-control-label" for="notif3"></label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bar">© 2026 AdminPanel</div>
+  </div>
+</div>
+
+<!-- PASSWORD MODAL -->
+<div class="modal fade" id="pwdModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fas fa-key mr-2 text-primary"></i>Changer le mot de passe</h5>
+        <button class="close" data-dismiss="modal"><span>×</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="small font-weight-bold">Mot de passe actuel</label>
+          <input type="password" class="form-control" placeholder="••••••••">
+        </div>
+        <div class="form-group">
+          <label class="small font-weight-bold">Nouveau mot de passe</label>
+          <input type="password" class="form-control" placeholder="••••••••">
+          <small class="text-muted">Minimum 8 caractères, 1 majuscule, 1 chiffre.</small>
+        </div>
+        <div class="form-group mb-0">
+          <label class="small font-weight-bold">Confirmer le mot de passe</label>
+          <input type="password" class="form-control" placeholder="••••••••">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary btn-sm" data-dismiss="modal">Annuler</button>
+        <button class="btn btn-primary btn-sm" onclick="$('#pwdModal').modal('hide');showToast('✓ Mot de passe modifié')">
+          <i class="fas fa-check mr-1"></i>Confirmer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SESSIONS MODAL -->
+<div class="modal fade" id="sessionsModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fas fa-desktop mr-2 text-primary"></i>Sessions actives</h5>
+        <button class="close" data-dismiss="modal"><span>×</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="session-item">
+          <div class="d-flex align-items-center gap-2">
+            <i class="fas fa-laptop fa-lg text-primary mr-3"></i>
+            <div>
+              <div class="font-weight-bold small">MacBook Pro · Paris, FR</div>
+              <small class="text-success"><i class="fas fa-circle" style="font-size:.5rem"></i> Session actuelle · Chrome 122</small>
+            </div>
+          </div>
+        </div>
+        <div class="session-item">
+          <div class="d-flex align-items-center gap-2">
+            <i class="fas fa-mobile-alt fa-lg text-muted mr-3"></i>
+            <div>
+              <div class="font-weight-bold small">iPhone 15 · Paris, FR</div>
+              <small class="text-muted">Il y a 2h · Safari Mobile</small>
+            </div>
+          </div>
+          <button class="btn btn-outline-danger btn-sm" onclick="showToast('Session révoquée')">Révoquer</button>
+        </div>
+        <div class="session-item">
+          <div class="d-flex align-items-center gap-2">
+            <i class="fas fa-desktop fa-lg text-muted mr-3"></i>
+            <div>
+              <div class="font-weight-bold small">Windows PC · Lyon, FR</div>
+              <small class="text-muted">Il y a 3 jours · Firefox 123</small>
+            </div>
+          </div>
+          <button class="btn btn-outline-danger btn-sm" onclick="showToast('Session révoquée')">Révoquer</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary btn-sm" data-dismiss="modal">Fermer</button>
+        <button class="btn btn-danger btn-sm" onclick="$('#sessionsModal').modal('hide');showToast('⚠ Toutes les sessions révoquées')">
+          <i class="fas fa-sign-out-alt mr-1"></i>Tout révoquer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DELETE MODAL -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header border-bottom-0">
+        <h5 class="modal-title text-danger"><i class="fas fa-exclamation-triangle mr-2"></i>Supprimer le compte</h5>
+        <button class="close" data-dismiss="modal"><span>×</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-danger py-2 small"><i class="fas fa-exclamation-circle mr-1"></i>Cette action est <strong>irréversible</strong>. Toutes vos données seront supprimées.</div>
+        <div class="form-group">
+          <label class="small font-weight-bold">Confirmez en tapant votre email</label>
+          <input type="email" class="form-control" placeholder="admin@exemple.fr">
+        </div>
+        <div class="form-group mb-0">
+          <label class="small font-weight-bold">Raison (optionnel)</label>
+          <textarea class="form-control" rows="2" placeholder="Pourquoi supprimez-vous votre compte ?"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary btn-sm" data-dismiss="modal">Annuler</button>
+        <button class="btn btn-danger btn-sm">Supprimer définitivement</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container"><div class="toast-custom" id="toast"></div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js"></script>
+<script>
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>

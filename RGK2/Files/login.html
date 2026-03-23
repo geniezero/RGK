@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Connexion</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    :root {
+      --sidebar-bg: #1e2a3a;
+      --accent: #4e73df;
+      --accent-green: #1cc88a;
+      --accent-cyan: #36b9cc;
+      --accent-yellow: #f6c23e;
+      --accent-red: #e74a3b;
+    }
+    body {
+      background: #f0f2f8;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+    .login-card {
+      width: 100%;
+      max-width: 420px;
+      border: none;
+      border-radius: .5rem;
+      box-shadow: 0 .15rem 1.75rem 0 rgba(58,59,69,.15);
+    }
+    .login-card .card-header {
+      background: var(--accent);
+      border-radius: .5rem .5rem 0 0 !important;
+      padding: 1.5rem;
+    }
+    .login-card .card-header h4 {
+      color: #fff;
+      font-weight: 700;
+      margin: 0;
+      font-size: 1.1rem;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+    .form-control:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 .2rem rgba(78,115,223,.25);
+    }
+    .btn-primary {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    .btn-primary:hover {
+      background: #2e59d9;
+      border-color: #2653d4;
+    }
+    .divider { border-top: 1px solid #e3e6f0; }
+    a { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-5">
+
+        <div class="text-center mb-4">
+          <h1 class="h3 font-weight-bold" style="color: var(--sidebar-bg);">
+            <i class="fas fa-shield-alt mr-2" style="color:var(--accent)"></i>AdminPanel
+          </h1>
+          <p class="text-muted small">Espace d'administration sécurisé</p>
+        </div>
+
+        <div class="card login-card">
+          <div class="card-header text-center">
+            <h4><i class="fas fa-lock mr-2"></i>Connexion</h4>
+          </div>
+          <div class="card-body p-4">
+            <form>
+              <div class="form-group">
+                <label class="small font-weight-bold text-uppercase text-muted" style="font-size:.7rem;letter-spacing:.05em">Adresse email</label>
+                <input type="email" class="form-control form-control-user" placeholder="admin@exemple.fr" value="admin@exemple.fr" style="border-radius:2rem;padding:.75rem 1.25rem;font-size:.9rem">
+              </div>
+              <div class="form-group">
+                <label class="small font-weight-bold text-uppercase text-muted" style="font-size:.7rem;letter-spacing:.05em">Mot de passe</label>
+                <input type="password" class="form-control form-control-user" placeholder="••••••••" value="password" style="border-radius:2rem;padding:.75rem 1.25rem;font-size:.9rem">
+              </div>
+              <div class="form-group d-flex justify-content-between align-items-center">
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" id="rememberMe" checked>
+                  <label class="custom-control-label small" for="rememberMe">Se souvenir de moi</label>
+                </div>
+                <a href="#" class="small">Mot de passe oublié ?</a>
+              </div>
+              <a href="dashboard.html" class="btn btn-primary btn-block" style="border-radius:2rem;padding:.75rem;font-weight:700;font-size:.9rem;letter-spacing:.05em;text-transform:uppercase">
+                Se connecter
+              </a>
+            </form>
+            <hr class="divider my-3">
+            <div class="text-center small text-muted">
+              Pas encore de compte ? <a href="#">Demander un accès</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center mt-3 small text-muted">
+          © 2026 AdminPanel · v2.4.1
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
