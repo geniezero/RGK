@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Suivi des indicateurs</title>
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f3f4f6;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #1f2937;
+}
+
+.wrapper {
+  width: 100%;
+  background-color: #f3f4f6;
+}
+
+.container {
+  width: 920px;
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  border-collapse: collapse;
+}
+
+.main-header {
+  background-color: #e5e7eb;
+  padding: 22px 24px;
+  border-bottom: 1px solid #d1d5db;
+}
+
+.main-title {
+  font-size: 22px;
+  font-weight: bold;
+  color: #111827;
+}
+
+.main-subtitle {
+  font-size: 13px;
+  color: #6b7280;
+  padding-top: 6px;
+}
+
+.intro {
+  padding: 18px 24px;
+  font-size: 14px;
+  color: #4b5563;
+  line-height: 20px;
+}
+
+.card {
+  border: 1px solid #e5e7eb;
+  background-color: #ffffff;
+}
+
+.card-title {
+  padding: 12px 14px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #374151;
+  background-color: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.card-body {
+  padding: 10px;
+}
+
+.dataframe {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  background-color: #ffffff;
+}
+
+.dataframe th,
+.dataframe td {
+  border: 1px solid #e5e7eb;
+  padding: 8px;
+  text-align: center;
+  color: #374151;
+}
+
+.col-indicator {
+  background-color: #f9fafb;
+  font-weight: bold;
+  color: #111827;
+  text-align: left !important;
+}
+
+.col-odd-blue {
+  background-color: #eff6ff;
+}
+
+.col-even-blue {
+  background-color: #dbeafe;
+}
+
+.col-odd-orange {
+  background-color: #fffbeb;
+}
+
+.col-even-orange {
+  background-color: #fef3c7;
+}
+
+.col-odd-green {
+  background-color: #ecfdf5;
+}
+
+.col-even-green {
+  background-color: #d1fae5;
+}
+
+.summary {
+  padding: 8px 24px 20px 24px;
+  font-size: 13px;
+  color: #4b5563;
+  line-height: 20px;
+}
+
+.footer {
+  border-top: 1px solid #e5e7eb;
+  padding: 16px 24px;
+  font-size: 12px;
+  color: #6b7280;
+}
+</style>
+</head>
+<body>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="wrapper">
+  <tr>
+    <td align="center" style="padding:24px;">
+      <table role="presentation" width="920" cellpadding="0" cellspacing="0" class="container">
+
+        <tr>
+          <td class="main-header">
+            <div class="main-title">Suivi quotidien des indicateurs</div>
+            <div class="main-subtitle">Design material avec alternance de couleurs par colonnes</div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="intro">
+            Bonjour,<br><br>
+            Veuillez trouver ci-dessous le reporting des indicateurs, avec une alternance de couleurs sur les colonnes pour améliorer la lecture.
+          </td>
+        </tr>
+
+        <tr>
+          <td style="padding:0 16px 8px 16px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+              
+              <tr>
+                <td style="padding:8px;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="card">
+                    <tr>
+                      <td class="card-title">Activité / Production</td>
+                    </tr>
+                    <tr>
+                      <td class="card-body">
+                        <table border="1" class="dataframe">
+                          <tr>
+                            <th class="col-indicator">Indicateur</th>
+                            <th class="col-odd-blue">Lun</th>
+                            <th class="col-even-blue">Mar</th>
+                            <th class="col-odd-blue">Mer</th>
+                            <th class="col-even-blue">Jeu</th>
+                            <th class="col-odd-blue">Ven</th>
+                          </tr>
+                          <tr>
+                            <td class="col-indicator">Volume traité</td>
+                            <td class="col-odd-blue">1 245</td>
+                            <td class="col-even-blue">1 301</td>
+                            <td class="col-odd-blue">1 287</td>
+                            <td class="col-even-blue">1 356</td>
+                            <td class="col-odd-blue">1 412</td>
+                          </tr>
+                          <tr>
+                            <td class="col-indicator">Dossiers finalisés</td>
+                            <td class="col-odd-blue">1 180</td>
+                            <td class="col-even-blue">1 244</td>
+                            <td class="col-odd-blue">1 230</td>
+                            <td class="col-even-blue">1 298</td>
+                            <td class="col-odd-blue">1 350</td>
+                          </tr>
+                          <tr>
+                            <td class="col-indicator">Backlog</td>
+                            <td class="col-odd-blue">215</td>
+                            <td class="col-even-blue">198</td>
+                            <td class="col-odd-blue">190</td>
+                            <td class="col-even-blue">175</td>
+                            <td class="col-odd-blue">162</td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              <tr>
+                <td style="padding:8px;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="card">
+                    <tr>
+                      <td class="card-title">Qualité / Incidents</td>
+                    </tr>
+                    <tr>
+                      <td class="card-body">
+                        <table border="1" class="dataframe">
+                          <tr>
+                            <th class="col-indicator">Indicateur</th>
+                            <th class="col-odd-orange">Lun</th>
+                            <th class="col-even-orange">Mar</th>
+                            <th class="col-odd-orange">Mer</th>
+                            <th class="col-even-orange">Jeu</th>
+                            <th class="col-odd-orange">Ven</th>
+                          </tr>
+                          <tr>
+                            <td class="col-indicator">Taux d'erreur</td>
+                            <td class="col-odd-orange">1,7 %</td>
+                            <td class="col-even-orange">1,5 %</td>
+                            <td class="col-odd-orange">1,3 %</td>
+                            <td class="col-even-orange">1,1 %</td>
+                            <td class="col-odd-orange">0,9 %</td>
+                          </tr>
+                          <tr>
+                            <td class="col-indicator">Anomalies</td>
+                            <td class="col-odd-orange">12</td>
+                            <td class="col-even-orange">10</td>
+                            <td class="col-odd-orange">8</td>
+                            <td class="col-even-orange">6</td>
+                            <td class="col-odd-orange">5</td>
+                          </tr>
+                          <tr>
+                            <td class="col-indicator">Incidents critiques</td>
+                            <td class="col-odd-orange">1</td>
+                            <td class="col-even-orange">0</td>
+                            <td class="col-odd-orange">0</td>
+                            <td class="col-even-orange">0</td>
+                            <td class="col-odd-orange">0</td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              <tr>
+                <td style="padding:8px;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="card">
+                    <tr>
+                      <td class="card-title">Service / Disponibilité</td>
+                    </tr>
+                    <tr>
+                      <td class="card-body">
+                        <table border="1" class="dataframe">
+                          <tr>
+                            <th class="col-indicator">Indicateur</th>
+                            <th class="col-odd-green">Lun</th>
+                            <th class="col-even-green">Mar</th>
+                            <th class="col-odd-green">Mer</th>
+                            <th class="col-even-green">Jeu</th>
+                            <th class="col-odd-green">Ven</th>
+                          </tr>
+                          <tr>
+                            <td class="col-indicator">Disponibilité</td>
+                            <td class="col-odd-green">99,3 %</td>
+                            <td class="col-even-green">99,5 %</td>
+                            <td class="col-odd-green">99,7 %</td>
+                            <td class="col-even-green">99,8 %</td>
+                            <td class="col-odd-green">99,9 %</td>
+                          </tr>
+                          <tr>
+                            <td class="col-indicator">Temps moyen</td>
+                            <td class="col-odd-green">4 min</td>
+                            <td class="col-even-green">4 min</td>
+                            <td class="col-odd-green">3 min</td>
+                            <td class="col-even-green">3 min</td>
+                            <td class="col-odd-green">2 min</td>
+                          </tr>
+                          <tr>
+                            <td class="col-indicator">SLA respecté</td>
+                            <td class="col-odd-green">96 %</td>
+                            <td class="col-even-green">97 %</td>
+                            <td class="col-odd-green">98 %</td>
+                            <td class="col-even-green">98 %</td>
+                            <td class="col-odd-green">99 %</td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+            </table>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="summary">
+            Synthèse : l’alternance de couleurs par colonnes permet une lecture plus fluide jour par jour, tout en conservant une structure neutre et professionnelle.
+          </td>
+        </tr>
+
+        <tr>
+          <td class="footer">
+            Email généré automatiquement — compatible Outlook.
+          </td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

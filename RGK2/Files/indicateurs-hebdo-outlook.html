@@ -1,0 +1,507 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Indicateurs Hebdomadaires</title>
+  <!--[if mso]>
+  <style type="text/css">
+    table { border-collapse: collapse; }
+    td, th { font-family: Arial, sans-serif; }
+  </style>
+  <![endif]-->
+</head>
+
+<body style="margin:0; padding:0; background-color:#F5F5F5; font-family:Arial,sans-serif;">
+
+<!-- Outer wrapper -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#F5F5F5;">
+  <tr>
+    <td align="center" style="padding:32px 16px;">
+
+      <!-- Email card -->
+      <table width="900" cellpadding="0" cellspacing="0" border="0" style="background-color:#FFFFFF; border:1px solid #E0E0E0;">
+
+        <!-- ===== HEADER ===== -->
+        <tr>
+          <td style="background-color:#424242; padding:24px 32px;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td>
+                  <p style="margin:0; font-family:Arial,sans-serif; font-size:11px; font-weight:bold; color:#9E9E9E; letter-spacing:2px; text-transform:uppercase;">RAPPORT HEBDOMADAIRE</p>
+                  <p style="margin:6px 0 0 0; font-family:Arial,sans-serif; font-size:22px; font-weight:bold; color:#FFFFFF;">Tableau de bord des indicateurs</p>
+                </td>
+                <td align="right" valign="middle">
+                  <table cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td align="center" style="background-color:#616161; padding:10px 18px;">
+                        <p style="margin:0; font-family:Arial,sans-serif; font-size:10px; color:#BDBDBD; letter-spacing:1px; text-transform:uppercase;">Semaine</p>
+                        <p style="margin:4px 0 0 0; font-family:Arial,sans-serif; font-size:18px; font-weight:bold; color:#FFFFFF;" id="week-num">—</p>
+                      </td>
+                      <td width="12"></td>
+                      <td align="center" style="background-color:#616161; padding:10px 18px;">
+                        <p style="margin:0; font-family:Arial,sans-serif; font-size:10px; color:#BDBDBD; letter-spacing:1px; text-transform:uppercase;">Période</p>
+                        <p style="margin:4px 0 0 0; font-family:Arial,sans-serif; font-size:12px; font-weight:bold; color:#FFFFFF;" id="week-range">—</p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- ===== CATEGORY LEGEND ===== -->
+        <tr>
+          <td style="background-color:#FAFAFA; padding:12px 32px; border-bottom:1px solid #E0E0E0;">
+            <table cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td style="padding-right:20px;">
+                  <table cellpadding="0" cellspacing="0" border="0"><tr>
+                    <td width="8" height="8" style="background-color:#546E7A; font-size:0; line-height:0;">&nbsp;</td>
+                    <td style="padding-left:6px; font-family:Arial,sans-serif; font-size:10px; color:#757575; letter-spacing:1px;">PERFORMANCE</td>
+                  </tr></table>
+                </td>
+                <td style="padding-right:20px;">
+                  <table cellpadding="0" cellspacing="0" border="0"><tr>
+                    <td width="8" height="8" style="background-color:#78909C; font-size:0; line-height:0;">&nbsp;</td>
+                    <td style="padding-left:6px; font-family:Arial,sans-serif; font-size:10px; color:#757575; letter-spacing:1px;">FINANCE</td>
+                  </tr></table>
+                </td>
+                <td style="padding-right:20px;">
+                  <table cellpadding="0" cellspacing="0" border="0"><tr>
+                    <td width="8" height="8" style="background-color:#90A4AE; font-size:0; line-height:0;">&nbsp;</td>
+                    <td style="padding-left:6px; font-family:Arial,sans-serif; font-size:10px; color:#757575; letter-spacing:1px;">RH</td>
+                  </tr></table>
+                </td>
+                <td style="padding-right:20px;">
+                  <table cellpadding="0" cellspacing="0" border="0"><tr>
+                    <td width="8" height="8" style="background-color:#B0BEC5; font-size:0; line-height:0;">&nbsp;</td>
+                    <td style="padding-left:6px; font-family:Arial,sans-serif; font-size:10px; color:#757575; letter-spacing:1px;">OPÉRATIONS</td>
+                  </tr></table>
+                </td>
+                <td style="padding-right:20px;">
+                  <table cellpadding="0" cellspacing="0" border="0"><tr>
+                    <td width="8" height="8" style="background-color:#CFD8DC; font-size:0; line-height:0;">&nbsp;</td>
+                    <td style="padding-left:6px; font-family:Arial,sans-serif; font-size:10px; color:#757575; letter-spacing:1px;">CLIENT</td>
+                  </tr></table>
+                </td>
+                <td>
+                  <table cellpadding="0" cellspacing="0" border="0"><tr>
+                    <td width="8" height="8" style="background-color:#ECEFF1; border:1px solid #CFD8DC; font-size:0; line-height:0;">&nbsp;</td>
+                    <td style="padding-left:6px; font-family:Arial,sans-serif; font-size:10px; color:#757575; letter-spacing:1px;">MARKETING</td>
+                  </tr></table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- ===== MAIN TABLE ===== -->
+        <tr>
+          <td style="padding:0 0 0 0;">
+
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+
+              <!-- Column headers -->
+              <tr style="background-color:#EEEEEE;">
+                <td width="200" style="padding:10px 16px 10px 32px; border-bottom:2px solid #BDBDBD; border-right:1px solid #E0E0E0;">
+                  <span style="font-family:Arial,sans-serif; font-size:9px; font-weight:bold; color:#757575; letter-spacing:2px; text-transform:uppercase;">INDICATEUR</span>
+                </td>
+                <td width="100" align="center" style="padding:10px 8px; border-bottom:2px solid #BDBDBD; border-right:1px solid #E0E0E0;">
+                  <span style="font-family:Arial,sans-serif; font-size:9px; font-weight:bold; color:#757575; letter-spacing:1px; text-transform:uppercase; display:block;" class="day-label" id="hdr0">LUN —</span>
+                </td>
+                <td width="100" align="center" style="padding:10px 8px; border-bottom:2px solid #BDBDBD; border-right:1px solid #E0E0E0;">
+                  <span style="font-family:Arial,sans-serif; font-size:9px; font-weight:bold; color:#757575; letter-spacing:1px; text-transform:uppercase; display:block;" id="hdr1">MAR —</span>
+                </td>
+                <td width="100" align="center" style="padding:10px 8px; border-bottom:2px solid #BDBDBD; border-right:1px solid #E0E0E0;">
+                  <span style="font-family:Arial,sans-serif; font-size:9px; font-weight:bold; color:#757575; letter-spacing:1px; text-transform:uppercase; display:block;" id="hdr2">MER —</span>
+                </td>
+                <td width="100" align="center" style="padding:10px 8px; border-bottom:2px solid #BDBDBD; border-right:1px solid #E0E0E0;">
+                  <span style="font-family:Arial,sans-serif; font-size:9px; font-weight:bold; color:#757575; letter-spacing:1px; text-transform:uppercase; display:block;" id="hdr3">JEU —</span>
+                </td>
+                <td width="100" align="center" style="padding:10px 8px; border-bottom:2px solid #BDBDBD; border-right:1px solid #E0E0E0;">
+                  <span style="font-family:Arial,sans-serif; font-size:9px; font-weight:bold; color:#757575; letter-spacing:1px; text-transform:uppercase; display:block;" id="hdr4">VEN —</span>
+                </td>
+                <td width="100" align="center" style="padding:10px 8px; border-bottom:2px solid #BDBDBD; border-right:1px solid #E0E0E0;">
+                  <span style="font-family:Arial,sans-serif; font-size:9px; font-weight:bold; color:#9E9E9E; letter-spacing:1px; text-transform:uppercase; display:block;" id="hdr5">SAM —</span>
+                </td>
+                <td width="100" align="center" style="padding:10px 8px; border-bottom:2px solid #BDBDBD;">
+                  <span style="font-family:Arial,sans-serif; font-size:9px; font-weight:bold; color:#9E9E9E; letter-spacing:1px; text-transform:uppercase; display:block;" id="hdr6">DIM —</span>
+                </td>
+              </tr>
+
+              <!-- ============================================================ -->
+              <!-- SECTION: PERFORMANCE -->
+              <!-- ============================================================ -->
+              <tr style="background-color:#F5F5F5;">
+                <td colspan="8" style="padding:8px 16px 8px 32px; border-bottom:1px solid #E0E0E0; border-left:3px solid #546E7A;">
+                  <span style="font-family:Arial,sans-serif; font-size:9px; font-weight:bold; color:#546E7A; letter-spacing:2px; text-transform:uppercase;">PERFORMANCE</span>
+                </td>
+              </tr>
+
+              <!-- Row: CA -->
+              <tr style="background-color:#FFFFFF;">
+                <td style="padding:12px 12px 12px 28px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; border-left:3px solid #546E7A;">
+                  <span style="font-family:Arial,sans-serif; font-size:12px; color:#212121; font-weight:bold; display:block;">Chiffre d'affaires</span>
+                  <span style="font-family:Arial,sans-serif; font-size:10px; color:#9E9E9E; display:block; margin-top:2px;">Ventes journalières (€)</span>
+                </td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#FAFAFA;">
+                  <input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" />
+                </td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0;">
+                  <input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" />
+                </td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#FAFAFA;">
+                  <input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" />
+                </td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0;">
+                  <input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" />
+                </td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#FAFAFA;">
+                  <input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" />
+                </td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#F5F5F5;">
+                  <input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#9E9E9E; text-align:center; background:#EEEEEE;" />
+                </td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; background-color:#F5F5F5;">
+                  <input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#9E9E9E; text-align:center; background:#EEEEEE;" />
+                </td>
+              </tr>
+
+              <!-- Row: Taux conversion -->
+              <tr style="background-color:#FAFAFA;">
+                <td style="padding:12px 12px 12px 28px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; border-left:3px solid #546E7A;">
+                  <span style="font-family:Arial,sans-serif; font-size:12px; color:#212121; font-weight:bold; display:block;">Taux de conversion</span>
+                  <span style="font-family:Arial,sans-serif; font-size:10px; color:#9E9E9E; display:block; margin-top:2px;">% leads → clients</span>
+                </td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#FAFAFA;">
+                  <input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" />
+                </td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0;">
+                  <input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" />
+                </td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#FAFAFA;">
+                  <input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" />
+                </td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0;">
+                  <input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" />
+                </td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#FAFAFA;">
+                  <input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" />
+                </td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#F5F5F5;">
+                  <input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#9E9E9E; text-align:center; background:#EEEEEE;" />
+                </td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; background-color:#F5F5F5;">
+                  <input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#9E9E9E; text-align:center; background:#EEEEEE;" />
+                </td>
+              </tr>
+
+              <!-- Row: NPS -->
+              <tr style="background-color:#FFFFFF;">
+                <td style="padding:12px 12px 12px 28px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; border-left:3px solid #546E7A;">
+                  <span style="font-family:Arial,sans-serif; font-size:12px; color:#212121; font-weight:bold; display:block;">NPS</span>
+                  <span style="font-family:Arial,sans-serif; font-size:10px; color:#9E9E9E; display:block; margin-top:2px;">Net Promoter Score</span>
+                </td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#FAFAFA;">
+                  <input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" />
+                </td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0;">
+                  <input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" />
+                </td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#FAFAFA;">
+                  <input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" />
+                </td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0;">
+                  <input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" />
+                </td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#FAFAFA;">
+                  <input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" />
+                </td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#F5F5F5;">
+                  <input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#9E9E9E; text-align:center; background:#EEEEEE;" />
+                </td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; background-color:#F5F5F5;">
+                  <input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#9E9E9E; text-align:center; background:#EEEEEE;" />
+                </td>
+              </tr>
+
+              <!-- SECTION: FINANCE -->
+              <tr style="background-color:#F5F5F5;">
+                <td colspan="8" style="padding:8px 16px 8px 32px; border-bottom:1px solid #E0E0E0; border-top:2px solid #E0E0E0; border-left:3px solid #78909C;">
+                  <span style="font-family:Arial,sans-serif; font-size:9px; font-weight:bold; color:#78909C; letter-spacing:2px; text-transform:uppercase;">FINANCE</span>
+                </td>
+              </tr>
+
+              <!-- Row: Trésorerie -->
+              <tr style="background-color:#FFFFFF;">
+                <td style="padding:12px 12px 12px 28px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; border-left:3px solid #78909C;">
+                  <span style="font-family:Arial,sans-serif; font-size:12px; color:#212121; font-weight:bold; display:block;">Trésorerie disponible</span>
+                  <span style="font-family:Arial,sans-serif; font-size:10px; color:#9E9E9E; display:block; margin-top:2px;">Solde bancaire J (€)</span>
+                </td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#FAFAFA;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#FAFAFA;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#FAFAFA;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#F5F5F5;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#9E9E9E; text-align:center; background:#EEEEEE;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; background-color:#F5F5F5;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#9E9E9E; text-align:center; background:#EEEEEE;" /></td>
+              </tr>
+
+              <!-- Row: Marge brute -->
+              <tr style="background-color:#FAFAFA;">
+                <td style="padding:12px 12px 12px 28px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; border-left:3px solid #78909C;">
+                  <span style="font-family:Arial,sans-serif; font-size:12px; color:#212121; font-weight:bold; display:block;">Marge brute</span>
+                  <span style="font-family:Arial,sans-serif; font-size:10px; color:#9E9E9E; display:block; margin-top:2px;">CA – coût des ventes (%)</span>
+                </td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#FAFAFA;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#FAFAFA;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#FAFAFA;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#F5F5F5;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#9E9E9E; text-align:center; background:#EEEEEE;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; background-color:#F5F5F5;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#9E9E9E; text-align:center; background:#EEEEEE;" /></td>
+              </tr>
+
+              <!-- SECTION: RH -->
+              <tr style="background-color:#F5F5F5;">
+                <td colspan="8" style="padding:8px 16px 8px 32px; border-bottom:1px solid #E0E0E0; border-top:2px solid #E0E0E0; border-left:3px solid #90A4AE;">
+                  <span style="font-family:Arial,sans-serif; font-size:9px; font-weight:bold; color:#90A4AE; letter-spacing:2px; text-transform:uppercase;">RESSOURCES HUMAINES</span>
+                </td>
+              </tr>
+
+              <!-- Row: Absentéisme -->
+              <tr style="background-color:#FFFFFF;">
+                <td style="padding:12px 12px 12px 28px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; border-left:3px solid #90A4AE;">
+                  <span style="font-family:Arial,sans-serif; font-size:12px; color:#212121; font-weight:bold; display:block;">Absentéisme</span>
+                  <span style="font-family:Arial,sans-serif; font-size:10px; color:#9E9E9E; display:block; margin-top:2px;">% effectif absent</span>
+                </td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#FAFAFA;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#FAFAFA;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#FAFAFA;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#F5F5F5;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#9E9E9E; text-align:center; background:#EEEEEE;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; background-color:#F5F5F5;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#9E9E9E; text-align:center; background:#EEEEEE;" /></td>
+              </tr>
+
+              <!-- Row: Heures sup -->
+              <tr style="background-color:#FAFAFA;">
+                <td style="padding:12px 12px 12px 28px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; border-left:3px solid #90A4AE;">
+                  <span style="font-family:Arial,sans-serif; font-size:12px; color:#212121; font-weight:bold; display:block;">Heures supplémentaires</span>
+                  <span style="font-family:Arial,sans-serif; font-size:10px; color:#9E9E9E; display:block; margin-top:2px;">Total équipe (h)</span>
+                </td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#FAFAFA;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#FAFAFA;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#FAFAFA;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#F5F5F5;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#9E9E9E; text-align:center; background:#EEEEEE;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; background-color:#F5F5F5;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#9E9E9E; text-align:center; background:#EEEEEE;" /></td>
+              </tr>
+
+              <!-- SECTION: OPÉRATIONS -->
+              <tr style="background-color:#F5F5F5;">
+                <td colspan="8" style="padding:8px 16px 8px 32px; border-bottom:1px solid #E0E0E0; border-top:2px solid #E0E0E0; border-left:3px solid #B0BEC5;">
+                  <span style="font-family:Arial,sans-serif; font-size:9px; font-weight:bold; color:#B0BEC5; letter-spacing:2px; text-transform:uppercase;">OPÉRATIONS</span>
+                </td>
+              </tr>
+
+              <!-- Row: Tickets support -->
+              <tr style="background-color:#FFFFFF;">
+                <td style="padding:12px 12px 12px 28px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; border-left:3px solid #B0BEC5;">
+                  <span style="font-family:Arial,sans-serif; font-size:12px; color:#212121; font-weight:bold; display:block;">Tickets support</span>
+                  <span style="font-family:Arial,sans-serif; font-size:10px; color:#9E9E9E; display:block; margin-top:2px;">Nouveaux / Résolus</span>
+                </td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#FAFAFA;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#FAFAFA;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#FAFAFA;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#F5F5F5;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#9E9E9E; text-align:center; background:#EEEEEE;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; background-color:#F5F5F5;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#9E9E9E; text-align:center; background:#EEEEEE;" /></td>
+              </tr>
+
+              <!-- Row: Uptime -->
+              <tr style="background-color:#FAFAFA;">
+                <td style="padding:12px 12px 12px 28px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; border-left:3px solid #B0BEC5;">
+                  <span style="font-family:Arial,sans-serif; font-size:12px; color:#212121; font-weight:bold; display:block;">Uptime système</span>
+                  <span style="font-family:Arial,sans-serif; font-size:10px; color:#9E9E9E; display:block; margin-top:2px;">Disponibilité infra (%)</span>
+                </td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#FAFAFA;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#FAFAFA;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#FAFAFA;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#F5F5F5;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#9E9E9E; text-align:center; background:#EEEEEE;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; background-color:#F5F5F5;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#9E9E9E; text-align:center; background:#EEEEEE;" /></td>
+              </tr>
+
+              <!-- SECTION: CLIENT -->
+              <tr style="background-color:#F5F5F5;">
+                <td colspan="8" style="padding:8px 16px 8px 32px; border-bottom:1px solid #E0E0E0; border-top:2px solid #E0E0E0; border-left:3px solid #CFD8DC;">
+                  <span style="font-family:Arial,sans-serif; font-size:9px; font-weight:bold; color:#90A4AE; letter-spacing:2px; text-transform:uppercase;">CLIENT</span>
+                </td>
+              </tr>
+
+              <!-- Row: Nouveaux clients -->
+              <tr style="background-color:#FFFFFF;">
+                <td style="padding:12px 12px 12px 28px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; border-left:3px solid #CFD8DC;">
+                  <span style="font-family:Arial,sans-serif; font-size:12px; color:#212121; font-weight:bold; display:block;">Nouveaux clients</span>
+                  <span style="font-family:Arial,sans-serif; font-size:10px; color:#9E9E9E; display:block; margin-top:2px;">Acquisitions du jour</span>
+                </td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#FAFAFA;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#FAFAFA;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#FAFAFA;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#F5F5F5;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#9E9E9E; text-align:center; background:#EEEEEE;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; background-color:#F5F5F5;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#9E9E9E; text-align:center; background:#EEEEEE;" /></td>
+              </tr>
+
+              <!-- Row: CSAT -->
+              <tr style="background-color:#FAFAFA;">
+                <td style="padding:12px 12px 12px 28px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; border-left:3px solid #CFD8DC;">
+                  <span style="font-family:Arial,sans-serif; font-size:12px; color:#212121; font-weight:bold; display:block;">Satisfaction client (CSAT)</span>
+                  <span style="font-family:Arial,sans-serif; font-size:10px; color:#9E9E9E; display:block; margin-top:2px;">Score moyen /10</span>
+                </td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#FAFAFA;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#FAFAFA;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#FAFAFA;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#F5F5F5;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#9E9E9E; text-align:center; background:#EEEEEE;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; background-color:#F5F5F5;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#9E9E9E; text-align:center; background:#EEEEEE;" /></td>
+              </tr>
+
+              <!-- SECTION: MARKETING -->
+              <tr style="background-color:#F5F5F5;">
+                <td colspan="8" style="padding:8px 16px 8px 32px; border-bottom:1px solid #E0E0E0; border-top:2px solid #E0E0E0; border-left:3px solid #ECEFF1;">
+                  <span style="font-family:Arial,sans-serif; font-size:9px; font-weight:bold; color:#90A4AE; letter-spacing:2px; text-transform:uppercase;">MARKETING</span>
+                </td>
+              </tr>
+
+              <!-- Row: Visites site -->
+              <tr style="background-color:#FFFFFF;">
+                <td style="padding:12px 12px 12px 28px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; border-left:3px solid #ECEFF1;">
+                  <span style="font-family:Arial,sans-serif; font-size:12px; color:#212121; font-weight:bold; display:block;">Visites site web</span>
+                  <span style="font-family:Arial,sans-serif; font-size:10px; color:#9E9E9E; display:block; margin-top:2px;">Sessions Analytics</span>
+                </td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#FAFAFA;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#FAFAFA;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#FAFAFA;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; border-right:1px solid #E0E0E0; background-color:#F5F5F5;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#9E9E9E; text-align:center; background:#EEEEEE;" /></td>
+                <td align="center" style="padding:10px 8px; border-bottom:1px solid #EEEEEE; background-color:#F5F5F5;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#9E9E9E; text-align:center; background:#EEEEEE;" /></td>
+              </tr>
+
+              <!-- Row: CPL -->
+              <tr style="background-color:#FAFAFA;">
+                <td style="padding:12px 12px 12px 28px; border-right:1px solid #E0E0E0; border-left:3px solid #ECEFF1;">
+                  <span style="font-family:Arial,sans-serif; font-size:12px; color:#212121; font-weight:bold; display:block;">Coût par lead (CPL)</span>
+                  <span style="font-family:Arial,sans-serif; font-size:10px; color:#9E9E9E; display:block; margin-top:2px;">Dépenses pub / leads (€)</span>
+                </td>
+                <td align="center" style="padding:10px 8px; border-right:1px solid #E0E0E0; background-color:#FAFAFA;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-right:1px solid #E0E0E0;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-right:1px solid #E0E0E0; background-color:#FAFAFA;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-right:1px solid #E0E0E0;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-right:1px solid #E0E0E0; background-color:#FAFAFA;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#212121; text-align:center; background:#FFFFFF;" /></td>
+                <td align="center" style="padding:10px 8px; border-right:1px solid #E0E0E0; background-color:#F5F5F5;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#9E9E9E; text-align:center; background:#EEEEEE;" /></td>
+                <td align="center" style="padding:10px 8px; background-color:#F5F5F5;"><input type="text" value="" placeholder="—" style="width:72px; border:1px solid #E0E0E0; padding:5px 6px; font-family:Arial,sans-serif; font-size:12px; color:#9E9E9E; text-align:center; background:#EEEEEE;" /></td>
+              </tr>
+
+            </table>
+          </td>
+        </tr>
+
+        <!-- ===== NOTES ZONE ===== -->
+        <tr>
+          <td style="padding:0 0 0 0; border-top:2px solid #E0E0E0;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td style="padding:16px 32px 8px 32px;">
+                  <span style="font-family:Arial,sans-serif; font-size:9px; font-weight:bold; color:#757575; letter-spacing:2px; text-transform:uppercase;">COMMENTAIRES / NOTES</span>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:8px 32px 24px 32px;">
+                  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td style="border:1px solid #E0E0E0; padding:12px 14px; background-color:#FAFAFA;">
+                        <p style="margin:0; font-family:Arial,sans-serif; font-size:12px; color:#BDBDBD;">Saisir vos observations hebdomadaires ici...</p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- ===== FOOTER ===== -->
+        <tr>
+          <td style="background-color:#EEEEEE; padding:14px 32px; border-top:1px solid #E0E0E0;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td>
+                  <span style="font-family:Arial,sans-serif; font-size:10px; color:#9E9E9E;">Rapport généré automatiquement — Ne pas répondre à cet email</span>
+                </td>
+                <td align="right">
+                  <span style="font-family:Arial,sans-serif; font-size:10px; color:#BDBDBD;" id="footer-date">—</span>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+      </table>
+      <!-- /email card -->
+
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+// Set week info
+(function() {
+  var days = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+  var months = ['jan','fév','mar','avr','mai','juin','juil','août','sep','oct','nov','déc'];
+
+  var today = new Date();
+  var dow = today.getDay();
+  var monday = new Date(today);
+  monday.setDate(today.getDate() - ((dow + 6) % 7));
+
+  // Week number
+  var d = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()));
+  d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
+  var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+  var weekNo = Math.ceil((((d - yearStart) / 86400000) + 1)/7);
+  var wn = document.getElementById('week-num');
+  if (wn) wn.innerHTML = 'S' + weekNo;
+
+  // Day headers
+  var abbrs = ['LUN','MAR','MER','JEU','VEN','SAM','DIM'];
+  for (var i = 0; i < 7; i++) {
+    var d2 = new Date(monday);
+    d2.setDate(monday.getDate() + i);
+    var el = document.getElementById('hdr' + i);
+    if (el) el.innerHTML = abbrs[i] + ' ' + d2.getDate();
+  }
+
+  // Week range
+  var sunday = new Date(monday);
+  sunday.setDate(monday.getDate() + 6);
+  var wr = document.getElementById('week-range');
+  if (wr) wr.innerHTML = monday.getDate() + ' ' + months[monday.getMonth()] + ' – ' + sunday.getDate() + ' ' + months[sunday.getMonth()];
+
+  // Footer date
+  var fd = document.getElementById('footer-date');
+  if (fd) fd.innerHTML = days[today.getDay()] + ' ' + today.getDate() + ' ' + months[today.getMonth()] + ' ' + today.getFullYear();
+})();
+</script>
+
+</body>
+</html>
