@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AdminPanel — Prévisualisation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0c10;--surface:#111318;--surface2:#181b22;--border:#252830;
+  --accent:#e8ff47;--accent2:#47c6ff;--danger:#ff4757;--success:#2ed573;
+  --text:#e8eaf0;--muted:#6b7280;--sidebar-w:240px;
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Space Mono',monospace;font-size:13px}
+
+/* ── SIDEBAR ── */
+.sidebar{width:var(--sidebar-w);background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100}
+.sidebar-logo{padding:28px 24px 20px;border-bottom:1px solid var(--border)}
+.logo-mark{font-family:'Syne',sans-serif;font-weight:800;font-size:20px;color:var(--accent);letter-spacing:-.5px}
+.logo-sub{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-top:2px}
+.nav-section{padding:20px 12px 8px;flex:1}
+.nav-label{font-size:9px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);padding:0 12px;margin-bottom:6px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;text-decoration:none;color:var(--muted);cursor:pointer;transition:all .15s;margin-bottom:2px;border:none;background:none;width:100%;text-align:left;font-family:'Space Mono',monospace;font-size:13px}
+.nav-item:hover{background:var(--surface2);color:var(--text)}
+.nav-item.active{background:var(--accent);color:#000}
+.nav-item .icon{font-size:16px;width:20px;text-align:center}
+.nav-item .label{font-family:'Syne',sans-serif;font-weight:600;font-size:13px}
+.sidebar-footer{padding:16px 12px;border-top:1px solid var(--border)}
+.user-info{display:flex;align-items:center;gap:10px;padding:8px 12px}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--accent);color:#000;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:13px}
+.user-name{font-size:12px;color:var(--text)}
+.user-role{font-size:10px;color:var(--muted)}
+.logout-btn{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;color:var(--danger);text-decoration:none;margin-top:4px;font-size:12px;cursor:pointer;border:none;background:none;font-family:'Space Mono',monospace;width:100%;transition:background .15s}
+.logout-btn:hover{background:rgba(255,71,87,.1)}
+
+/* ── MAIN ── */
+.main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.page-title{font-family:'Syne',sans-serif;font-weight:700;font-size:18px}
+.breadcrumb{font-size:11px;color:var(--muted);margin-top:2px}
+.topbar-actions{display:flex;gap:8px;align-items:center}
+.content{padding:32px;flex:1}
+
+/* ── COMPOSANTS ── */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;border:none;transition:all .15s}
+.btn-primary{background:var(--accent);color:#000}
+.btn-primary:hover{background:#d4e83f}
+.btn-secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
+.btn-secondary:hover{border-color:var(--accent);color:var(--accent)}
+.btn-danger{background:transparent;color:var(--danger);border:1px solid var(--danger)}
+.btn-danger:hover{background:var(--danger);color:#fff}
+.btn-sm{padding:5px 10px;font-size:11px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:24px}
+.card-title{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+table{width:100%;border-collapse:collapse}
+thead tr{border-bottom:2px solid var(--border)}
+th{text-align:left;padding:10px 14px;font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted)}
+td{padding:12px 14px;border-bottom:1px solid var(--border);vertical-align:middle}
+tbody tr:hover{background:var(--surface2)}
+tbody tr:last-child td{border-bottom:none}
+.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.badge-success{background:rgba(46,213,115,.15);color:var(--success)}
+.badge-danger{background:rgba(255,71,87,.15);color:var(--danger)}
+.badge-info{background:rgba(71,198,255,.15);color:var(--accent2)}
+.badge-warn{background:rgba(255,193,7,.15);color:#ffc107}
+.form-group{margin-bottom:18px}
+.form-label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px}
+.form-control{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:10px 14px;font-family:'Space Mono',monospace;font-size:12px;transition:border-color .15s}
+.form-control:focus{outline:none;border-color:var(--accent)}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:28px}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px}
+.stat-value{font-family:'Syne',sans-serif;font-weight:800;font-size:32px;color:var(--accent);line-height:1}
+.stat-label{font-size:11px;color:var(--muted);margin-top:6px;text-transform:uppercase;letter-spacing:1px}
+.empty-state{text-align:center;padding:60px 20px;color:var(--muted)}
+.empty-state .icon{font-size:48px;margin-bottom:16px;opacity:.4}
+
+/* ── MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;align-items:center;justify-content:center}
+.modal-overlay.show{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;width:480px;max-width:95vw;animation:modalIn .2s ease}
+@keyframes modalIn{from{opacity:0;transform:scale(.95) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.modal-title{font-family:'Syne',sans-serif;font-weight:700;font-size:17px;margin-bottom:24px}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:24px}
+
+/* ── PAGE VIEWS ── */
+.page-view{display:none}
+.page-view.active{display:block}
+
+/* ── LOGIN ── */
+.login-screen{display:none;position:fixed;inset:0;background:var(--bg);z-index:300;align-items:center;justify-content:center}
+.login-screen.show{display:flex}
+.bg-grid{position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:.3;pointer-events:none}
+.login-wrap{position:relative;z-index:1;width:400px;max-width:95vw}
+.login-brand{text-align:center;margin-bottom:40px}
+.login-brand .mark{font-family:'Syne',sans-serif;font-weight:800;font-size:28px;color:var(--accent)}
+.login-brand .sub{font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:4px}
+.login-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:36px}
+.login-card h1{font-family:'Syne',sans-serif;font-weight:700;font-size:20px;margin-bottom:6px}
+.login-card p{color:var(--muted);font-size:12px;margin-bottom:28px}
+.alert{padding:12px 16px;border-radius:8px;margin-bottom:20px;font-size:12px}
+.alert-error{background:rgba(255,71,87,.1);border:1px solid var(--danger);color:var(--danger)}
+.alert-success{background:rgba(46,213,115,.1);border:1px solid var(--success);color:var(--success)}
+.hint{text-align:center;margin-top:20px;font-size:11px;color:var(--muted)}
+.hint code{background:rgba(232,255,71,.1);color:var(--accent);padding:2px 6px;border-radius:4px}
+.btn-full{width:100%;padding:12px;justify-content:center}
+
+/* Filtres bar */
+.filter-bar{display:flex;gap:10px;margin-bottom:24px;align-items:center;flex-wrap:wrap}
+.filter-bar input,.filter-bar select{flex:1;min-width:120px}
+
+/* Pagination */
+.pagination{display:flex;justify-content:center;gap:6px;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)}
+
+/* Stats user cards */
+.user-stats-grid{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:4px}
+.user-stat-mini{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px 20px;min-width:140px}
+.user-stat-mini .val{font-family:'Syne',sans-serif;font-weight:700;color:var(--accent);font-size:22px}
+.user-stat-mini .who{color:var(--text);font-size:12px;margin-top:2px}
+.user-stat-mini .vol{color:var(--muted);font-size:11px;margin-top:2px}
+
+/* File icon colors */
+.ic-pdf{color:#ff6b6b} .ic-img{color:#a29bfe} .ic-doc{color:#74b9ff} .ic-zip{color:#ffeaa7} .ic-xls{color:#55efc4} .ic-other{color:var(--muted)}
+
+/* Toggle switch */
+.toggle{position:relative;display:inline-block;width:36px;height:20px}
+.toggle input{opacity:0;width:0;height:0}
+.slider{position:absolute;cursor:pointer;inset:0;background:var(--border);border-radius:20px;transition:.2s}
+.slider:before{position:absolute;content:"";height:14px;width:14px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.2s}
+input:checked + .slider{background:var(--success)}
+input:checked + .slider:before{transform:translateX(16px)}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+     ÉCRAN DE LOGIN
+═══════════════════════════════════════════════ -->
+<div class="login-screen show" id="loginScreen">
+  <div class="bg-grid"></div>
+  <div class="login-wrap">
+    <div class="login-brand">
+      <div class="mark">⬡ AdminPanel</div>
+      <div class="sub">Classic ASP — Back-office</div>
+    </div>
+    <div class="login-card">
+      <h1>Connexion</h1>
+      <p>Accès réservé aux administrateurs autorisés.</p>
+      <div class="alert alert-error" id="loginErr" style="display:none">⚠ Identifiants incorrects.</div>
+      <div class="form-group">
+        <label class="form-label">Identifiant</label>
+        <input type="text" id="loginInput" class="form-control" placeholder="admin" value="admin">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Mot de passe</label>
+        <input type="password" id="pwdInput" class="form-control" placeholder="••••••••" value="Admin123!">
+      </div>
+      <button class="btn btn-primary btn-full" onclick="doLogin()">→ Se connecter</button>
+      <div class="hint">Démo : <code>admin</code> / <code>Admin123!</code></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     APP SHELL
+═══════════════════════════════════════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">⬡ AdminPanel</div>
+    <div class="logo-sub">v2.0 — Classic ASP</div>
+  </div>
+  <nav class="nav-section">
+    <div class="nav-label">Navigation</div>
+    <button class="nav-item active" id="nav-dashboard" onclick="goTo('dashboard')">
+      <span class="icon">◈</span><span class="label">Dashboard</span>
+    </button>
+    <button class="nav-item" id="nav-users" onclick="goTo('users')">
+      <span class="icon">◉</span><span class="label">Utilisateurs</span>
+    </button>
+    <button class="nav-item" id="nav-uploads" onclick="goTo('uploads')">
+      <span class="icon">◫</span><span class="label">Fichiers</span>
+    </button>
+    <button class="nav-item" id="nav-history" onclick="goTo('history')">
+      <span class="icon">◷</span><span class="label">Historique</span>
+    </button>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="user-info">
+      <div class="avatar">A</div>
+      <div>
+        <div class="user-name">admin</div>
+        <div class="user-role">Administrateur</div>
+      </div>
+    </div>
+    <button class="logout-btn" onclick="doLogout()">⊗ Déconnexion</button>
+  </div>
+</aside>
+
+<main class="main">
+  <div class="topbar">
+    <div>
+      <div class="page-title" id="pageTitle">Dashboard</div>
+      <div class="breadcrumb" id="pageBreadcrumb">Admin / Dashboard</div>
+    </div>
+    <div class="topbar-actions" id="topbarActions"></div>
+  </div>
+  <div class="content">
+
+    <!-- ══ PAGE : DASHBOARD ══════════════════════════════ -->
+    <div class="page-view active" id="page-dashboard">
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-value">4</div><div class="stat-label">◉ Utilisateurs</div></div>
+        <div class="stat-card"><div class="stat-value">12</div><div class="stat-label">◫ Fichiers stockés</div></div>
+        <div class="stat-card"><div class="stat-value">47.3 Mo</div><div class="stat-label">◈ Volume total</div></div>
+        <div class="stat-card"><div class="stat-value">3</div><div class="stat-label">◷ Uploads aujourd'hui</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">
+          <span>◷ Activité récente</span>
+          <button class="btn btn-secondary btn-sm" onclick="goTo('history')">Tout voir →</button>
+        </div>
+        <table>
+          <thead><tr><th>Fichier</th><th>Uploadé par</th><th>Taille</th><th>Date</th></tr></thead>
+          <tbody id="dashActivity"></tbody>
+        </table>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+        <div class="card" style="margin-bottom:0">
+          <div class="card-title"><span>◉ Accès rapide — Utilisateurs</span></div>
+          <button class="btn btn-secondary" style="display:block;width:100%;justify-content:center;margin-bottom:10px" onclick="goTo('users')">Gérer les comptes</button>
+          <button class="btn btn-primary" style="display:block;width:100%;justify-content:center" onclick="goTo('users');setTimeout(()=>openModal('modalUser'),100)">+ Nouvel utilisateur</button>
+        </div>
+        <div class="card" style="margin-bottom:0">
+          <div class="card-title"><span>◫ Accès rapide — Fichiers</span></div>
+          <button class="btn btn-secondary" style="display:block;width:100%;justify-content:center;margin-bottom:10px" onclick="goTo('uploads')">Gérer les fichiers</button>
+          <button class="btn btn-primary" style="display:block;width:100%;justify-content:center" onclick="goTo('uploads');setTimeout(()=>openModal('modalUpload'),100)">+ Uploader un fichier</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PAGE : UTILISATEURS ═══════════════════════════ -->
+    <div class="page-view" id="page-users">
+      <div style="display:flex;gap:12px;margin-bottom:24px;align-items:center">
+        <input type="text" id="userSearch" class="form-control" placeholder="Rechercher par login ou email…" style="flex:1" oninput="renderUsers()">
+        <button class="btn btn-primary" onclick="openModal('modalUser')">+ Nouvel utilisateur</button>
+      </div>
+      <div class="card">
+        <div class="card-title"><span>◉ Utilisateurs</span></div>
+        <table>
+          <thead><tr><th>#</th><th>Login</th><th>Email</th><th>Rôle</th><th>Statut</th><th>Créé le</th><th>Actions</th></tr></thead>
+          <tbody id="usersTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══ PAGE : UPLOADS ════════════════════════════════ -->
+    <div class="page-view" id="page-uploads">
+      <div style="display:flex;gap:12px;margin-bottom:24px;align-items:center;flex-wrap:wrap">
+        <input type="text" id="fileSearch" class="form-control" placeholder="Rechercher un fichier ou utilisateur…" style="flex:1" oninput="renderFiles()">
+        <div style="display:flex;gap:6px" id="extFilters"></div>
+        <button class="btn btn-primary" onclick="openModal('modalUpload')">↑ Uploader</button>
+      </div>
+      <div class="card">
+        <div class="card-title"><span>◫ Fichiers uploadés</span></div>
+        <table>
+          <thead><tr><th>Fichier</th><th>Type</th><th>Taille</th><th>Uploadé par</th><th>Date</th><th>Actions</th></tr></thead>
+          <tbody id="filesTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══ PAGE : HISTORIQUE ══════════════════════════════ -->
+    <div class="page-view" id="page-history">
+      <div class="card">
+        <div class="card-title"><span>◉ Volume par utilisateur</span></div>
+        <div class="user-stats-grid" id="userStatsGrid"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 160px 140px 140px auto;gap:10px;margin-bottom:24px;align-items:end">
+        <div><div class="form-label">Recherche libre</div><input type="text" id="histSearch" class="form-control" placeholder="Nom, login…" oninput="renderHistory()"></div>
+        <div><div class="form-label">Utilisateur</div>
+          <select class="form-control" id="histUser" onchange="renderHistory()">
+            <option value="">— Tous —</option>
+          </select>
+        </div>
+        <div><div class="form-label">Extension</div>
+          <select class="form-control" id="histExt" onchange="renderHistory()">
+            <option value="">— Toutes —</option>
+            <option value="pdf">PDF</option><option value="docx">DOCX</option>
+            <option value="xlsx">XLSX</option><option value="jpg">JPG</option>
+            <option value="png">PNG</option><option value="zip">ZIP</option>
+          </select>
+        </div>
+        <div><div class="form-label">Date début</div><input type="date" class="form-control" id="histDate" onchange="renderHistory()"></div>
+        <div style="padding-top:20px"><button class="btn btn-secondary" onclick="resetHistFilters()">✕ Effacer</button></div>
+      </div>
+      <div class="card">
+        <div class="card-title">
+          <span>◷ Journal des uploads <span id="histCount" style="font-size:12px;color:var(--muted)"></span></span>
+          <span id="histPage" style="font-size:11px;color:var(--muted)"></span>
+        </div>
+        <table>
+          <thead><tr><th>#</th><th>Fichier</th><th>Type</th><th>Taille</th><th>Utilisateur</th><th>Rôle</th><th>Date &amp; heure</th><th>Description</th></tr></thead>
+          <tbody id="histTable"></tbody>
+        </table>
+        <div class="pagination" id="histPagination"></div>
+      </div>
+    </div>
+
+  </div><!-- /.content -->
+</main>
+
+<!-- ══════════════════════════════════════════════
+     MODALS
+═══════════════════════════════════════════════ -->
+
+<!-- Modal : Créer utilisateur -->
+<div class="modal-overlay" id="modalUser">
+  <div class="modal">
+    <div class="modal-title" id="modalUserTitle">+ Nouvel utilisateur</div>
+    <div class="form-group"><label class="form-label">Login *</label><input type="text" id="uLogin" class="form-control" placeholder="jdupont"></div>
+    <div class="form-group"><label class="form-label">Email *</label><input type="email" id="uEmail" class="form-control" placeholder="j.dupont@exemple.fr"></div>
+    <div class="form-group" id="uPwdGroup"><label class="form-label">Mot de passe *</label><input type="password" id="uPwd" class="form-control" placeholder="Minimum 8 caractères"></div>
+    <div class="form-group"><label class="form-label">Rôle</label>
+      <select id="uRole" class="form-control"><option value="user">Utilisateur</option><option value="admin">Administrateur</option></select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal('modalUser')">Annuler</button>
+      <button class="btn btn-primary" onclick="saveUser()">→ Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal : Upload fichier -->
+<div class="modal-overlay" id="modalUpload">
+  <div class="modal">
+    <div class="modal-title">↑ Uploader un fichier</div>
+    <p style="color:var(--muted);font-size:11px;margin-bottom:20px">Extensions acceptées : PDF, DOC, DOCX, XLS, XLSX, JPG, PNG, GIF, ZIP, RAR, TXT, CSV<br>Taille maximale : 20 Mo</p>
+    <div class="form-group">
+      <label class="form-label">Sélectionner le fichier *</label>
+      <input type="file" id="uploadFile" class="form-control" accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.gif,.zip,.rar,.txt,.csv">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Description (optionnel)</label>
+      <input type="text" id="uploadDesc" class="form-control" placeholder="Brève description du fichier">
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal('modalUpload')">Annuler</button>
+      <button class="btn btn-primary" onclick="doUpload()">↑ Uploader</button>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm overlay -->
+<div class="modal-overlay" id="modalConfirm">
+  <div class="modal" style="width:380px">
+    <div class="modal-title">⚠ Confirmation</div>
+    <p id="confirmMsg" style="color:var(--muted);font-size:13px;line-height:1.6"></p>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal('modalConfirm')">Annuler</button>
+      <button class="btn btn-danger" id="confirmOk">Supprimer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" style="position:fixed;bottom:28px;right:28px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 20px;font-size:12px;z-index:500;opacity:0;transition:opacity .3s;pointer-events:none;min-width:240px"></div>
+
+<script>
+// ── DATA ─────────────────────────────────────────────────────
+let users = [
+  {id:1,login:'admin',email:'admin@exemple.fr',role:'admin',actif:true,date:'01/01/2024 09h00'},
+  {id:2,login:'jdupont',email:'j.dupont@exemple.fr',role:'user',actif:true,date:'15/01/2024 10h30'},
+  {id:3,login:'mmartin',email:'m.martin@exemple.fr',role:'user',actif:true,date:'20/01/2024 14h15'},
+  {id:4,login:'lbernard',email:'l.bernard@exemple.fr',role:'user',actif:false,date:'05/02/2024 11h00'},
+];
+
+let files = [
+  {id:1,nom:'rapport_q1.pdf',taille:245760,user:'jdupont',date:'10/01/2024 09h15',desc:'Rapport Q1 2024'},
+  {id:2,nom:'photo_equipe.jpg',taille:1048576,user:'mmartin',date:'15/01/2024 14h22',desc:'Photo de l\'équipe'},
+  {id:3,nom:'budget_2024.xlsx',taille:512000,user:'admin',date:'01/02/2024 08h45',desc:'Budget prévisionnel'},
+  {id:4,nom:'contrat_fournisseur.pdf',taille:307200,user:'jdupont',date:'10/02/2024 16h10',desc:'Contrat fournisseur'},
+  {id:5,nom:'logo_final.png',taille:89600,user:'mmartin',date:'01/03/2024 09h30',desc:'Logo entreprise'},
+  {id:6,nom:'procedure_rh.docx',taille:156000,user:'admin',date:'05/03/2024 11h00',desc:'Procédure RH'},
+  {id:7,nom:'backup_data.zip',taille:8388608,user:'admin',date:'06/03/2024 20h00',desc:'Sauvegarde mensuelle'},
+  {id:8,nom:'rapport_q2.pdf',taille:278000,user:'jdupont',date:'07/03/2024 10h00',desc:'Rapport Q2 2024'},
+  {id:9,nom:'formation_securite.pdf',taille:420000,user:'mmartin',date:'08/03/2024 14h30',desc:'Support formation'},
+  {id:10,nom:'export_clients.xlsx',taille:980000,user:'jdupont',date:'09/03/2024 08h55',desc:'Export CRM'},
+  {id:11,nom:'facture_mars.pdf',taille:125000,user:'admin',date:'09/03/2024 09h10',desc:'Facture mensuelle'},
+  {id:12,nom:'charte_graphique.png',taille:2100000,user:'mmartin',date:'09/03/2024 15h45',desc:'Charte graphique v3'},
+];
+
+let nextUserId = 5;
+let nextFileId = 13;
+let currentPage = 'dashboard';
+let editingUserId = null;
+let histCurrentPage = 1;
+const HIST_PAGE_SIZE = 6;
+let activeExtFilter = '';
+
+// ── HELPERS ──────────────────────────────────────────────────
+function fmt(bytes){
+  if(bytes<1024) return bytes+' o';
+  if(bytes<1048576) return (bytes/1024).toFixed(1)+' Ko';
+  return (bytes/1048576).toFixed(1)+' Mo';
+}
+function fileIcon(nom){
+  const ext = nom.split('.').pop().toLowerCase();
+  const map = {pdf:['📄','ic-pdf'],jpg:['🖼','ic-img'],jpeg:['🖼','ic-img'],png:['🖼','ic-img'],gif:['🖼','ic-img'],webp:['🖼','ic-img'],doc:['📝','ic-doc'],docx:['📝','ic-doc'],xls:['📊','ic-xls'],xlsx:['📊','ic-xls'],csv:['📊','ic-xls'],zip:['📦','ic-zip'],rar:['📦','ic-zip']};
+  return map[ext] || ['📎','ic-other'];
+}
+function ext(nom){ return nom.includes('.')?nom.split('.').pop().toLowerCase():''; }
+function showToast(msg,ok=true){
+  const t=document.getElementById('toast');
+  t.innerHTML=(ok?'✓ ':'⚠ ')+msg;
+  t.style.borderColor=ok?'var(--success)':'var(--danger)';
+  t.style.color=ok?'var(--success)':'var(--danger)';
+  t.style.opacity='1';
+  setTimeout(()=>t.style.opacity='0',2800);
+}
+function openModal(id){ document.getElementById(id).classList.add('show'); }
+function closeModal(id){ document.getElementById(id).classList.remove('show'); }
+
+// ── NAVIGATION ───────────────────────────────────────────────
+const titles={dashboard:'Dashboard',users:'Gestion des utilisateurs',uploads:'Gestion des fichiers',history:'Historique des uploads'};
+function goTo(page){
+  document.querySelectorAll('.page-view').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  document.getElementById('nav-'+page).classList.add('active');
+  document.getElementById('pageTitle').textContent=titles[page];
+  document.getElementById('pageBreadcrumb').textContent='Admin / '+titles[page];
+  currentPage=page;
+  if(page==='dashboard') renderDashboard();
+  if(page==='users') renderUsers();
+  if(page==='uploads'){ renderExtFilters(); renderFiles(); }
+  if(page==='history'){ populateHistFilters(); renderUserStats(); renderHistory(); }
+}
+
+// ── LOGIN / LOGOUT ───────────────────────────────────────────
+function doLogin(){
+  const l=document.getElementById('loginInput').value;
+  const p=document.getElementById('pwdInput').value;
+  if(l==='admin'&&p==='Admin123!'){
+    document.getElementById('loginScreen').classList.remove('show');
+    goTo('dashboard');
+  } else {
+    document.getElementById('loginErr').style.display='block';
+  }
+}
+function doLogout(){
+  document.getElementById('loginInput').value='admin';
+  document.getElementById('pwdInput').value='Admin123!';
+  document.getElementById('loginErr').style.display='none';
+  document.getElementById('loginScreen').classList.add('show');
+}
+document.getElementById('pwdInput').addEventListener('keydown',e=>{ if(e.key==='Enter') doLogin(); });
+
+// ── DASHBOARD ────────────────────────────────────────────────
+function renderDashboard(){
+  const recent = [...files].sort((a,b)=>b.id-a.id).slice(0,8);
+  const tbody = document.getElementById('dashActivity');
+  tbody.innerHTML = recent.map(f=>{
+    const [ic,cl]=fileIcon(f.nom);
+    return `<tr>
+      <td><span class="file-icon ${cl}">${ic}</span> ${f.nom}</td>
+      <td><span class="badge badge-info">${f.user}</span></td>
+      <td>${fmt(f.taille)}</td>
+      <td>${f.date}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ── UTILISATEURS ─────────────────────────────────────────────
+function renderUsers(){
+  const q=document.getElementById('userSearch').value.toLowerCase();
+  const filtered=users.filter(u=>u.login.includes(q)||u.email.includes(q));
+  document.getElementById('usersTable').innerHTML=filtered.map(u=>`
+    <tr>
+      <td style="color:var(--muted)">#${u.id}</td>
+      <td><strong>${u.login}</strong></td>
+      <td style="color:var(--muted)">${u.email}</td>
+      <td>${u.role==='admin'?'<span class="badge badge-warn">Admin</span>':'<span class="badge badge-info">User</span>'}</td>
+      <td>${u.actif?'<span class="badge badge-success">Actif</span>':'<span class="badge badge-danger">Inactif</span>'}</td>
+      <td>${u.date}</td>
+      <td>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-secondary btn-sm" onclick="editUser(${u.id})">✎ Éditer</button>
+          <button class="btn btn-secondary btn-sm" onclick="toggleUser(${u.id})" title="${u.actif?'Désactiver':'Activer'}">${u.actif?'⏸':'▶'}</button>
+          ${u.id!==1?`<button class="btn btn-danger btn-sm" onclick="confirmDel('user',${u.id},'${u.login}')">✕</button>`:''}
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function editUser(id){
+  const u=users.find(x=>x.id===id);
+  editingUserId=id;
+  document.getElementById('modalUserTitle').textContent='✎ Modifier '+u.login;
+  document.getElementById('uLogin').value=u.login;
+  document.getElementById('uEmail').value=u.email;
+  document.getElementById('uRole').value=u.role;
+  document.getElementById('uPwdGroup').style.display='none';
+  openModal('modalUser');
+}
+
+function saveUser(){
+  const login=document.getElementById('uLogin').value.trim();
+  const email=document.getElementById('uEmail').value.trim();
+  const role=document.getElementById('uRole').value;
+  const pwd=document.getElementById('uPwd').value;
+  if(!login||!email){ showToast('Champs obligatoires manquants.',false); return; }
+  if(editingUserId){
+    const u=users.find(x=>x.id===editingUserId);
+    u.login=login; u.email=email; u.role=role;
+    showToast('Utilisateur modifié avec succès.');
+  } else {
+    if(!pwd){ showToast('Mot de passe requis.',false); return; }
+    users.push({id:nextUserId++,login,email,role,actif:true,date:new Date().toLocaleDateString('fr-FR')+'  '+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})+'h'});
+    showToast('Utilisateur «'+login+'» créé avec succès.');
+  }
+  closeModal('modalUser');
+  resetUserModal();
+  renderUsers();
+}
+
+function resetUserModal(){
+  editingUserId=null;
+  document.getElementById('modalUserTitle').textContent='+ Nouvel utilisateur';
+  document.getElementById('uLogin').value='';
+  document.getElementById('uEmail').value='';
+  document.getElementById('uPwd').value='';
+  document.getElementById('uRole').value='user';
+  document.getElementById('uPwdGroup').style.display='block';
+}
+
+function toggleUser(id){
+  const u=users.find(x=>x.id===id);
+  u.actif=!u.actif;
+  showToast('Statut de «'+u.login+'» mis à jour.');
+  renderUsers();
+}
+
+// ── UPLOADS ──────────────────────────────────────────────────
+const ALL_EXTS=['pdf','jpg','docx','zip'];
+function renderExtFilters(){
+  document.getElementById('extFilters').innerHTML=ALL_EXTS.map(e=>
+    `<button class="btn btn-secondary btn-sm ${activeExtFilter===e?'btn-primary':''}" onclick="setExtFilter('${e}')">${e.toUpperCase()}</button>`
+  ).join('');
+}
+function setExtFilter(e){
+  activeExtFilter=(activeExtFilter===e)?'':e;
+  renderExtFilters();
+  renderFiles();
+}
+
+function renderFiles(){
+  const q=document.getElementById('fileSearch').value.toLowerCase();
+  let filtered=files.filter(f=>(f.nom.toLowerCase().includes(q)||f.user.toLowerCase().includes(q)));
+  if(activeExtFilter) filtered=filtered.filter(f=>ext(f.nom)===activeExtFilter||(activeExtFilter==='jpg'&&['jpg','jpeg','png','gif','webp'].includes(ext(f.nom))));
+  document.getElementById('filesTable').innerHTML=filtered.length===0
+    ?`<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted)">Aucun fichier trouvé</td></tr>`
+    :filtered.map(f=>{
+      const [ic,cl]=fileIcon(f.nom);
+      return `<tr>
+        <td><span class="${cl}">${ic}</span> ${f.nom}</td>
+        <td><span class="badge badge-info">${ext(f.nom).toUpperCase()}</span></td>
+        <td>${fmt(f.taille)}</td>
+        <td><span class="badge badge-warn">${f.user}</span></td>
+        <td>${f.date}</td>
+        <td>
+          <div style="display:flex;gap:6px">
+            <button class="btn btn-secondary btn-sm" title="Télécharger">↓</button>
+            <button class="btn btn-danger btn-sm" onclick="confirmDel('file',${f.id},'${f.nom}')">✕</button>
+          </div>
+        </td>
+      </tr>`;
+    }).join('');
+}
+
+function doUpload(){
+  const fileInput=document.getElementById('uploadFile');
+  const desc=document.getElementById('uploadDesc').value;
+  if(!fileInput.files.length){ showToast('Veuillez sélectionner un fichier.',false); return; }
+  const file=fileInput.files[0];
+  const now=new Date();
+  const dateStr=`${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}/${now.getFullYear()} ${String(now.getHours()).padStart(2,'0')}h${String(now.getMinutes()).padStart(2,'0')}`;
+  files.unshift({id:nextFileId++,nom:file.name,taille:file.size,user:'admin',date:dateStr,desc});
+  closeModal('modalUpload');
+  fileInput.value='';
+  document.getElementById('uploadDesc').value='';
+  showToast('«'+file.name+'» uploadé avec succès.');
+  renderFiles();
+}
+
+// ── HISTORIQUE ───────────────────────────────────────────────
+function populateHistFilters(){
+  const sel=document.getElementById('histUser');
+  const logins=[...new Set(files.map(f=>f.user))].sort();
+  sel.innerHTML='<option value="">— Tous —</option>'+logins.map(l=>`<option value="${l}">${l}</option>`).join('');
+}
+function renderUserStats(){
+  const stats={};
+  files.forEach(f=>{ if(!stats[f.user]) stats[f.user]={nb:0,vol:0}; stats[f.user].nb++; stats[f.user].vol+=f.taille; });
+  document.getElementById('userStatsGrid').innerHTML=Object.entries(stats)
+    .sort((a,b)=>b[1].nb-a[1].nb)
+    .map(([u,s])=>`<div class="user-stat-mini"><div class="val">${s.nb}</div><div class="who">${u}</div><div class="vol">${fmt(s.vol)}</div></div>`)
+    .join('');
+}
+function renderHistory(){
+  const q=document.getElementById('histSearch').value.toLowerCase();
+  const filterUser=document.getElementById('histUser').value;
+  const filterExt=document.getElementById('histExt').value;
+  const filterDate=document.getElementById('histDate').value;
+  let filtered=[...files].sort((a,b)=>b.id-a.id).filter(f=>{
+    if(q && !f.nom.toLowerCase().includes(q) && !f.user.toLowerCase().includes(q)) return false;
+    if(filterUser && f.user!==filterUser) return false;
+    if(filterExt && ext(f.nom)!==filterExt) return false;
+    return true;
+  });
+  const total=filtered.length;
+  const pages=Math.max(1,Math.ceil(total/HIST_PAGE_SIZE));
+  if(histCurrentPage>pages) histCurrentPage=1;
+  const slice=filtered.slice((histCurrentPage-1)*HIST_PAGE_SIZE,histCurrentPage*HIST_PAGE_SIZE);
+  document.getElementById('histCount').textContent=`(${total} résultat${total>1?'s':''})`;
+  document.getElementById('histPage').textContent=`Page ${histCurrentPage} / ${pages}`;
+  const userRole=u=>users.find(x=>x.login===u)?.role||'user';
+  document.getElementById('histTable').innerHTML=slice.length===0
+    ?`<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--muted)">Aucun résultat</td></tr>`
+    :slice.map(f=>{
+      const [ic,cl]=fileIcon(f.nom);
+      const role=userRole(f.user);
+      return `<tr>
+        <td style="color:var(--muted)">#${f.id}</td>
+        <td><span class="${cl}">${ic}</span> ${f.nom}</td>
+        <td><span class="badge badge-info">${ext(f.nom).toUpperCase()}</span></td>
+        <td>${fmt(f.taille)}</td>
+        <td><span class="badge badge-warn" style="cursor:pointer" onclick="filterByUser('${f.user}')">${f.user}</span></td>
+        <td>${role==='admin'?'<span class="badge badge-danger">Admin</span>':'<span class="badge badge-success">User</span>'}</td>
+        <td style="white-space:nowrap">${f.date}</td>
+        <td style="color:var(--muted);font-size:11px">${f.desc||'—'}</td>
+      </tr>`;
+    }).join('');
+  // Pagination
+  let pag='';
+  if(pages>1){
+    if(histCurrentPage>1) pag+=`<button class="btn btn-secondary btn-sm" onclick="histGoPage(${histCurrentPage-1})">←</button>`;
+    for(let p=Math.max(1,histCurrentPage-2);p<=Math.min(pages,histCurrentPage+2);p++)
+      pag+=`<button class="btn btn-sm ${p===histCurrentPage?'btn-primary':'btn-secondary'}" onclick="histGoPage(${p})">${p}</button>`;
+    if(histCurrentPage<pages) pag+=`<button class="btn btn-secondary btn-sm" onclick="histGoPage(${histCurrentPage+1})">→</button>`;
+  }
+  document.getElementById('histPagination').innerHTML=pag;
+}
+function histGoPage(p){ histCurrentPage=p; renderHistory(); }
+function filterByUser(u){ document.getElementById('histUser').value=u; histCurrentPage=1; renderHistory(); }
+function resetHistFilters(){
+  document.getElementById('histSearch').value='';
+  document.getElementById('histUser').value='';
+  document.getElementById('histExt').value='';
+  document.getElementById('histDate').value='';
+  histCurrentPage=1;
+  renderHistory();
+}
+
+// ── SUPPRESSION ──────────────────────────────────────────────
+let pendingDelete=null;
+function confirmDel(type,id,nom){
+  document.getElementById('confirmMsg').textContent=`Supprimer « ${nom} » ? Cette action est irréversible.`;
+  pendingDelete={type,id,nom};
+  openModal('modalConfirm');
+}
+document.getElementById('confirmOk').onclick=function(){
+  if(!pendingDelete) return;
+  const {type,id,nom}=pendingDelete;
+  if(type==='user'){
+    users=users.filter(u=>u.id!==id);
+    renderUsers();
+    showToast('Utilisateur «'+nom+'» supprimé.');
+  } else {
+    files=files.filter(f=>f.id!==id);
+    renderFiles();
+    renderDashboard();
+    renderUserStats();
+    showToast('Fichier «'+nom+'» supprimé.');
+  }
+  closeModal('modalConfirm');
+  pendingDelete=null;
+};
+
+// Fermer modals en cliquant hors
+document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{ if(e.target===o){ closeModal(o.id); if(o.id==='modalUser') resetUserModal(); }}));
+
+// Init
+renderDashboard();
+</script>
+</body>
+</html>

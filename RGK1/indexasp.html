@@ -1,0 +1,551 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Suivi Météo Hebdomadaire</title>
+  <!--[if mso]>
+  <style type="text/css">
+    table { border-collapse: collapse; }
+    td, th { font-family: Arial, sans-serif; }
+  </style>
+  <![endif]-->
+</head>
+<body style="margin:0; padding:0; background-color:#ECEFF1; font-family:Arial,sans-serif;">
+
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#ECEFF1;">
+<tr><td align="center" style="padding:28px 16px;">
+
+<!-- ================================================================ -->
+<!--  MAIN WRAPPER                                                      -->
+<!-- ================================================================ -->
+<table width="860" cellpadding="0" cellspacing="0" border="0">
+
+  <!-- ===== PAGE HEADER ===== -->
+  <tr>
+    <td style="background-color:#263238; padding:0; margin-bottom:0;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td width="5" style="background-color:#4FC3F7; font-size:0; line-height:0;">&nbsp;</td>
+          <td style="padding:20px 24px;">
+            <p style="margin:0; font-family:Arial,sans-serif; font-size:10px; font-weight:bold; color:#78909C; letter-spacing:3px; text-transform:uppercase;">RAPPORT HEBDOMADAIRE</p>
+            <p style="margin:5px 0 0 0; font-family:Arial,sans-serif; font-size:20px; font-weight:bold; color:#FFFFFF;">Suivi M&#233;t&#233;orologique — Pr&#233;visions vs R&#233;el</p>
+          </td>
+          <td align="right" valign="middle" style="padding:20px 24px;">
+            <table cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td align="center" style="background-color:#1C2B33; padding:8px 16px; border:1px solid #37474F;">
+                  <p style="margin:0; font-family:Arial,sans-serif; font-size:9px; color:#78909C; letter-spacing:1px; text-transform:uppercase;">Semaine</p>
+                  <p style="margin:3px 0 0 0; font-family:Arial,sans-serif; font-size:18px; font-weight:bold; color:#FFFFFF;" id="week-num">—</p>
+                </td>
+                <td width="8">&nbsp;</td>
+                <td align="center" style="background-color:#4FC3F7; padding:8px 16px;">
+                  <p style="margin:0; font-family:Arial,sans-serif; font-size:9px; color:#01579B; letter-spacing:1px; text-transform:uppercase;">P&#233;riode</p>
+                  <p style="margin:3px 0 0 0; font-family:Arial,sans-serif; font-size:11px; font-weight:bold; color:#01579B;" id="week-range">—</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <!-- spacer -->
+  <tr><td style="height:20px; font-size:0; line-height:0;">&nbsp;</td></tr>
+
+
+  <!-- ================================================================ -->
+  <!--  SECTION 1 — TEMPÉRATURE                                          -->
+  <!-- ================================================================ -->
+  <tr>
+    <td style="padding:0;">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#FFFFFF; border:1px solid #CFD8DC;">
+
+      <!-- Section title bar -->
+      <tr>
+        <td style="background-color:#1565C0; padding:0;">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+              <td width="4" style="background-color:#4FC3F7; font-size:0; line-height:0;">&nbsp;</td>
+              <td style="padding:10px 18px;">
+                <span style="font-family:Arial,sans-serif; font-size:11px; font-weight:bold; color:#FFFFFF; letter-spacing:2px; text-transform:uppercase;">&#9651; TEMP&#201;RATURE</span>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+
+      <!-- Column headers: Indicateur + Semaine + 7 jours -->
+      <tr style="background-color:#E3F2FD;">
+        <td width="110" style="padding:9px 10px 9px 18px; border-bottom:2px solid #1565C0; border-right:1px solid #BBDEFB;">
+          <span style="font-family:Arial,sans-serif; font-size:8px; font-weight:bold; color:#1565C0; letter-spacing:2px; text-transform:uppercase;">INDICATEUR</span>
+        </td>
+        <td width="80" align="center" style="padding:9px 6px; border-bottom:2px solid #1565C0; border-right:2px solid #1565C0; background-color:#BBDEFB;">
+          <span style="font-family:Arial,sans-serif; font-size:8px; font-weight:bold; color:#1565C0; letter-spacing:1px; text-transform:uppercase; display:block;">SEMAINE</span>
+          <span style="font-family:Arial,sans-serif; font-size:9px; color:#42A5F5; display:block; margin-top:2px;" id="s1-range">—</span>
+        </td>
+        <td width="95" align="center" style="padding:9px 4px; border-bottom:2px solid #1565C0; border-right:1px solid #BBDEFB;">
+          <span style="font-family:Arial,sans-serif; font-size:9px; font-weight:bold; color:#1565C0; display:block;" id="s1-d0">LUN —</span>
+        </td>
+        <td width="95" align="center" style="padding:9px 4px; border-bottom:2px solid #1565C0; border-right:1px solid #BBDEFB;">
+          <span style="font-family:Arial,sans-serif; font-size:9px; font-weight:bold; color:#1565C0; display:block;" id="s1-d1">MAR —</span>
+        </td>
+        <td width="95" align="center" style="padding:9px 4px; border-bottom:2px solid #1565C0; border-right:1px solid #BBDEFB;">
+          <span style="font-family:Arial,sans-serif; font-size:9px; font-weight:bold; color:#1565C0; display:block;" id="s1-d2">MER —</span>
+        </td>
+        <td width="95" align="center" style="padding:9px 4px; border-bottom:2px solid #1565C0; border-right:1px solid #BBDEFB;">
+          <span style="font-family:Arial,sans-serif; font-size:9px; font-weight:bold; color:#1565C0; display:block;" id="s1-d3">JEU —</span>
+        </td>
+        <td width="95" align="center" style="padding:9px 4px; border-bottom:2px solid #1565C0; border-right:1px solid #BBDEFB;">
+          <span style="font-family:Arial,sans-serif; font-size:9px; font-weight:bold; color:#1565C0; display:block;" id="s1-d4">VEN —</span>
+        </td>
+        <td width="95" align="center" style="padding:9px 4px; border-bottom:2px solid #1565C0; border-right:1px solid #BBDEFB; background-color:#F5F5F5;">
+          <span style="font-family:Arial,sans-serif; font-size:9px; font-weight:bold; color:#AAAAAA; display:block;" id="s1-d5">SAM —</span>
+        </td>
+        <td width="95" align="center" style="padding:9px 4px; border-bottom:2px solid #1565C0; background-color:#F5F5F5;">
+          <span style="font-family:Arial,sans-serif; font-size:9px; font-weight:bold; color:#AAAAAA; display:block;" id="s1-d6">DIM —</span>
+        </td>
+      </tr>
+
+      <!-- ROW: T° maximale -->
+      <tr style="background-color:#FFFFFF;">
+        <td rowspan="3" style="padding:0; border-right:1px solid #BBDEFB; border-bottom:2px solid #E3F2FD; vertical-align:middle; background-color:#F8FBFF;">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr><td style="padding:10px 8px 10px 16px; border-left:3px solid #1565C0;">
+              <span style="font-family:Arial,sans-serif; font-size:11px; font-weight:bold; color:#1565C0; display:block;">T&#176; maximale</span>
+              <span style="font-family:Arial,sans-serif; font-size:9px; color:#90A4AE; display:block; margin-top:2px;">En &#176;C</span>
+            </td></tr>
+          </table>
+        </td>
+        <!-- Semaine col -->
+        <td align="center" style="padding:6px 4px; border-right:2px solid #1565C0; border-bottom:1px solid #E3F2FD; background-color:#EBF5FF;">
+          <span style="font-family:Arial,sans-serif; font-size:8px; color:#1565C0; font-weight:bold; display:block; text-transform:uppercase;">Pr&#233;v.</span>
+          <input type="text" placeholder="—" style="width:52px; border:1px solid #BBDEFB; padding:4px 3px; font-family:Arial,sans-serif; font-size:11px; color:#1565C0; text-align:center; background:#FFFFFF; margin-top:3px;" />
+        </td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #BBDEFB; border-bottom:1px solid #E3F2FD; background-color:#F7FAFF;"><input type="text" placeholder="—" style="width:68px; border:1px solid #BBDEFB; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#37474F; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #BBDEFB; border-bottom:1px solid #E3F2FD;"><input type="text" placeholder="—" style="width:68px; border:1px solid #BBDEFB; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#37474F; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #BBDEFB; border-bottom:1px solid #E3F2FD; background-color:#F7FAFF;"><input type="text" placeholder="—" style="width:68px; border:1px solid #BBDEFB; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#37474F; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #BBDEFB; border-bottom:1px solid #E3F2FD;"><input type="text" placeholder="—" style="width:68px; border:1px solid #BBDEFB; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#37474F; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #BBDEFB; border-bottom:1px solid #E3F2FD; background-color:#F7FAFF;"><input type="text" placeholder="—" style="width:68px; border:1px solid #BBDEFB; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#37474F; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #BBDEFB; border-bottom:1px solid #E3F2FD; background-color:#F5F5F5;"><input type="text" placeholder="—" style="width:68px; border:1px solid #E0E0E0; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#AAAAAA; text-align:center; background:#ECECEC;" /></td>
+        <td align="center" style="padding:6px 4px; border-bottom:1px solid #E3F2FD; background-color:#F5F5F5;"><input type="text" placeholder="—" style="width:68px; border:1px solid #E0E0E0; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#AAAAAA; text-align:center; background:#ECECEC;" /></td>
+      </tr>
+      <tr style="background-color:#FFFFFF;">
+        <td align="center" style="padding:6px 4px; border-right:2px solid #1565C0; border-bottom:1px solid #E3F2FD; background-color:#EBF5FF;">
+          <span style="font-family:Arial,sans-serif; font-size:8px; color:#0277BD; font-weight:bold; display:block; text-transform:uppercase;">R&#233;el</span>
+          <input type="text" placeholder="—" style="width:52px; border:1px solid #4FC3F7; padding:4px 3px; font-family:Arial,sans-serif; font-size:11px; color:#0277BD; text-align:center; background:#FFFFFF; margin-top:3px;" />
+        </td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #BBDEFB; border-bottom:1px solid #E3F2FD; background-color:#F7FAFF;"><input type="text" placeholder="—" style="width:68px; border:1px solid #4FC3F7; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#0277BD; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #BBDEFB; border-bottom:1px solid #E3F2FD;"><input type="text" placeholder="—" style="width:68px; border:1px solid #4FC3F7; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#0277BD; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #BBDEFB; border-bottom:1px solid #E3F2FD; background-color:#F7FAFF;"><input type="text" placeholder="—" style="width:68px; border:1px solid #4FC3F7; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#0277BD; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #BBDEFB; border-bottom:1px solid #E3F2FD;"><input type="text" placeholder="—" style="width:68px; border:1px solid #4FC3F7; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#0277BD; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #BBDEFB; border-bottom:1px solid #E3F2FD; background-color:#F7FAFF;"><input type="text" placeholder="—" style="width:68px; border:1px solid #4FC3F7; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#0277BD; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #BBDEFB; border-bottom:1px solid #E3F2FD; background-color:#F5F5F5;"><input type="text" placeholder="—" style="width:68px; border:1px solid #E0E0E0; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#AAAAAA; text-align:center; background:#ECECEC;" /></td>
+        <td align="center" style="padding:6px 4px; border-bottom:1px solid #E3F2FD; background-color:#F5F5F5;"><input type="text" placeholder="—" style="width:68px; border:1px solid #E0E0E0; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#AAAAAA; text-align:center; background:#ECECEC;" /></td>
+      </tr>
+      <tr style="background-color:#FFFFFF;">
+        <td align="center" style="padding:6px 4px; border-right:2px solid #1565C0; border-bottom:2px solid #E3F2FD; background-color:#EBF5FF;">
+          <span style="font-family:Arial,sans-serif; font-size:8px; color:#546E7A; font-weight:bold; display:block; text-transform:uppercase;">&#201;cart</span>
+          <input type="text" placeholder="—" style="width:52px; border:1px solid #CFD8DC; padding:4px 3px; font-family:Arial,sans-serif; font-size:11px; color:#546E7A; text-align:center; background:#F5F7F8; margin-top:3px;" />
+        </td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #BBDEFB; border-bottom:2px solid #E3F2FD; background-color:#F7FAFF;"><input type="text" placeholder="—" style="width:68px; border:1px solid #CFD8DC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#546E7A; text-align:center; background:#F5F7F8;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #BBDEFB; border-bottom:2px solid #E3F2FD;"><input type="text" placeholder="—" style="width:68px; border:1px solid #CFD8DC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#546E7A; text-align:center; background:#F5F7F8;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #BBDEFB; border-bottom:2px solid #E3F2FD; background-color:#F7FAFF;"><input type="text" placeholder="—" style="width:68px; border:1px solid #CFD8DC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#546E7A; text-align:center; background:#F5F7F8;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #BBDEFB; border-bottom:2px solid #E3F2FD;"><input type="text" placeholder="—" style="width:68px; border:1px solid #CFD8DC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#546E7A; text-align:center; background:#F5F7F8;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #BBDEFB; border-bottom:2px solid #E3F2FD; background-color:#F7FAFF;"><input type="text" placeholder="—" style="width:68px; border:1px solid #CFD8DC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#546E7A; text-align:center; background:#F5F7F8;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #BBDEFB; border-bottom:2px solid #E3F2FD; background-color:#F5F5F5;"><input type="text" placeholder="—" style="width:68px; border:1px solid #E0E0E0; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#AAAAAA; text-align:center; background:#ECECEC;" /></td>
+        <td align="center" style="padding:6px 4px; border-bottom:2px solid #E3F2FD; background-color:#F5F5F5;"><input type="text" placeholder="—" style="width:68px; border:1px solid #E0E0E0; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#AAAAAA; text-align:center; background:#ECECEC;" /></td>
+      </tr>
+
+      <!-- ROW: T° minimale -->
+      <tr style="background-color:#FFFFFF;">
+        <td rowspan="3" style="padding:0; border-right:1px solid #BBDEFB; border-bottom:2px solid #E3F2FD; vertical-align:middle; background-color:#F8FBFF;">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr><td style="padding:10px 8px 10px 16px; border-left:3px solid #42A5F5;">
+              <span style="font-family:Arial,sans-serif; font-size:11px; font-weight:bold; color:#1565C0; display:block;">T&#176; minimale</span>
+              <span style="font-family:Arial,sans-serif; font-size:9px; color:#90A4AE; display:block; margin-top:2px;">En &#176;C</span>
+            </td></tr>
+          </table>
+        </td>
+        <td align="center" style="padding:6px 4px; border-right:2px solid #1565C0; border-bottom:1px solid #E3F2FD; background-color:#EBF5FF;">
+          <span style="font-family:Arial,sans-serif; font-size:8px; color:#1565C0; font-weight:bold; display:block; text-transform:uppercase;">Pr&#233;v.</span>
+          <input type="text" placeholder="—" style="width:52px; border:1px solid #BBDEFB; padding:4px 3px; font-family:Arial,sans-serif; font-size:11px; color:#1565C0; text-align:center; background:#FFFFFF; margin-top:3px;" />
+        </td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #BBDEFB; border-bottom:1px solid #E3F2FD; background-color:#F7FAFF;"><input type="text" placeholder="—" style="width:68px; border:1px solid #BBDEFB; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#37474F; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #BBDEFB; border-bottom:1px solid #E3F2FD;"><input type="text" placeholder="—" style="width:68px; border:1px solid #BBDEFB; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#37474F; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #BBDEFB; border-bottom:1px solid #E3F2FD; background-color:#F7FAFF;"><input type="text" placeholder="—" style="width:68px; border:1px solid #BBDEFB; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#37474F; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #BBDEFB; border-bottom:1px solid #E3F2FD;"><input type="text" placeholder="—" style="width:68px; border:1px solid #BBDEFB; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#37474F; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #BBDEFB; border-bottom:1px solid #E3F2FD; background-color:#F7FAFF;"><input type="text" placeholder="—" style="width:68px; border:1px solid #BBDEFB; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#37474F; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #BBDEFB; border-bottom:1px solid #E3F2FD; background-color:#F5F5F5;"><input type="text" placeholder="—" style="width:68px; border:1px solid #E0E0E0; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#AAAAAA; text-align:center; background:#ECECEC;" /></td>
+        <td align="center" style="padding:6px 4px; border-bottom:1px solid #E3F2FD; background-color:#F5F5F5;"><input type="text" placeholder="—" style="width:68px; border:1px solid #E0E0E0; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#AAAAAA; text-align:center; background:#ECECEC;" /></td>
+      </tr>
+      <tr>
+        <td align="center" style="padding:6px 4px; border-right:2px solid #1565C0; border-bottom:1px solid #E3F2FD; background-color:#EBF5FF;">
+          <span style="font-family:Arial,sans-serif; font-size:8px; color:#0277BD; font-weight:bold; display:block; text-transform:uppercase;">R&#233;el</span>
+          <input type="text" placeholder="—" style="width:52px; border:1px solid #4FC3F7; padding:4px 3px; font-family:Arial,sans-serif; font-size:11px; color:#0277BD; text-align:center; background:#FFFFFF; margin-top:3px;" />
+        </td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #BBDEFB; border-bottom:1px solid #E3F2FD; background-color:#F7FAFF;"><input type="text" placeholder="—" style="width:68px; border:1px solid #4FC3F7; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#0277BD; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #BBDEFB; border-bottom:1px solid #E3F2FD;"><input type="text" placeholder="—" style="width:68px; border:1px solid #4FC3F7; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#0277BD; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #BBDEFB; border-bottom:1px solid #E3F2FD; background-color:#F7FAFF;"><input type="text" placeholder="—" style="width:68px; border:1px solid #4FC3F7; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#0277BD; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #BBDEFB; border-bottom:1px solid #E3F2FD;"><input type="text" placeholder="—" style="width:68px; border:1px solid #4FC3F7; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#0277BD; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #BBDEFB; border-bottom:1px solid #E3F2FD; background-color:#F7FAFF;"><input type="text" placeholder="—" style="width:68px; border:1px solid #4FC3F7; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#0277BD; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #BBDEFB; border-bottom:1px solid #E3F2FD; background-color:#F5F5F5;"><input type="text" placeholder="—" style="width:68px; border:1px solid #E0E0E0; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#AAAAAA; text-align:center; background:#ECECEC;" /></td>
+        <td align="center" style="padding:6px 4px; border-bottom:1px solid #E3F2FD; background-color:#F5F5F5;"><input type="text" placeholder="—" style="width:68px; border:1px solid #E0E0E0; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#AAAAAA; text-align:center; background:#ECECEC;" /></td>
+      </tr>
+      <tr>
+        <td align="center" style="padding:6px 4px; border-right:2px solid #1565C0; background-color:#EBF5FF;">
+          <span style="font-family:Arial,sans-serif; font-size:8px; color:#546E7A; font-weight:bold; display:block; text-transform:uppercase;">&#201;cart</span>
+          <input type="text" placeholder="—" style="width:52px; border:1px solid #CFD8DC; padding:4px 3px; font-family:Arial,sans-serif; font-size:11px; color:#546E7A; text-align:center; background:#F5F7F8; margin-top:3px;" />
+        </td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #BBDEFB; background-color:#F7FAFF;"><input type="text" placeholder="—" style="width:68px; border:1px solid #CFD8DC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#546E7A; text-align:center; background:#F5F7F8;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #BBDEFB;"><input type="text" placeholder="—" style="width:68px; border:1px solid #CFD8DC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#546E7A; text-align:center; background:#F5F7F8;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #BBDEFB; background-color:#F7FAFF;"><input type="text" placeholder="—" style="width:68px; border:1px solid #CFD8DC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#546E7A; text-align:center; background:#F5F7F8;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #BBDEFB;"><input type="text" placeholder="—" style="width:68px; border:1px solid #CFD8DC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#546E7A; text-align:center; background:#F5F7F8;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #BBDEFB; background-color:#F7FAFF;"><input type="text" placeholder="—" style="width:68px; border:1px solid #CFD8DC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#546E7A; text-align:center; background:#F5F7F8;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #BBDEFB; background-color:#F5F5F5;"><input type="text" placeholder="—" style="width:68px; border:1px solid #E0E0E0; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#AAAAAA; text-align:center; background:#ECECEC;" /></td>
+        <td align="center" style="padding:6px 4px; background-color:#F5F5F5;"><input type="text" placeholder="—" style="width:68px; border:1px solid #E0E0E0; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#AAAAAA; text-align:center; background:#ECECEC;" /></td>
+      </tr>
+
+    </table>
+    </td>
+  </tr>
+
+  <!-- spacer -->
+  <tr><td style="height:16px; font-size:0; line-height:0;">&nbsp;</td></tr>
+
+
+  <!-- ================================================================ -->
+  <!--  SECTION 2 — PRÉCIPITATIONS                                       -->
+  <!-- ================================================================ -->
+  <tr>
+    <td style="padding:0;">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#FFFFFF; border:1px solid #CFD8DC;">
+
+      <tr>
+        <td style="background-color:#01579B; padding:0;">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+              <td width="4" style="background-color:#B3E5FC; font-size:0; line-height:0;">&nbsp;</td>
+              <td style="padding:10px 18px;">
+                <span style="font-family:Arial,sans-serif; font-size:11px; font-weight:bold; color:#FFFFFF; letter-spacing:2px; text-transform:uppercase;">&#9730; PR&#201;CIPITATIONS</span>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+
+      <!-- Headers -->
+      <tr style="background-color:#E1F5FE;">
+        <td width="110" style="padding:9px 10px 9px 18px; border-bottom:2px solid #01579B; border-right:1px solid #B3E5FC;">
+          <span style="font-family:Arial,sans-serif; font-size:8px; font-weight:bold; color:#01579B; letter-spacing:2px; text-transform:uppercase;">INDICATEUR</span>
+        </td>
+        <td width="80" align="center" style="padding:9px 6px; border-bottom:2px solid #01579B; border-right:2px solid #01579B; background-color:#B3E5FC;">
+          <span style="font-family:Arial,sans-serif; font-size:8px; font-weight:bold; color:#01579B; letter-spacing:1px; text-transform:uppercase; display:block;">SEMAINE</span>
+          <span style="font-family:Arial,sans-serif; font-size:9px; color:#039BE5; display:block; margin-top:2px;" id="s2-range">—</span>
+        </td>
+        <td width="95" align="center" style="padding:9px 4px; border-bottom:2px solid #01579B; border-right:1px solid #B3E5FC;"><span style="font-family:Arial,sans-serif; font-size:9px; font-weight:bold; color:#01579B; display:block;" id="s2-d0">LUN —</span></td>
+        <td width="95" align="center" style="padding:9px 4px; border-bottom:2px solid #01579B; border-right:1px solid #B3E5FC;"><span style="font-family:Arial,sans-serif; font-size:9px; font-weight:bold; color:#01579B; display:block;" id="s2-d1">MAR —</span></td>
+        <td width="95" align="center" style="padding:9px 4px; border-bottom:2px solid #01579B; border-right:1px solid #B3E5FC;"><span style="font-family:Arial,sans-serif; font-size:9px; font-weight:bold; color:#01579B; display:block;" id="s2-d2">MER —</span></td>
+        <td width="95" align="center" style="padding:9px 4px; border-bottom:2px solid #01579B; border-right:1px solid #B3E5FC;"><span style="font-family:Arial,sans-serif; font-size:9px; font-weight:bold; color:#01579B; display:block;" id="s2-d3">JEU —</span></td>
+        <td width="95" align="center" style="padding:9px 4px; border-bottom:2px solid #01579B; border-right:1px solid #B3E5FC;"><span style="font-family:Arial,sans-serif; font-size:9px; font-weight:bold; color:#01579B; display:block;" id="s2-d4">VEN —</span></td>
+        <td width="95" align="center" style="padding:9px 4px; border-bottom:2px solid #01579B; border-right:1px solid #B3E5FC; background-color:#F5F5F5;"><span style="font-family:Arial,sans-serif; font-size:9px; font-weight:bold; color:#AAAAAA; display:block;" id="s2-d5">SAM —</span></td>
+        <td width="95" align="center" style="padding:9px 4px; border-bottom:2px solid #01579B; background-color:#F5F5F5;"><span style="font-family:Arial,sans-serif; font-size:9px; font-weight:bold; color:#AAAAAA; display:block;" id="s2-d6">DIM —</span></td>
+      </tr>
+
+      <!-- Pluviométrie -->
+      <tr>
+        <td rowspan="3" style="padding:0; border-right:1px solid #B3E5FC; border-bottom:2px solid #E1F5FE; vertical-align:middle; background-color:#F5FBFF;">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding:10px 8px 10px 16px; border-left:3px solid #01579B;">
+            <span style="font-family:Arial,sans-serif; font-size:11px; font-weight:bold; color:#01579B; display:block;">Pluviom&#233;trie</span>
+            <span style="font-family:Arial,sans-serif; font-size:9px; color:#90A4AE; display:block; margin-top:2px;">En mm</span>
+          </td></tr></table>
+        </td>
+        <td align="center" style="padding:6px 4px; border-right:2px solid #01579B; border-bottom:1px solid #E1F5FE; background-color:#E1F5FE;">
+          <span style="font-family:Arial,sans-serif; font-size:8px; color:#01579B; font-weight:bold; display:block; text-transform:uppercase;">Pr&#233;v.</span>
+          <input type="text" placeholder="—" style="width:52px; border:1px solid #B3E5FC; padding:4px 3px; font-family:Arial,sans-serif; font-size:11px; color:#01579B; text-align:center; background:#FFFFFF; margin-top:3px;" />
+        </td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B3E5FC; border-bottom:1px solid #E1F5FE; background-color:#F5FBFF;"><input type="text" placeholder="—" style="width:68px; border:1px solid #B3E5FC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#37474F; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B3E5FC; border-bottom:1px solid #E1F5FE;"><input type="text" placeholder="—" style="width:68px; border:1px solid #B3E5FC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#37474F; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B3E5FC; border-bottom:1px solid #E1F5FE; background-color:#F5FBFF;"><input type="text" placeholder="—" style="width:68px; border:1px solid #B3E5FC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#37474F; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B3E5FC; border-bottom:1px solid #E1F5FE;"><input type="text" placeholder="—" style="width:68px; border:1px solid #B3E5FC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#37474F; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B3E5FC; border-bottom:1px solid #E1F5FE; background-color:#F5FBFF;"><input type="text" placeholder="—" style="width:68px; border:1px solid #B3E5FC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#37474F; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B3E5FC; border-bottom:1px solid #E1F5FE; background-color:#F5F5F5;"><input type="text" placeholder="—" style="width:68px; border:1px solid #E0E0E0; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#AAAAAA; text-align:center; background:#ECECEC;" /></td>
+        <td align="center" style="padding:6px 4px; border-bottom:1px solid #E1F5FE; background-color:#F5F5F5;"><input type="text" placeholder="—" style="width:68px; border:1px solid #E0E0E0; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#AAAAAA; text-align:center; background:#ECECEC;" /></td>
+      </tr>
+      <tr>
+        <td align="center" style="padding:6px 4px; border-right:2px solid #01579B; border-bottom:1px solid #E1F5FE; background-color:#E1F5FE;">
+          <span style="font-family:Arial,sans-serif; font-size:8px; color:#0277BD; font-weight:bold; display:block; text-transform:uppercase;">R&#233;el</span>
+          <input type="text" placeholder="—" style="width:52px; border:1px solid #4FC3F7; padding:4px 3px; font-family:Arial,sans-serif; font-size:11px; color:#0277BD; text-align:center; background:#FFFFFF; margin-top:3px;" />
+        </td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B3E5FC; border-bottom:1px solid #E1F5FE; background-color:#F5FBFF;"><input type="text" placeholder="—" style="width:68px; border:1px solid #4FC3F7; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#0277BD; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B3E5FC; border-bottom:1px solid #E1F5FE;"><input type="text" placeholder="—" style="width:68px; border:1px solid #4FC3F7; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#0277BD; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B3E5FC; border-bottom:1px solid #E1F5FE; background-color:#F5FBFF;"><input type="text" placeholder="—" style="width:68px; border:1px solid #4FC3F7; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#0277BD; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B3E5FC; border-bottom:1px solid #E1F5FE;"><input type="text" placeholder="—" style="width:68px; border:1px solid #4FC3F7; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#0277BD; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B3E5FC; border-bottom:1px solid #E1F5FE; background-color:#F5FBFF;"><input type="text" placeholder="—" style="width:68px; border:1px solid #4FC3F7; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#0277BD; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B3E5FC; border-bottom:1px solid #E1F5FE; background-color:#F5F5F5;"><input type="text" placeholder="—" style="width:68px; border:1px solid #E0E0E0; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#AAAAAA; text-align:center; background:#ECECEC;" /></td>
+        <td align="center" style="padding:6px 4px; border-bottom:1px solid #E1F5FE; background-color:#F5F5F5;"><input type="text" placeholder="—" style="width:68px; border:1px solid #E0E0E0; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#AAAAAA; text-align:center; background:#ECECEC;" /></td>
+      </tr>
+      <tr>
+        <td align="center" style="padding:6px 4px; border-right:2px solid #01579B; border-bottom:2px solid #E1F5FE; background-color:#E1F5FE;">
+          <span style="font-family:Arial,sans-serif; font-size:8px; color:#546E7A; font-weight:bold; display:block; text-transform:uppercase;">&#201;cart</span>
+          <input type="text" placeholder="—" style="width:52px; border:1px solid #CFD8DC; padding:4px 3px; font-family:Arial,sans-serif; font-size:11px; color:#546E7A; text-align:center; background:#F5F7F8; margin-top:3px;" />
+        </td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B3E5FC; border-bottom:2px solid #E1F5FE; background-color:#F5FBFF;"><input type="text" placeholder="—" style="width:68px; border:1px solid #CFD8DC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#546E7A; text-align:center; background:#F5F7F8;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B3E5FC; border-bottom:2px solid #E1F5FE;"><input type="text" placeholder="—" style="width:68px; border:1px solid #CFD8DC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#546E7A; text-align:center; background:#F5F7F8;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B3E5FC; border-bottom:2px solid #E1F5FE; background-color:#F5FBFF;"><input type="text" placeholder="—" style="width:68px; border:1px solid #CFD8DC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#546E7A; text-align:center; background:#F5F7F8;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B3E5FC; border-bottom:2px solid #E1F5FE;"><input type="text" placeholder="—" style="width:68px; border:1px solid #CFD8DC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#546E7A; text-align:center; background:#F5F7F8;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B3E5FC; border-bottom:2px solid #E1F5FE; background-color:#F5FBFF;"><input type="text" placeholder="—" style="width:68px; border:1px solid #CFD8DC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#546E7A; text-align:center; background:#F5F7F8;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B3E5FC; border-bottom:2px solid #E1F5FE; background-color:#F5F5F5;"><input type="text" placeholder="—" style="width:68px; border:1px solid #E0E0E0; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#AAAAAA; text-align:center; background:#ECECEC;" /></td>
+        <td align="center" style="padding:6px 4px; border-bottom:2px solid #E1F5FE; background-color:#F5F5F5;"><input type="text" placeholder="—" style="width:68px; border:1px solid #E0E0E0; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#AAAAAA; text-align:center; background:#ECECEC;" /></td>
+      </tr>
+
+      <!-- Probabilité pluie -->
+      <tr>
+        <td rowspan="3" style="padding:0; border-right:1px solid #B3E5FC; vertical-align:middle; background-color:#F5FBFF;">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding:10px 8px 10px 16px; border-left:3px solid #4FC3F7;">
+            <span style="font-family:Arial,sans-serif; font-size:11px; font-weight:bold; color:#01579B; display:block;">Prob. pluie</span>
+            <span style="font-family:Arial,sans-serif; font-size:9px; color:#90A4AE; display:block; margin-top:2px;">En %</span>
+          </td></tr></table>
+        </td>
+        <td align="center" style="padding:6px 4px; border-right:2px solid #01579B; border-bottom:1px solid #E1F5FE; background-color:#E1F5FE;">
+          <span style="font-family:Arial,sans-serif; font-size:8px; color:#01579B; font-weight:bold; display:block; text-transform:uppercase;">Pr&#233;v.</span>
+          <input type="text" placeholder="—" style="width:52px; border:1px solid #B3E5FC; padding:4px 3px; font-family:Arial,sans-serif; font-size:11px; color:#01579B; text-align:center; background:#FFFFFF; margin-top:3px;" />
+        </td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B3E5FC; border-bottom:1px solid #E1F5FE; background-color:#F5FBFF;"><input type="text" placeholder="—" style="width:68px; border:1px solid #B3E5FC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#37474F; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B3E5FC; border-bottom:1px solid #E1F5FE;"><input type="text" placeholder="—" style="width:68px; border:1px solid #B3E5FC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#37474F; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B3E5FC; border-bottom:1px solid #E1F5FE; background-color:#F5FBFF;"><input type="text" placeholder="—" style="width:68px; border:1px solid #B3E5FC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#37474F; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B3E5FC; border-bottom:1px solid #E1F5FE;"><input type="text" placeholder="—" style="width:68px; border:1px solid #B3E5FC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#37474F; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B3E5FC; border-bottom:1px solid #E1F5FE; background-color:#F5FBFF;"><input type="text" placeholder="—" style="width:68px; border:1px solid #B3E5FC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#37474F; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B3E5FC; border-bottom:1px solid #E1F5FE; background-color:#F5F5F5;"><input type="text" placeholder="—" style="width:68px; border:1px solid #E0E0E0; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#AAAAAA; text-align:center; background:#ECECEC;" /></td>
+        <td align="center" style="padding:6px 4px; border-bottom:1px solid #E1F5FE; background-color:#F5F5F5;"><input type="text" placeholder="—" style="width:68px; border:1px solid #E0E0E0; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#AAAAAA; text-align:center; background:#ECECEC;" /></td>
+      </tr>
+      <tr>
+        <td align="center" style="padding:6px 4px; border-right:2px solid #01579B; border-bottom:1px solid #E1F5FE; background-color:#E1F5FE;">
+          <span style="font-family:Arial,sans-serif; font-size:8px; color:#0277BD; font-weight:bold; display:block; text-transform:uppercase;">R&#233;el</span>
+          <input type="text" placeholder="—" style="width:52px; border:1px solid #4FC3F7; padding:4px 3px; font-family:Arial,sans-serif; font-size:11px; color:#0277BD; text-align:center; background:#FFFFFF; margin-top:3px;" />
+        </td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B3E5FC; border-bottom:1px solid #E1F5FE; background-color:#F5FBFF;"><input type="text" placeholder="—" style="width:68px; border:1px solid #4FC3F7; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#0277BD; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B3E5FC; border-bottom:1px solid #E1F5FE;"><input type="text" placeholder="—" style="width:68px; border:1px solid #4FC3F7; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#0277BD; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B3E5FC; border-bottom:1px solid #E1F5FE; background-color:#F5FBFF;"><input type="text" placeholder="—" style="width:68px; border:1px solid #4FC3F7; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#0277BD; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B3E5FC; border-bottom:1px solid #E1F5FE;"><input type="text" placeholder="—" style="width:68px; border:1px solid #4FC3F7; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#0277BD; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B3E5FC; border-bottom:1px solid #E1F5FE; background-color:#F5FBFF;"><input type="text" placeholder="—" style="width:68px; border:1px solid #4FC3F7; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#0277BD; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B3E5FC; border-bottom:1px solid #E1F5FE; background-color:#F5F5F5;"><input type="text" placeholder="—" style="width:68px; border:1px solid #E0E0E0; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#AAAAAA; text-align:center; background:#ECECEC;" /></td>
+        <td align="center" style="padding:6px 4px; border-bottom:1px solid #E1F5FE; background-color:#F5F5F5;"><input type="text" placeholder="—" style="width:68px; border:1px solid #E0E0E0; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#AAAAAA; text-align:center; background:#ECECEC;" /></td>
+      </tr>
+      <tr>
+        <td align="center" style="padding:6px 4px; border-right:2px solid #01579B; background-color:#E1F5FE;">
+          <span style="font-family:Arial,sans-serif; font-size:8px; color:#546E7A; font-weight:bold; display:block; text-transform:uppercase;">&#201;cart</span>
+          <input type="text" placeholder="—" style="width:52px; border:1px solid #CFD8DC; padding:4px 3px; font-family:Arial,sans-serif; font-size:11px; color:#546E7A; text-align:center; background:#F5F7F8; margin-top:3px;" />
+        </td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B3E5FC; background-color:#F5FBFF;"><input type="text" placeholder="—" style="width:68px; border:1px solid #CFD8DC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#546E7A; text-align:center; background:#F5F7F8;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B3E5FC;"><input type="text" placeholder="—" style="width:68px; border:1px solid #CFD8DC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#546E7A; text-align:center; background:#F5F7F8;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B3E5FC; background-color:#F5FBFF;"><input type="text" placeholder="—" style="width:68px; border:1px solid #CFD8DC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#546E7A; text-align:center; background:#F5F7F8;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B3E5FC;"><input type="text" placeholder="—" style="width:68px; border:1px solid #CFD8DC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#546E7A; text-align:center; background:#F5F7F8;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B3E5FC; background-color:#F5FBFF;"><input type="text" placeholder="—" style="width:68px; border:1px solid #CFD8DC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#546E7A; text-align:center; background:#F5F7F8;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B3E5FC; background-color:#F5F5F5;"><input type="text" placeholder="—" style="width:68px; border:1px solid #E0E0E0; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#AAAAAA; text-align:center; background:#ECECEC;" /></td>
+        <td align="center" style="padding:6px 4px; background-color:#F5F5F5;"><input type="text" placeholder="—" style="width:68px; border:1px solid #E0E0E0; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#AAAAAA; text-align:center; background:#ECECEC;" /></td>
+      </tr>
+
+    </table>
+    </td>
+  </tr>
+
+  <!-- spacer -->
+  <tr><td style="height:16px; font-size:0; line-height:0;">&nbsp;</td></tr>
+
+
+  <!-- ================================================================ -->
+  <!--  SECTION 3 — VENT                                                 -->
+  <!-- ================================================================ -->
+  <tr>
+    <td style="padding:0;">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#FFFFFF; border:1px solid #CFD8DC;">
+
+      <tr>
+        <td style="background-color:#37474F; padding:0;">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+              <td width="4" style="background-color:#B0BEC5; font-size:0; line-height:0;">&nbsp;</td>
+              <td style="padding:10px 18px;">
+                <span style="font-family:Arial,sans-serif; font-size:11px; font-weight:bold; color:#FFFFFF; letter-spacing:2px; text-transform:uppercase;">&#10148; VENT</span>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+
+      <!-- Headers -->
+      <tr style="background-color:#ECEFF1;">
+        <td width="110" style="padding:9px 10px 9px 18px; border-bottom:2px solid #37474F; border-right:1px solid #B0BEC5;">
+          <span style="font-family:Arial,sans-serif; font-size:8px; font-weight:bold; color:#37474F; letter-spacing:2px; text-transform:uppercase;">INDICATEUR</span>
+        </td>
+        <td width="80" align="center" style="padding:9px 6px; border-bottom:2px solid #37474F; border-right:2px solid #37474F; background-color:#B0BEC5;">
+          <span style="font-family:Arial,sans-serif; font-size:8px; font-weight:bold; color:#37474F; letter-spacing:1px; text-transform:uppercase; display:block;">SEMAINE</span>
+          <span style="font-family:Arial,sans-serif; font-size:9px; color:#546E7A; display:block; margin-top:2px;" id="s3-range">—</span>
+        </td>
+        <td width="95" align="center" style="padding:9px 4px; border-bottom:2px solid #37474F; border-right:1px solid #B0BEC5;"><span style="font-family:Arial,sans-serif; font-size:9px; font-weight:bold; color:#37474F; display:block;" id="s3-d0">LUN —</span></td>
+        <td width="95" align="center" style="padding:9px 4px; border-bottom:2px solid #37474F; border-right:1px solid #B0BEC5;"><span style="font-family:Arial,sans-serif; font-size:9px; font-weight:bold; color:#37474F; display:block;" id="s3-d1">MAR —</span></td>
+        <td width="95" align="center" style="padding:9px 4px; border-bottom:2px solid #37474F; border-right:1px solid #B0BEC5;"><span style="font-family:Arial,sans-serif; font-size:9px; font-weight:bold; color:#37474F; display:block;" id="s3-d2">MER —</span></td>
+        <td width="95" align="center" style="padding:9px 4px; border-bottom:2px solid #37474F; border-right:1px solid #B0BEC5;"><span style="font-family:Arial,sans-serif; font-size:9px; font-weight:bold; color:#37474F; display:block;" id="s3-d3">JEU —</span></td>
+        <td width="95" align="center" style="padding:9px 4px; border-bottom:2px solid #37474F; border-right:1px solid #B0BEC5;"><span style="font-family:Arial,sans-serif; font-size:9px; font-weight:bold; color:#37474F; display:block;" id="s3-d4">VEN —</span></td>
+        <td width="95" align="center" style="padding:9px 4px; border-bottom:2px solid #37474F; border-right:1px solid #B0BEC5; background-color:#F5F5F5;"><span style="font-family:Arial,sans-serif; font-size:9px; font-weight:bold; color:#AAAAAA; display:block;" id="s3-d5">SAM —</span></td>
+        <td width="95" align="center" style="padding:9px 4px; border-bottom:2px solid #37474F; background-color:#F5F5F5;"><span style="font-family:Arial,sans-serif; font-size:9px; font-weight:bold; color:#AAAAAA; display:block;" id="s3-d6">DIM —</span></td>
+      </tr>
+
+      <!-- Vitesse vent -->
+      <tr>
+        <td rowspan="3" style="padding:0; border-right:1px solid #B0BEC5; border-bottom:2px solid #ECEFF1; vertical-align:middle; background-color:#FAFBFC;">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding:10px 8px 10px 16px; border-left:3px solid #37474F;">
+            <span style="font-family:Arial,sans-serif; font-size:11px; font-weight:bold; color:#37474F; display:block;">Vitesse vent</span>
+            <span style="font-family:Arial,sans-serif; font-size:9px; color:#90A4AE; display:block; margin-top:2px;">En km/h</span>
+          </td></tr></table>
+        </td>
+        <td align="center" style="padding:6px 4px; border-right:2px solid #37474F; border-bottom:1px solid #ECEFF1; background-color:#ECEFF1;">
+          <span style="font-family:Arial,sans-serif; font-size:8px; color:#37474F; font-weight:bold; display:block; text-transform:uppercase;">Pr&#233;v.</span>
+          <input type="text" placeholder="—" style="width:52px; border:1px solid #B0BEC5; padding:4px 3px; font-family:Arial,sans-serif; font-size:11px; color:#37474F; text-align:center; background:#FFFFFF; margin-top:3px;" />
+        </td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B0BEC5; border-bottom:1px solid #ECEFF1; background-color:#FAFBFC;"><input type="text" placeholder="—" style="width:68px; border:1px solid #B0BEC5; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#37474F; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B0BEC5; border-bottom:1px solid #ECEFF1;"><input type="text" placeholder="—" style="width:68px; border:1px solid #B0BEC5; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#37474F; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B0BEC5; border-bottom:1px solid #ECEFF1; background-color:#FAFBFC;"><input type="text" placeholder="—" style="width:68px; border:1px solid #B0BEC5; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#37474F; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B0BEC5; border-bottom:1px solid #ECEFF1;"><input type="text" placeholder="—" style="width:68px; border:1px solid #B0BEC5; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#37474F; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B0BEC5; border-bottom:1px solid #ECEFF1; background-color:#FAFBFC;"><input type="text" placeholder="—" style="width:68px; border:1px solid #B0BEC5; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#37474F; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B0BEC5; border-bottom:1px solid #ECEFF1; background-color:#F5F5F5;"><input type="text" placeholder="—" style="width:68px; border:1px solid #E0E0E0; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#AAAAAA; text-align:center; background:#ECECEC;" /></td>
+        <td align="center" style="padding:6px 4px; border-bottom:1px solid #ECEFF1; background-color:#F5F5F5;"><input type="text" placeholder="—" style="width:68px; border:1px solid #E0E0E0; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#AAAAAA; text-align:center; background:#ECECEC;" /></td>
+      </tr>
+      <tr>
+        <td align="center" style="padding:6px 4px; border-right:2px solid #37474F; border-bottom:1px solid #ECEFF1; background-color:#ECEFF1;">
+          <span style="font-family:Arial,sans-serif; font-size:8px; color:#0277BD; font-weight:bold; display:block; text-transform:uppercase;">R&#233;el</span>
+          <input type="text" placeholder="—" style="width:52px; border:1px solid #4FC3F7; padding:4px 3px; font-family:Arial,sans-serif; font-size:11px; color:#0277BD; text-align:center; background:#FFFFFF; margin-top:3px;" />
+        </td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B0BEC5; border-bottom:1px solid #ECEFF1; background-color:#FAFBFC;"><input type="text" placeholder="—" style="width:68px; border:1px solid #4FC3F7; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#0277BD; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B0BEC5; border-bottom:1px solid #ECEFF1;"><input type="text" placeholder="—" style="width:68px; border:1px solid #4FC3F7; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#0277BD; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B0BEC5; border-bottom:1px solid #ECEFF1; background-color:#FAFBFC;"><input type="text" placeholder="—" style="width:68px; border:1px solid #4FC3F7; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#0277BD; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B0BEC5; border-bottom:1px solid #ECEFF1;"><input type="text" placeholder="—" style="width:68px; border:1px solid #4FC3F7; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#0277BD; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B0BEC5; border-bottom:1px solid #ECEFF1; background-color:#FAFBFC;"><input type="text" placeholder="—" style="width:68px; border:1px solid #4FC3F7; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#0277BD; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B0BEC5; border-bottom:1px solid #ECEFF1; background-color:#F5F5F5;"><input type="text" placeholder="—" style="width:68px; border:1px solid #E0E0E0; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#AAAAAA; text-align:center; background:#ECECEC;" /></td>
+        <td align="center" style="padding:6px 4px; border-bottom:1px solid #ECEFF1; background-color:#F5F5F5;"><input type="text" placeholder="—" style="width:68px; border:1px solid #E0E0E0; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#AAAAAA; text-align:center; background:#ECECEC;" /></td>
+      </tr>
+      <tr>
+        <td align="center" style="padding:6px 4px; border-right:2px solid #37474F; border-bottom:2px solid #ECEFF1; background-color:#ECEFF1;">
+          <span style="font-family:Arial,sans-serif; font-size:8px; color:#546E7A; font-weight:bold; display:block; text-transform:uppercase;">&#201;cart</span>
+          <input type="text" placeholder="—" style="width:52px; border:1px solid #CFD8DC; padding:4px 3px; font-family:Arial,sans-serif; font-size:11px; color:#546E7A; text-align:center; background:#F5F7F8; margin-top:3px;" />
+        </td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B0BEC5; border-bottom:2px solid #ECEFF1; background-color:#FAFBFC;"><input type="text" placeholder="—" style="width:68px; border:1px solid #CFD8DC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#546E7A; text-align:center; background:#F5F7F8;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B0BEC5; border-bottom:2px solid #ECEFF1;"><input type="text" placeholder="—" style="width:68px; border:1px solid #CFD8DC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#546E7A; text-align:center; background:#F5F7F8;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B0BEC5; border-bottom:2px solid #ECEFF1; background-color:#FAFBFC;"><input type="text" placeholder="—" style="width:68px; border:1px solid #CFD8DC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#546E7A; text-align:center; background:#F5F7F8;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B0BEC5; border-bottom:2px solid #ECEFF1;"><input type="text" placeholder="—" style="width:68px; border:1px solid #CFD8DC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#546E7A; text-align:center; background:#F5F7F8;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B0BEC5; border-bottom:2px solid #ECEFF1; background-color:#FAFBFC;"><input type="text" placeholder="—" style="width:68px; border:1px solid #CFD8DC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#546E7A; text-align:center; background:#F5F7F8;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B0BEC5; border-bottom:2px solid #ECEFF1; background-color:#F5F5F5;"><input type="text" placeholder="—" style="width:68px; border:1px solid #E0E0E0; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#AAAAAA; text-align:center; background:#ECECEC;" /></td>
+        <td align="center" style="padding:6px 4px; border-bottom:2px solid #ECEFF1; background-color:#F5F5F5;"><input type="text" placeholder="—" style="width:68px; border:1px solid #E0E0E0; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#AAAAAA; text-align:center; background:#ECECEC;" /></td>
+      </tr>
+
+      <!-- Rafales -->
+      <tr>
+        <td rowspan="3" style="padding:0; border-right:1px solid #B0BEC5; vertical-align:middle; background-color:#FAFBFC;">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding:10px 8px 10px 16px; border-left:3px solid #78909C;">
+            <span style="font-family:Arial,sans-serif; font-size:11px; font-weight:bold; color:#37474F; display:block;">Rafales</span>
+            <span style="font-family:Arial,sans-serif; font-size:9px; color:#90A4AE; display:block; margin-top:2px;">Pointe km/h</span>
+          </td></tr></table>
+        </td>
+        <td align="center" style="padding:6px 4px; border-right:2px solid #37474F; border-bottom:1px solid #ECEFF1; background-color:#ECEFF1;">
+          <span style="font-family:Arial,sans-serif; font-size:8px; color:#37474F; font-weight:bold; display:block; text-transform:uppercase;">Pr&#233;v.</span>
+          <input type="text" placeholder="—" style="width:52px; border:1px solid #B0BEC5; padding:4px 3px; font-family:Arial,sans-serif; font-size:11px; color:#37474F; text-align:center; background:#FFFFFF; margin-top:3px;" />
+        </td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B0BEC5; border-bottom:1px solid #ECEFF1; background-color:#FAFBFC;"><input type="text" placeholder="—" style="width:68px; border:1px solid #B0BEC5; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#37474F; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B0BEC5; border-bottom:1px solid #ECEFF1;"><input type="text" placeholder="—" style="width:68px; border:1px solid #B0BEC5; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#37474F; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B0BEC5; border-bottom:1px solid #ECEFF1; background-color:#FAFBFC;"><input type="text" placeholder="—" style="width:68px; border:1px solid #B0BEC5; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#37474F; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B0BEC5; border-bottom:1px solid #ECEFF1;"><input type="text" placeholder="—" style="width:68px; border:1px solid #B0BEC5; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#37474F; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B0BEC5; border-bottom:1px solid #ECEFF1; background-color:#FAFBFC;"><input type="text" placeholder="—" style="width:68px; border:1px solid #B0BEC5; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#37474F; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B0BEC5; border-bottom:1px solid #ECEFF1; background-color:#F5F5F5;"><input type="text" placeholder="—" style="width:68px; border:1px solid #E0E0E0; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#AAAAAA; text-align:center; background:#ECECEC;" /></td>
+        <td align="center" style="padding:6px 4px; border-bottom:1px solid #ECEFF1; background-color:#F5F5F5;"><input type="text" placeholder="—" style="width:68px; border:1px solid #E0E0E0; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#AAAAAA; text-align:center; background:#ECECEC;" /></td>
+      </tr>
+      <tr>
+        <td align="center" style="padding:6px 4px; border-right:2px solid #37474F; border-bottom:1px solid #ECEFF1; background-color:#ECEFF1;">
+          <span style="font-family:Arial,sans-serif; font-size:8px; color:#0277BD; font-weight:bold; display:block; text-transform:uppercase;">R&#233;el</span>
+          <input type="text" placeholder="—" style="width:52px; border:1px solid #4FC3F7; padding:4px 3px; font-family:Arial,sans-serif; font-size:11px; color:#0277BD; text-align:center; background:#FFFFFF; margin-top:3px;" />
+        </td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B0BEC5; border-bottom:1px solid #ECEFF1; background-color:#FAFBFC;"><input type="text" placeholder="—" style="width:68px; border:1px solid #4FC3F7; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#0277BD; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B0BEC5; border-bottom:1px solid #ECEFF1;"><input type="text" placeholder="—" style="width:68px; border:1px solid #4FC3F7; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#0277BD; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B0BEC5; border-bottom:1px solid #ECEFF1; background-color:#FAFBFC;"><input type="text" placeholder="—" style="width:68px; border:1px solid #4FC3F7; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#0277BD; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B0BEC5; border-bottom:1px solid #ECEFF1;"><input type="text" placeholder="—" style="width:68px; border:1px solid #4FC3F7; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#0277BD; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B0BEC5; border-bottom:1px solid #ECEFF1; background-color:#FAFBFC;"><input type="text" placeholder="—" style="width:68px; border:1px solid #4FC3F7; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#0277BD; text-align:center; background:#FFFFFF;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B0BEC5; border-bottom:1px solid #ECEFF1; background-color:#F5F5F5;"><input type="text" placeholder="—" style="width:68px; border:1px solid #E0E0E0; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#AAAAAA; text-align:center; background:#ECECEC;" /></td>
+        <td align="center" style="padding:6px 4px; border-bottom:1px solid #ECEFF1; background-color:#F5F5F5;"><input type="text" placeholder="—" style="width:68px; border:1px solid #E0E0E0; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#AAAAAA; text-align:center; background:#ECECEC;" /></td>
+      </tr>
+      <tr>
+        <td align="center" style="padding:6px 4px; border-right:2px solid #37474F; background-color:#ECEFF1;">
+          <span style="font-family:Arial,sans-serif; font-size:8px; color:#546E7A; font-weight:bold; display:block; text-transform:uppercase;">&#201;cart</span>
+          <input type="text" placeholder="—" style="width:52px; border:1px solid #CFD8DC; padding:4px 3px; font-family:Arial,sans-serif; font-size:11px; color:#546E7A; text-align:center; background:#F5F7F8; margin-top:3px;" />
+        </td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B0BEC5; background-color:#FAFBFC;"><input type="text" placeholder="—" style="width:68px; border:1px solid #CFD8DC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#546E7A; text-align:center; background:#F5F7F8;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B0BEC5;"><input type="text" placeholder="—" style="width:68px; border:1px solid #CFD8DC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#546E7A; text-align:center; background:#F5F7F8;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B0BEC5; background-color:#FAFBFC;"><input type="text" placeholder="—" style="width:68px; border:1px solid #CFD8DC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#546E7A; text-align:center; background:#F5F7F8;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B0BEC5;"><input type="text" placeholder="—" style="width:68px; border:1px solid #CFD8DC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#546E7A; text-align:center; background:#F5F7F8;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B0BEC5; background-color:#FAFBFC;"><input type="text" placeholder="—" style="width:68px; border:1px solid #CFD8DC; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#546E7A; text-align:center; background:#F5F7F8;" /></td>
+        <td align="center" style="padding:6px 4px; border-right:1px solid #B0BEC5; background-color:#F5F5F5;"><input type="text" placeholder="—" style="width:68px; border:1px solid #E0E0E0; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#AAAAAA; text-align:center; background:#ECECEC;" /></td>
+        <td align="center" style="padding:6px 4px; background-color:#F5F5F5;"><input type="text" placeholder="—" style="width:68px; border:1px solid #E0E0E0; padding:4px 2px; font-family:Arial,sans-serif; font-size:11px; color:#AAAAAA; text-align:center; background:#ECECEC;" /></td>
+      </tr>
+
+    </table>
+    </td>
+  </tr>
+
+  <!-- spacer -->
+  <tr><td style="height:16px; font-size:0; line-height:0;">&nbsp;</td></tr>
+
+  <!-- ===== FOOTER BAR ===== -->
+  <tr>
+    <td style="background-color:#263238; padding:12px 24px;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+        <td><span style="font-family:Arial,sans-serif; font-size:10px; color:#546E7A;">Service M&#233;t&#233;orologique — Rapport hebdomadaire automatis&#233;</span></td>
+        <td align="right"><span style="font-family:Arial,sans-serif; font-size:10px; color:#546E7A;" id="footer-date">—</span></td>
+      </tr></table>
+    </td>
+  </tr>
+
+</table>
+<!-- /MAIN WRAPPER -->
+
+</td></tr>
+</table>
+
+<script type="text/javascript">
+(function() {
+  var months = ['jan','f\u00e9v','mar','avr','mai','juin','juil','ao\u00fbt','sep','oct','nov','d\u00e9c'];
+  var dayNames = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+  var abbrs = ['LUN','MAR','MER','JEU','VEN','SAM','DIM'];
+
+  var today = new Date();
+  var dow = today.getDay();
+  var monday = new Date(today);
+  monday.setDate(today.getDate() - ((dow + 6) % 7));
+  var sunday = new Date(monday);
+  sunday.setDate(monday.getDate() + 6);
+
+  var d = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()));
+  d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
+  var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+  var weekNo = Math.ceil((((d - yearStart) / 86400000) + 1)/7);
+
+  var rangeShort = monday.getDate() + '/' + (monday.getMonth()+1) + ' – ' + sunday.getDate() + '/' + (sunday.getMonth()+1);
+
+  document.getElementById('week-num').innerHTML = 'S' + weekNo;
+  document.getElementById('week-range').innerHTML = monday.getDate() + ' ' + months[monday.getMonth()] + ' &ndash; ' + sunday.getDate() + ' ' + months[sunday.getMonth()];
+  document.getElementById('footer-date').innerHTML = dayNames[today.getDay()] + ' ' + today.getDate() + ' ' + months[today.getMonth()] + ' ' + today.getFullYear();
+
+  for (var s = 1; s <= 3; s++) {
+    var rng = document.getElementById('s' + s + '-range');
+    if (rng) rng.innerHTML = rangeShort;
+    for (var i = 0; i < 7; i++) {
+      var d2 = new Date(monday);
+      d2.setDate(monday.getDate() + i);
+      var el = document.getElementById('s' + s + '-d' + i);
+      if (el) el.innerHTML = abbrs[i] + ' ' + d2.getDate();
+    }
+  }
+})();
+</script>
+
+</body>
+</html>

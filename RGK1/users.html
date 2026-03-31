@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AdminPanel — Utilisateurs</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="admin-custom.css">
+</head>
+<body>
+<div id="wrapper">
+
+  <!-- SIDEBAR (identique) -->
+  <nav id="sidebar">
+    <a href="dashboard.html" class="sidebar-brand">
+      <i class="fas fa-shield-alt brand-icon"></i>AdminPanel
+    </a>
+    <div class="sidebar-nav">
+      <div class="sidebar-heading">Principal</div>
+      <div class="nav-item-sidebar"><a href="dashboard.html" class="nav-link-sidebar"><i class="fas fa-tachometer-alt nav-icon"></i>Dashboard</a></div>
+      <div class="nav-item-sidebar">
+        <a href="#collapseAnalytique" class="nav-link-sidebar" data-toggle="collapse" aria-expanded="false">
+          <i class="fas fa-chart-bar nav-icon"></i>Analytique<i class="fas fa-chevron-right arrow"></i>
+        </a>
+        <div class="collapse collapse-nav" id="collapseAnalytique">
+          <a href="#" class="nav-link-sidebar">Rapports</a>
+          <a href="#" class="nav-link-sidebar">Performance</a>
+        </div>
+      </div>
+      <div class="nav-item-sidebar"><a href="users.html" class="nav-link-sidebar active"><i class="fas fa-users nav-icon"></i>Utilisateurs<span class="badge badge-pill badge-primary ml-auto">4.8k</span></a></div>
+      <div class="nav-item-sidebar"><a href="#" class="nav-link-sidebar"><i class="fas fa-shopping-cart nav-icon"></i>Commandes<span class="badge badge-pill badge-warning ml-auto">24</span></a></div>
+      <div class="nav-item-sidebar"><a href="#" class="nav-link-sidebar"><i class="fas fa-envelope nav-icon"></i>Messages<span class="badge badge-pill badge-danger ml-auto">7</span></a></div>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-heading">Système</div>
+      <div class="nav-item-sidebar"><a href="#" class="nav-link-sidebar"><i class="fas fa-cog nav-icon"></i>Paramètres</a></div>
+      <div class="nav-item-sidebar"><a href="#" class="nav-link-sidebar"><i class="fas fa-lock nav-icon"></i>Sécurité</a></div>
+    </div>
+    <div class="sidebar-footer">
+      <div class="avatar-sm" style="background:var(--accent)">AD</div>
+      <div><div class="user-name">Admin Dupont</div><div class="user-role">Super Admin</div></div>
+    </div>
+  </nav>
+
+  <!-- CONTENT -->
+  <div id="content">
+    <div class="topbar">
+      <div class="topbar-search">
+        <i class="fas fa-search mr-2 text-muted" style="font-size:.8rem"></i>
+        <input type="text" placeholder="Rechercher un utilisateur..." id="searchInput" oninput="filterTable()">
+      </div>
+      <div class="topbar-right">
+        <button class="topbar-icon-btn"><i class="fas fa-bell"></i><span class="badge-notif"></span></button>
+        <div class="topbar-divider"></div>
+        <span class="topbar-username d-none d-md-inline mr-2">Admin Dupont</span>
+        <div class="topbar-avatar">AD</div>
+        <button class="topbar-icon-btn ml-1" onclick="window.location='login.html'"><i class="fas fa-sign-out-alt"></i></button>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div class="d-flex justify-content-between align-items-center mb-1">
+        <div>
+          <h1 class="page-title">Utilisateurs</h1>
+          <p class="page-subtitle mb-0">4 832 comptes · 127 actifs aujourd'hui</p>
+        </div>
+        <div>
+          <button class="btn btn-sm btn-outline-secondary mr-2"><i class="fas fa-file-csv mr-1"></i>Exporter</button>
+          <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#addUserModal">
+            <i class="fas fa-user-plus mr-1"></i>Ajouter
+          </button>
+        </div>
+      </div>
+      <hr class="mb-3">
+
+      <!-- FILTERS -->
+      <div class="d-flex align-items-center mb-3 flex-wrap gap-2">
+        <div class="btn-group btn-group-sm mr-auto" role="group">
+          <button type="button" class="btn btn-primary filter-btn" data-filter="all">Tous</button>
+          <button type="button" class="btn btn-outline-secondary filter-btn" data-filter="Actif">Actifs</button>
+          <button type="button" class="btn btn-outline-secondary filter-btn" data-filter="Inactif">Inactifs</button>
+          <button type="button" class="btn btn-outline-secondary filter-btn" data-filter="Suspendu">Suspendus</button>
+        </div>
+        <select class="form-control form-control-sm" style="width:auto" onchange="filterByPlan(this.value)">
+          <option value="">Tous les plans</option>
+          <option>Free</option><option>Pro</option><option>Enterprise</option>
+        </select>
+        <select class="form-control form-control-sm" style="width:auto" onchange="filterByRole(this.value)">
+          <option value="">Tous les rôles</option>
+          <option>Utilisateur</option><option>Éditeur</option><option>Admin</option><option>Super Admin</option>
+        </select>
+      </div>
+
+      <!-- TABLE -->
+      <div class="card">
+        <div class="card-header-custom">
+          <h6><i class="fas fa-table mr-2"></i>Liste des utilisateurs</h6>
+          <span class="text-muted small">Affichage 1–10 sur 4 832</span>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover mb-0" id="usersTable">
+              <thead>
+                <tr>
+                  <th><input type="checkbox" id="checkAll" onchange="toggleAll(this)"></th>
+                  <th>Utilisateur</th>
+                  <th>Rôle</th>
+                  <th>Statut</th>
+                  <th>Plan</th>
+                  <th>Dernière connexion</th>
+                  <th>Inscrit le</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="userTableBody">
+                <!-- Generated by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer bg-white border-top-0 d-flex justify-content-between align-items-center py-3">
+          <small class="text-muted">Page 1 sur 484</small>
+          <nav>
+            <ul class="pagination pagination-sm mb-0">
+              <li class="page-item disabled"><a class="page-link" href="#">‹</a></li>
+              <li class="page-item active"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item disabled"><a class="page-link" href="#">…</a></li>
+              <li class="page-item"><a class="page-link" href="#">484</a></li>
+              <li class="page-item"><a class="page-link" href="#">›</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bar">© 2026 AdminPanel</div>
+  </div>
+</div>
+
+<!-- ADD USER MODAL -->
+<div class="modal fade" id="addUserModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fas fa-user-plus mr-2 text-primary"></i>Ajouter un utilisateur</h5>
+        <button class="close" data-dismiss="modal"><span>×</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-group col-6">
+            <label class="small font-weight-bold">Prénom</label>
+            <input type="text" class="form-control" placeholder="Marie">
+          </div>
+          <div class="form-group col-6">
+            <label class="small font-weight-bold">Nom</label>
+            <input type="text" class="form-control" placeholder="Dupont">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="small font-weight-bold">Email</label>
+          <input type="email" class="form-control" placeholder="marie@exemple.fr">
+        </div>
+        <div class="form-row">
+          <div class="form-group col-6">
+            <label class="small font-weight-bold">Rôle</label>
+            <select class="form-control">
+              <option>Utilisateur</option><option>Éditeur</option><option>Admin</option><option>Super Admin</option>
+            </select>
+          </div>
+          <div class="form-group col-6">
+            <label class="small font-weight-bold">Plan</label>
+            <select class="form-control">
+              <option>Free</option><option>Pro</option><option>Enterprise</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary btn-sm" data-dismiss="modal">Annuler</button>
+        <button class="btn btn-primary btn-sm" onclick="$('#addUserModal').modal('hide');showToast('✓ Invitation envoyée')">
+          <i class="fas fa-paper-plane mr-1"></i>Envoyer l'invitation
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT USER MODAL -->
+<div class="modal fade" id="editUserModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalTitle"><i class="fas fa-user-edit mr-2 text-primary"></i>Modifier</h5>
+        <button class="close" data-dismiss="modal"><span>×</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="small font-weight-bold">Nom complet</label>
+          <input type="text" class="form-control" id="editName">
+        </div>
+        <div class="form-group">
+          <label class="small font-weight-bold">Email</label>
+          <input type="email" class="form-control" id="editEmail">
+        </div>
+        <div class="form-row">
+          <div class="form-group col-6">
+            <label class="small font-weight-bold">Rôle</label>
+            <select class="form-control"><option>Utilisateur</option><option>Éditeur</option><option>Admin</option></select>
+          </div>
+          <div class="form-group col-6">
+            <label class="small font-weight-bold">Statut</label>
+            <select class="form-control"><option>Actif</option><option>Inactif</option><option>Suspendu</option></select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary btn-sm" data-dismiss="modal">Annuler</button>
+        <button class="btn btn-primary btn-sm" onclick="$('#editUserModal').modal('hide');showToast('✓ Utilisateur mis à jour')">Sauvegarder</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM DELETE MODAL -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-danger"><i class="fas fa-exclamation-triangle mr-2"></i>Confirmer</h5>
+        <button class="close" data-dismiss="modal"><span>×</span></button>
+      </div>
+      <div class="modal-body text-center">
+        <p>Supprimer cet utilisateur ?<br><small class="text-muted">Cette action est irréversible.</small></p>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <button class="btn btn-secondary btn-sm" data-dismiss="modal">Annuler</button>
+        <button class="btn btn-danger btn-sm" onclick="$('#deleteModal').modal('hide');showToast('⚠ Utilisateur supprimé')">Supprimer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container"><div class="toast-custom" id="toast"></div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js"></script>
+<script>
+const users = [
+  { name:"Marie Dupont",     email:"marie.dupont@email.fr",    role:"Admin",       status:"Actif",    plan:"Pro",        last:"Il y a 3 min",  joined:"12 jan. 2024", color:"#4e73df" },
+  { name:"Lucas Martin",     email:"l.martin@corp.com",        role:"Utilisateur", status:"Actif",    plan:"Free",       last:"Il y a 1h",     joined:"3 fév. 2024",  color:"#1cc88a" },
+  { name:"Sophie Bernard",   email:"sbernard@gmail.com",       role:"Éditeur",     status:"Inactif",  plan:"Pro",        last:"Il y a 5j",     joined:"28 nov. 2023", color:"#f6c23e" },
+  { name:"Thomas Petit",     email:"thomas.p@startup.io",      role:"Admin",       status:"Actif",    plan:"Enterprise", last:"Il y a 2h",     joined:"7 oct. 2023",  color:"#e74a3b" },
+  { name:"Emma Leroy",       email:"e.leroy@design.co",        role:"Éditeur",     status:"Actif",    plan:"Pro",        last:"Il y a 30 min", joined:"15 mars 2024", color:"#36b9cc" },
+  { name:"Hugo Moreau",      email:"hugo.m@dev.fr",            role:"Utilisateur", status:"Suspendu", plan:"Free",       last:"Il y a 3 sem.", joined:"1 sept. 2023", color:"#858796" },
+  { name:"Camille Dubois",   email:"cdubois@agency.fr",        role:"Utilisateur", status:"Actif",    plan:"Free",       last:"Il y a 4h",     joined:"22 jan. 2025", color:"#1cc88a" },
+  { name:"Paul Simon",       email:"paul.simon@corp.eu",       role:"Super Admin", status:"Actif",    plan:"Enterprise", last:"Il y a 10 min", joined:"5 mars 2023",  color:"#4e73df" },
+  { name:"Lucie Lambert",    email:"l.lambert@media.fr",       role:"Éditeur",     status:"Inactif",  plan:"Pro",        last:"Il y a 2 sem.", joined:"11 avr. 2024", color:"#f6c23e" },
+  { name:"Nicolas Durand",   email:"n.durand@fin.com",         role:"Utilisateur", status:"Actif",    plan:"Free",       last:"Hier",          joined:"30 juil. 2024",color:"#36b9cc" },
+];
+
+const statusBadge = { "Actif":"badge-success-soft", "Inactif":"badge-secondary-soft", "Suspendu":"badge-danger-soft" };
+const roleBadge   = { "Super Admin":"badge-primary-soft", "Admin":"badge-primary-soft", "Éditeur":"badge-warning-soft", "Utilisateur":"badge-secondary-soft" };
+const planBadge   = { "Enterprise":"badge-primary-soft", "Pro":"badge-success-soft", "Free":"badge-secondary-soft" };
+
+function renderTable(data) {
+  const tbody = document.getElementById('userTableBody');
+  tbody.innerHTML = data.map(u => {
+    const i = u.name.split(' ').map(n=>n[0]).join('');
+    return `<tr>
+      <td><input type="checkbox" class="row-check"></td>
+      <td>
+        <div class="d-flex align-items-center">
+          <div class="avatar-sm mr-2" style="background:${u.color};width:30px;height:30px;font-size:.65rem;flex-shrink:0">${i}</div>
+          <div>
+            <div class="font-weight-bold" style="font-size:.85rem">${u.name}</div>
+            <small class="text-muted">${u.email}</small>
+          </div>
+        </div>
+      </td>
+      <td><span class="badge ${roleBadge[u.role]} px-2 py-1 rounded-pill">${u.role}</span></td>
+      <td><span class="badge ${statusBadge[u.status]} px-2 py-1 rounded-pill">${u.status}</span></td>
+      <td><span class="badge ${planBadge[u.plan]} px-2 py-1 rounded-pill">${u.plan}</span></td>
+      <td class="text-muted small">${u.last}</td>
+      <td class="text-muted small">${u.joined}</td>
+      <td>
+        <div class="btn-group btn-group-sm">
+          <button class="btn btn-sm btn-outline-primary" onclick="openEdit('${u.name}','${u.email}')" title="Modifier"><i class="fas fa-edit"></i></button>
+          <button class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#deleteModal" title="Supprimer"><i class="fas fa-trash"></i></button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+renderTable(users);
+
+function openEdit(name, email) {
+  document.getElementById('editModalTitle').innerHTML = `<i class="fas fa-user-edit mr-2 text-primary"></i>${name}`;
+  document.getElementById('editName').value = name;
+  document.getElementById('editEmail').value = email;
+  $('#editUserModal').modal('show');
+}
+
+function toggleAll(el) {
+  document.querySelectorAll('.row-check').forEach(c => c.checked = el.checked);
+}
+
+let currentFilter = 'all';
+function filterTable() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const filtered = users.filter(u => {
+    const matchSearch = u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q);
+    const matchStatus = currentFilter === 'all' || u.status === currentFilter;
+    return matchSearch && matchStatus;
+  });
+  renderTable(filtered);
+}
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.filter-btn').forEach(b => {
+      b.classList.remove('btn-primary');
+      b.classList.add('btn-outline-secondary');
+    });
+    this.classList.add('btn-primary');
+    this.classList.remove('btn-outline-secondary');
+    currentFilter = this.dataset.filter;
+    filterTable();
+  });
+});
+
+function filterByPlan(plan) {
+  const data = plan ? users.filter(u => u.plan === plan) : users;
+  renderTable(data);
+}
+function filterByRole(role) {
+  const data = role ? users.filter(u => u.role === role) : users;
+  renderTable(data);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>
