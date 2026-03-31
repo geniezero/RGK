@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AdminPanel — Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    :root {
+      --sidebar-bg:    #1e2a3a;
+      --sidebar-dark:  #16202e;
+      --sidebar-hover: #2d3f55;
+      --sidebar-text:  rgba(255,255,255,.75);
+      --sidebar-muted: rgba(255,255,255,.4);
+      --sidebar-w:     220px;
+      --topbar-h:      56px;
+      --blue:   #4e73df;
+      --green:  #1cc88a;
+      --cyan:   #36b9cc;
+      --yellow: #f6c23e;
+      --red:    #e74a3b;
+      --bg:     #f0f2f8;
+      --shadow: 0 .125rem .75rem rgba(0,0,0,.08);
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin:0; background:var(--bg); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; font-size:.875rem; color:#5a5c69; }
+
+    /* LAYOUT */
+    #wrapper { display:flex; min-height:100vh; }
+
+    /* SIDEBAR */
+    #sidebar {
+      width:var(--sidebar-w); background:var(--sidebar-bg);
+      display:flex; flex-direction:column;
+      position:fixed; top:0; left:0; height:100vh; z-index:1000;
+    }
+    .sidebar-brand {
+      height:var(--topbar-h); display:flex; align-items:center; padding:0 1.25rem;
+      background:var(--sidebar-dark); color:#fff !important; font-size:.95rem;
+      font-weight:800; letter-spacing:.08em; text-transform:uppercase;
+      text-decoration:none !important; border-bottom:1px solid rgba(255,255,255,.06); flex-shrink:0;
+    }
+    .sidebar-brand i { color:var(--blue); margin-right:.6rem; font-size:1rem; }
+    .sidebar-nav { flex:1; overflow-y:auto; padding:.5rem 0; }
+    .sidebar-nav::-webkit-scrollbar { width:3px; }
+    .sidebar-nav::-webkit-scrollbar-thumb { background:rgba(255,255,255,.1); }
+    .nav-heading { font-size:.6rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--sidebar-muted); padding:.75rem 1.25rem .3rem; }
+    .nav-divider { border-top:1px solid rgba(255,255,255,.07); margin:.4rem 1rem; }
+    .nav-link-s {
+      display:flex; align-items:center; color:var(--sidebar-text) !important;
+      padding:.6rem 1.25rem; font-size:.83rem; font-weight:600;
+      text-decoration:none !important; transition:background .15s,color .15s;
+    }
+    .nav-link-s:hover { background:var(--sidebar-hover); color:#fff !important; }
+    .nav-link-s.active { background:rgba(255,255,255,.08); color:#fff !important; border-left:3px solid var(--blue); }
+    .nav-link-s .ni { width:1.1rem; text-align:center; margin-right:.75rem; font-size:.8rem; opacity:.8; }
+    .nav-link-s .arrow { margin-left:auto; font-size:.65rem; opacity:.6; transition:transform .2s; }
+    .nav-link-s[aria-expanded="true"] .arrow { transform:rotate(90deg); }
+    .nav-link-s .bs-badge { margin-left:auto; font-size:.6rem; }
+    .collapse-sub .nav-link-s { padding-left:3rem; font-size:.78rem; font-weight:500; }
+    .sidebar-footer {
+      flex-shrink:0; padding:.75rem 1.25rem; border-top:1px solid rgba(255,255,255,.08);
+      display:flex; align-items:center; gap:.75rem;
+    }
+    .s-av { width:32px; height:32px; border-radius:50%; background:var(--blue); display:flex; align-items:center; justify-content:center; font-size:.7rem; font-weight:700; color:#fff; flex-shrink:0; }
+    .s-name { font-weight:700; color:#fff; font-size:.8rem; line-height:1.2; }
+    .s-role { font-size:.68rem; color:var(--sidebar-muted); }
+
+    /* CONTENT */
+    #content { margin-left:var(--sidebar-w); flex:1; display:flex; flex-direction:column; min-height:100vh; }
+
+    /* TOPBAR */
+    .topbar {
+      height:var(--topbar-h); background:#fff; border-bottom:1px solid #e3e6f0;
+      display:flex; align-items:center; padding:0 1.5rem; gap:.5rem;
+      position:sticky; top:0; z-index:900;
+    }
+    .t-search { display:flex; align-items:center; background:var(--bg); border:1px solid #d1d3e2; border-radius:2rem; padding:.3rem 1rem; flex:0 0 260px; }
+    .t-search input { background:none; border:none; outline:none; font-size:.82rem; color:#858796; width:100%; }
+    .t-search i { color:#b7b9cc; margin-right:.5rem; font-size:.8rem; }
+    .t-divider { width:1px; height:30px; background:#e3e6f0; margin:0 .5rem; }
+    .t-right { margin-left:auto; display:flex; align-items:center; gap:.15rem; }
+    .t-btn { width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#858796; background:none; border:none; cursor:pointer; position:relative; font-size:.85rem; transition:background .15s; }
+    .t-btn:hover { background:var(--bg); color:#5a5c69; }
+    .t-dot { position:absolute; top:5px; right:5px; width:8px; height:8px; border-radius:50%; background:var(--red); border:2px solid #fff; }
+    .t-av { width:34px; height:34px; border-radius:50%; background:var(--blue); display:flex; align-items:center; justify-content:center; font-size:.72rem; font-weight:700; color:#fff; cursor:pointer; margin-left:.25rem; }
+    .t-username { font-size:.8rem; font-weight:700; color:#5a5c69; }
+
+    /* MAIN */
+    .main-wrap { padding:1.5rem; flex:1; }
+    .page-title { font-size:1.2rem; font-weight:700; color:#1e2a3a; margin-bottom:0; }
+    .page-sub   { font-size:.78rem; color:#858796; }
+
+    /* CARDS */
+    .card { border:1px solid #e3e6f0 !important; border-radius:.5rem !important; box-shadow:var(--shadow) !important; }
+    .stat-card { border-left:4px solid !important; }
+    .stat-card.c-blue   { border-left-color:var(--blue)   !important; }
+    .stat-card.c-green  { border-left-color:var(--green)  !important; }
+    .stat-card.c-cyan   { border-left-color:var(--cyan)   !important; }
+    .stat-card.c-yellow { border-left-color:var(--yellow) !important; }
+    .stat-label { font-size:.62rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; margin-bottom:.35rem; }
+    .c-blue   .stat-label { color:var(--blue); }
+    .c-green  .stat-label { color:var(--green); }
+    .c-cyan   .stat-label { color:var(--cyan); }
+    .c-yellow .stat-label { color:var(--yellow); }
+    .stat-val  { font-size:1.5rem; font-weight:700; color:#1e2a3a; line-height:1; }
+    .stat-icon { font-size:2rem; color:#dddfeb; }
+
+    /* CARD HEADER */
+    .ch { background:#f8f9fc; border-bottom:1px solid #e3e6f0; padding:.7rem 1.25rem; display:flex; align-items:center; justify-content:space-between; border-radius:.5rem .5rem 0 0; }
+    .ch h6 { margin:0; font-size:.78rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--blue); }
+    .ch.g h6 { color:var(--green); }
+
+    /* BAR CHART */
+    .bar-chart { display:flex; align-items:flex-end; gap:6px; height:150px; padding-bottom:20px; }
+    .bar-col { flex:1; display:flex; flex-direction:column; align-items:center; }
+    .bar-fill { width:100%; background:#dde2ff; border-radius:3px 3px 0 0; transition:background .2s; cursor:pointer; }
+    .bar-fill:hover { background:var(--blue); opacity:.75; }
+    .bar-fill.hi { background:var(--blue); }
+    .bar-lbl { font-size:.62rem; color:#b7b9cc; margin-top:4px; }
+
+    /* PROGRESS */
+    .progress { height:6px !important; border-radius:3px !important; }
+
+    /* TABLE */
+    .table thead th { font-size:.66rem; text-transform:uppercase; letter-spacing:.05em; font-weight:700; color:#858796; border-top:none !important; border-bottom:2px solid #e3e6f0 !important; background:#f8f9fc; white-space:nowrap; }
+    .table td { vertical-align:middle !important; border-color:#e3e6f0 !important; font-size:.84rem; }
+    .table-hover tbody tr:hover td { background:#f8f9fc !important; }
+
+    /* SOFT BADGES */
+    .b-success { background:rgba(28,200,138,.12);  color:#13855c; font-weight:600; }
+    .b-warning { background:rgba(246,194,62,.18);  color:#8a6d00; font-weight:600; }
+    .b-danger  { background:rgba(231,74,59,.12);   color:#be3227; font-weight:600; }
+    .b-primary { background:rgba(78,115,223,.12);  color:#2e59d9; font-weight:600; }
+    .b-muted   { background:#eaecf4; color:#858796; font-weight:600; }
+
+    /* MODAL */
+    .modal-header { background:#f8f9fc; border-bottom:1px solid #e3e6f0; }
+    .modal-header .modal-title { font-size:.9rem; font-weight:700; color:#1e2a3a; }
+    .modal-footer { background:#f8f9fc; border-top:1px solid #e3e6f0; }
+    .btn-primary { background:var(--blue) !important; border-color:var(--blue) !important; }
+    .btn-primary:hover { background:#2e59d9 !important; }
+    .btn-outline-primary { color:var(--blue) !important; border-color:var(--blue) !important; }
+    .btn-outline-primary:hover { background:var(--blue) !important; color:#fff !important; }
+
+    /* FOOTER */
+    .footer-bar { background:#fff; border-top:1px solid #e3e6f0; padding:.7rem 1.5rem; font-size:.75rem; color:#858796; }
+
+    /* TOAST */
+    #toast-wrap { position:fixed; bottom:1.5rem; right:1.5rem; z-index:9999; }
+    #toast { background:#1e2a3a; color:#fff; border-radius:.4rem; padding:.7rem 1.25rem; font-size:.83rem; display:none; align-items:center; gap:.5rem; box-shadow:0 .5rem 1.5rem rgba(0,0,0,.25); }
+    #toast.show { display:flex; animation:toastIn .25s ease; }
+    @keyframes toastIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+  </style>
+</head>
+<body>
+<div id="wrapper">
+
+  <!-- SIDEBAR -->
+  <nav id="sidebar">
+    <a href="#" class="sidebar-brand"><i class="fas fa-shield-alt"></i>AdminPanel</a>
+    <div class="sidebar-nav">
+      <div class="nav-heading">Principal</div>
+      <a href="#" class="nav-link-s active"><i class="fas fa-tachometer-alt ni"></i>Dashboard</a>
+      <a href="#sub-a" class="nav-link-s" data-toggle="collapse" aria-expanded="false">
+        <i class="fas fa-chart-bar ni"></i>Analytique<i class="fas fa-chevron-right arrow"></i>
+      </a>
+      <div class="collapse collapse-sub" id="sub-a">
+        <a href="#" class="nav-link-s">Rapports</a>
+        <a href="#" class="nav-link-s">Performance</a>
+        <a href="#" class="nav-link-s">Entonnoirs</a>
+      </div>
+      <a href="#" class="nav-link-s"><i class="fas fa-users ni"></i>Utilisateurs<span class="badge badge-pill badge-primary bs-badge">4.8k</span></a>
+      <a href="#" class="nav-link-s"><i class="fas fa-shopping-cart ni"></i>Commandes<span class="badge badge-pill badge-warning bs-badge">24</span></a>
+      <a href="#" class="nav-link-s"><i class="fas fa-envelope ni"></i>Messages<span class="badge badge-pill badge-danger bs-badge">7</span></a>
+      <div class="nav-divider"></div>
+      <div class="nav-heading">Contenu</div>
+      <a href="#sub-c" class="nav-link-s" data-toggle="collapse" aria-expanded="false">
+        <i class="fas fa-file-alt ni"></i>Contenu<i class="fas fa-chevron-right arrow"></i>
+      </a>
+      <div class="collapse collapse-sub" id="sub-c">
+        <a href="#" class="nav-link-s">Articles</a>
+        <a href="#" class="nav-link-s">Médias</a>
+        <a href="#" class="nav-link-s">Catégories</a>
+      </div>
+      <div class="nav-divider"></div>
+      <div class="nav-heading">Système</div>
+      <a href="#" class="nav-link-s"><i class="fas fa-cog ni"></i>Paramètres</a>
+      <a href="#" class="nav-link-s"><i class="fas fa-lock ni"></i>Sécurité</a>
+      <a href="#" class="nav-link-s"><i class="fas fa-clipboard-list ni"></i>Journaux</a>
+    </div>
+    <div class="sidebar-footer">
+      <div class="s-av">AD</div>
+      <div><div class="s-name">Admin Dupont</div><div class="s-role">Super Admin</div></div>
+    </div>
+  </nav>
+
+  <!-- CONTENT -->
+  <div id="content">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div class="t-search">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Rechercher...">
+      </div>
+      <div class="t-right">
+        <button class="t-btn"><i class="fas fa-bell"></i><span class="t-dot"></span></button>
+        <button class="t-btn"><i class="fas fa-envelope"></i></button>
+        <div class="t-divider"></div>
+        <span class="t-username d-none d-md-inline mr-1">Admin Dupont</span>
+        <div class="t-av" data-toggle="modal" data-target="#profileModal">AD</div>
+        <button class="t-btn" onclick="window.location='login.html'"><i class="fas fa-sign-out-alt"></i></button>
+      </div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main-wrap">
+
+      <!-- Header -->
+      <div class="d-flex justify-content-between align-items-start mb-1">
+        <div>
+          <h1 class="page-title">Dashboard</h1>
+          <p class="page-sub mb-0">Bienvenue, Admin &middot; Mardi 17 mars 2026</p>
+        </div>
+        <div>
+          <button class="btn btn-sm btn-outline-secondary mr-2"><i class="fas fa-download mr-1"></i>Exporter</button>
+          <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#newProjectModal"><i class="fas fa-plus mr-1"></i>Nouveau projet</button>
+        </div>
+      </div>
+      <hr class="mb-4">
+
+      <!-- STAT CARDS -->
+      <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-4">
+          <div class="card stat-card c-blue h-100">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <div class="stat-label">Revenus (mois)</div>
+                  <div class="stat-val">€48 210</div>
+                  <small class="text-success mt-1 d-block"><i class="fas fa-arrow-up mr-1"></i>12% ce mois</small>
+                </div>
+                <i class="fas fa-euro-sign stat-icon"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+          <div class="card stat-card c-green h-100">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <div class="stat-label">Commandes</div>
+                  <div class="stat-val">284</div>
+                  <small class="text-success mt-1 d-block"><i class="fas fa-arrow-up mr-1"></i>6% cette semaine</small>
+                </div>
+                <i class="fas fa-shopping-bag stat-icon"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+          <div class="card stat-card c-cyan h-100">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <div class="stat-label">Nouveaux clients</div>
+                  <div class="stat-val">1 203</div>
+                  <small class="text-danger mt-1 d-block"><i class="fas fa-arrow-down mr-1"></i>2% cette semaine</small>
+                </div>
+                <i class="fas fa-users stat-icon"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+          <div class="card stat-card c-yellow h-100">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <div class="stat-label">Taux de rétention</div>
+                  <div class="stat-val">87%</div>
+                  <small class="text-success mt-1 d-block"><i class="fas fa-arrow-up mr-1"></i>3% vs dernier mois</small>
+                </div>
+                <i class="fas fa-percentage stat-icon"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHARTS ROW -->
+      <div class="row mb-4">
+        <div class="col-xl-8 mb-4">
+          <div class="card h-100">
+            <div class="ch">
+              <h6><i class="fas fa-chart-bar mr-2"></i>Aperçu des revenus</h6>
+              <div class="dropdown">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-toggle="dropdown" style="font-size:.72rem">Mensuel</button>
+                <div class="dropdown-menu dropdown-menu-right">
+                  <a class="dropdown-item small" href="#">Hebdomadaire</a>
+                  <a class="dropdown-item small" href="#">Mensuel</a>
+                  <a class="dropdown-item small" href="#">Annuel</a>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="bar-chart">
+                <div class="bar-col"><div class="bar-fill" style="height:55%"></div><span class="bar-lbl">Jan</span></div>
+                <div class="bar-col"><div class="bar-fill" style="height:70%"></div><span class="bar-lbl">Fév</span></div>
+                <div class="bar-col"><div class="bar-fill" style="height:45%"></div><span class="bar-lbl">Mar</span></div>
+                <div class="bar-col"><div class="bar-fill hi" style="height:88%"></div><span class="bar-lbl">Avr</span></div>
+                <div class="bar-col"><div class="bar-fill" style="height:62%"></div><span class="bar-lbl">Mai</span></div>
+                <div class="bar-col"><div class="bar-fill" style="height:76%"></div><span class="bar-lbl">Jun</span></div>
+                <div class="bar-col"><div class="bar-fill" style="height:58%"></div><span class="bar-lbl">Jul</span></div>
+                <div class="bar-col"><div class="bar-fill" style="height:82%"></div><span class="bar-lbl">Aoû</span></div>
+                <div class="bar-col"><div class="bar-fill" style="height:68%"></div><span class="bar-lbl">Sep</span></div>
+                <div class="bar-col"><div class="bar-fill" style="height:90%"></div><span class="bar-lbl">Oct</span></div>
+                <div class="bar-col"><div class="bar-fill" style="height:74%"></div><span class="bar-lbl">Nov</span></div>
+                <div class="bar-col"><div class="bar-fill hi" style="height:100%"></div><span class="bar-lbl">Déc</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-4 mb-4">
+          <div class="card h-100">
+            <div class="ch g"><h6><i class="fas fa-chart-pie mr-2"></i>Sources de trafic</h6></div>
+            <div class="card-body">
+              <div class="mb-3">
+                <div class="d-flex justify-content-between mb-1"><span class="small font-weight-bold">Direct</span><span class="small text-muted">30%</span></div>
+                <div class="progress"><div class="progress-bar bg-primary" style="width:30%"></div></div>
+              </div>
+              <div class="mb-3">
+                <div class="d-flex justify-content-between mb-1"><span class="small font-weight-bold">Social</span><span class="small text-muted">25%</span></div>
+                <div class="progress"><div class="progress-bar bg-success" style="width:25%"></div></div>
+              </div>
+              <div class="mb-3">
+                <div class="d-flex justify-content-between mb-1"><span class="small font-weight-bold">Référents</span><span class="small text-muted">20%</span></div>
+                <div class="progress"><div class="progress-bar bg-info" style="width:20%"></div></div>
+              </div>
+              <div class="mb-3">
+                <div class="d-flex justify-content-between mb-1"><span class="small font-weight-bold">Recherche</span><span class="small text-muted">15%</span></div>
+                <div class="progress"><div class="progress-bar bg-warning" style="width:15%"></div></div>
+              </div>
+              <div class="mb-0">
+                <div class="d-flex justify-content-between mb-1"><span class="small font-weight-bold">Autres</span><span class="small text-muted">10%</span></div>
+                <div class="progress"><div class="progress-bar bg-danger" style="width:10%"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACTIVITY + SYSTEM -->
+      <div class="row mb-4">
+        <div class="col-xl-6 mb-4">
+          <div class="card h-100">
+            <div class="ch">
+              <h6><i class="fas fa-stream mr-2"></i>Activité récente</h6>
+              <a href="#" class="small" style="color:var(--blue)">Tout voir</a>
+            </div>
+            <div class="card-body p-0">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item border-0 d-flex align-items-start py-3 px-4">
+                  <span class="badge badge-pill b-success mr-3 mt-1" style="font-size:.65rem">●</span>
+                  <div><div class="font-weight-bold" style="font-size:.83rem">Nouvel utilisateur — <em>Marie Dupont</em></div><small class="text-muted">Il y a 3 min</small></div>
+                </li>
+                <li class="list-group-item d-flex align-items-start py-3 px-4">
+                  <span class="badge badge-pill b-primary mr-3 mt-1" style="font-size:.65rem">●</span>
+                  <div><div class="font-weight-bold" style="font-size:.83rem">Paiement reçu — <em>€1 240</em> · #8821</div><small class="text-muted">Il y a 14 min</small></div>
+                </li>
+                <li class="list-group-item d-flex align-items-start py-3 px-4">
+                  <span class="badge badge-pill b-warning mr-3 mt-1" style="font-size:.65rem">●</span>
+                  <div><div class="font-weight-bold" style="font-size:.83rem">Ticket urgent — Problème API</div><small class="text-muted">Il y a 27 min</small></div>
+                </li>
+                <li class="list-group-item d-flex align-items-start py-3 px-4">
+                  <span class="badge badge-pill b-muted mr-3 mt-1" style="font-size:.65rem">●</span>
+                  <div><div class="font-weight-bold" style="font-size:.83rem">Déploiement — <em>v2.4.1</em></div><small class="text-muted">Il y a 1h</small></div>
+                </li>
+                <li class="list-group-item border-0 d-flex align-items-start py-3 px-4">
+                  <span class="badge badge-pill b-danger mr-3 mt-1" style="font-size:.65rem">●</span>
+                  <div><div class="font-weight-bold" style="font-size:.83rem">Alerte sécurité — Connexion suspecte</div><small class="text-muted">Il y a 2h</small></div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-6 mb-4">
+          <div class="card h-100">
+            <div class="ch"><h6><i class="fas fa-server mr-2"></i>État du système</h6></div>
+            <div class="card-body">
+              <div class="row text-center mb-4">
+                <div class="col-4">
+                  <div style="font-size:1.4rem;font-weight:700;color:#1e2a3a">98.6%</div>
+                  <small class="text-muted">Disponibilité</small>
+                </div>
+                <div class="col-4">
+                  <div style="font-size:1.4rem;font-weight:700;color:#1e2a3a">142ms</div>
+                  <small class="text-muted">Temps rép.</small>
+                </div>
+                <div class="col-4">
+                  <div style="font-size:1.4rem;font-weight:700;color:#1e2a3a">3</div>
+                  <small class="text-muted">Tickets urgents</small>
+                </div>
+              </div>
+              <hr class="mt-0">
+              <div class="mb-2 d-flex justify-content-between"><span class="small font-weight-bold">Capacité serveur</span><span class="small text-muted">63%</span></div>
+              <div class="progress mb-3"><div class="progress-bar bg-info" style="width:63%"></div></div>
+              <div class="mb-2 d-flex justify-content-between"><span class="small font-weight-bold">Stockage utilisé</span><span class="small text-muted">78%</span></div>
+              <div class="progress mb-3"><div class="progress-bar bg-warning" style="width:78%"></div></div>
+              <div class="mb-2 d-flex justify-content-between"><span class="small font-weight-bold">Bande passante</span><span class="small text-muted">41%</span></div>
+              <div class="progress"><div class="progress-bar bg-success" style="width:41%"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TABLE -->
+      <div class="card mb-4">
+        <div class="ch">
+          <h6><i class="fas fa-table mr-2"></i>Projets récents</h6>
+          <button class="btn btn-sm btn-primary" style="font-size:.72rem" data-toggle="modal" data-target="#newProjectModal"><i class="fas fa-plus mr-1"></i>Nouveau</button>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover mb-0">
+              <thead>
+                <tr><th>Projet</th><th>Équipe</th><th>Statut</th><th style="min-width:130px">Progression</th><th>Échéance</th><th></th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="font-weight-bold">Refonte site web</td><td class="text-muted small">Design · Dev</td>
+                  <td><span class="badge b-success px-2 py-1 rounded-pill">Actif</span></td>
+                  <td><div class="progress mb-1"><div class="progress-bar bg-success" style="width:78%"></div></div><small class="text-muted">78%</small></td>
+                  <td class="text-muted small">30 mars</td><td><button class="btn btn-sm btn-outline-primary py-0" style="font-size:.72rem">Voir</button></td>
+                </tr>
+                <tr>
+                  <td class="font-weight-bold">Migration BDD</td><td class="text-muted small">Backend</td>
+                  <td><span class="badge b-warning px-2 py-1 rounded-pill">En attente</span></td>
+                  <td><div class="progress mb-1"><div class="progress-bar bg-warning" style="width:35%"></div></div><small class="text-muted">35%</small></td>
+                  <td class="text-muted small">15 avr.</td><td><button class="btn btn-sm btn-outline-primary py-0" style="font-size:.72rem">Voir</button></td>
+                </tr>
+                <tr>
+                  <td class="font-weight-bold">App mobile v3</td><td class="text-muted small">Mobile · QA</td>
+                  <td><span class="badge b-primary px-2 py-1 rounded-pill">En cours</span></td>
+                  <td><div class="progress mb-1"><div class="progress-bar bg-primary" style="width:60%"></div></div><small class="text-muted">60%</small></td>
+                  <td class="text-muted small">1 mai</td><td><button class="btn btn-sm btn-outline-primary py-0" style="font-size:.72rem">Voir</button></td>
+                </tr>
+                <tr>
+                  <td class="font-weight-bold">Audit sécurité</td><td class="text-muted small">Sécurité</td>
+                  <td><span class="badge b-danger px-2 py-1 rounded-pill">Bloqué</span></td>
+                  <td><div class="progress mb-1"><div class="progress-bar bg-danger" style="width:20%"></div></div><small class="text-muted">20%</small></td>
+                  <td class="text-muted small">22 mars</td><td><button class="btn btn-sm btn-outline-primary py-0" style="font-size:.72rem">Voir</button></td>
+                </tr>
+                <tr>
+                  <td class="font-weight-bold">Intégration paiement</td><td class="text-muted small">Full Stack</td>
+                  <td><span class="badge b-success px-2 py-1 rounded-pill">Actif</span></td>
+                  <td><div class="progress mb-1"><div class="progress-bar bg-success" style="width:92%"></div></div><small class="text-muted">92%</small></td>
+                  <td class="text-muted small">25 mars</td><td><button class="btn btn-sm btn-outline-primary py-0" style="font-size:.72rem">Voir</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /main-wrap -->
+    <div class="footer-bar">© 2026 AdminPanel &nbsp;·&nbsp; <a href="#" class="text-muted">Conditions</a> &nbsp;·&nbsp; <a href="#" class="text-muted">Confidentialité</a></div>
+  </div>
+</div>
+
+<!-- MODAL PROFIL -->
+<div class="modal fade" id="profileModal" tabindex="-1">
+  <div class="modal-dialog"><div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="fas fa-user-circle text-primary mr-2"></i>Mon profil</h5>
+      <button class="close" data-dismiss="modal"><span>&times;</span></button>
+    </div>
+    <div class="modal-body">
+      <div class="d-flex align-items-center p-3 mb-3 rounded" style="background:#f8f9fc;border:1px solid #e3e6f0">
+        <div class="s-av mr-3" style="width:46px;height:46px;font-size:.85rem">AD</div>
+        <div><div class="font-weight-bold">Admin Dupont</div><small class="text-muted">admin@exemple.fr</small><br><span class="badge b-primary mt-1">Super Admin</span></div>
+      </div>
+      <div class="form-group"><label class="small font-weight-bold">Nom complet</label><input type="text" class="form-control form-control-sm" value="Admin Dupont"></div>
+      <div class="form-group"><label class="small font-weight-bold">Email</label><input type="email" class="form-control form-control-sm" value="admin@exemple.fr"></div>
+      <div class="form-group mb-0"><label class="small font-weight-bold">Rôle</label>
+        <select class="form-control form-control-sm"><option>Super Admin</option><option>Admin</option></select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-sm btn-secondary" data-dismiss="modal">Annuler</button>
+      <button class="btn btn-sm btn-primary" onclick="closeModal('profileModal');toast('Profil mis à jour')">Sauvegarder</button>
+    </div>
+  </div></div>
+</div>
+
+<!-- MODAL NOUVEAU PROJET -->
+<div class="modal fade" id="newProjectModal" tabindex="-1">
+  <div class="modal-dialog"><div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="fas fa-plus-circle text-primary mr-2"></i>Nouveau projet</h5>
+      <button class="close" data-dismiss="modal"><span>&times;</span></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label class="small font-weight-bold">Nom du projet</label><input type="text" class="form-control form-control-sm" placeholder="Ex : Refonte landing page"></div>
+      <div class="form-group"><label class="small font-weight-bold">Description</label><textarea class="form-control form-control-sm" rows="3" placeholder="Décrivez le projet..."></textarea></div>
+      <div class="form-row">
+        <div class="form-group col-6"><label class="small font-weight-bold">Équipe</label>
+          <select class="form-control form-control-sm"><option>Design</option><option>Backend</option><option>Mobile</option><option>Full Stack</option></select>
+        </div>
+        <div class="form-group col-6"><label class="small font-weight-bold">Échéance</label><input type="date" class="form-control form-control-sm"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-sm btn-secondary" data-dismiss="modal">Annuler</button>
+      <button class="btn btn-sm btn-primary" onclick="closeModal('newProjectModal');toast('Projet créé')">Créer le projet</button>
+    </div>
+  </div></div>
+</div>
+
+<div id="toast-wrap"><div id="toast"></div></div>
+
+<!-- Bootstrap bundle (Popper inclus) — pas de jQuery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js"></script>
+<script>
+  function toast(msg) {
+    const el = document.getElementById('toast');
+    el.textContent = '✓ ' + msg;
+    el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), 3000);
+  }
+
+  function closeModal(id) {
+    const el = document.getElementById(id);
+    const instance = bootstrap.Modal.getInstance(el);
+    if (instance) instance.hide();
+  }
+</script>
+</body>
+</html>
