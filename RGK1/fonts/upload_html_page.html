@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload CSV/TXT</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+            text-align: center;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 25px;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #555;
+        }
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+        }
+        .file-input-wrapper input[type=file] {
+            position: absolute;
+            left: -9999px;
+        }
+        .file-input-label {
+            display: block;
+            padding: 30px 20px;
+            background: #f8f9fa;
+            border: 3px dashed #ddd;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .file-input-label:hover {
+            background: #e9ecef;
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+        .file-input-label.has-file {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+        button, .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 14px 30px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        button:hover, .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .info-box {
+            background: #e7f3ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 25px;
+            border-left: 4px solid #2196F3;
+        }
+        .info-box ul {
+            list-style: none;
+            color: #555;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+        .info-box li:before {
+            content: "✓ ";
+            color: #4CAF50;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        
+        /* Loader */
+        #loader {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .progress-bar-container {
+            width: 100%;
+            height: 30px;
+            background: #f0f0f0;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-top: 15px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            width: 0%;
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        /* Alert messages */
+        .alert {
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        .alert.show {
+            display: block;
+        }
+        .alert-success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            color: #155724;
+        }
+        .alert-success h2 {
+            color: #155724;
+            margin-bottom: 15px;
+        }
+        .alert-error {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            color: #721c24;
+        }
+        .alert-error h2 {
+            color: #721c24;
+            margin-bottom: 15px;
+        }
+        .result-info {
+            margin-top: 10px;
+        }
+        .result-info p {
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📁 Upload de Fichiers</h1>
+        <p class="subtitle">CSV et TXT</p>
+        
+        <!-- Messages d'alerte -->
+        <div id="alertSuccess" class="alert alert-success">
+            <h2>✓ Fichier uploadé avec succès!</h2>
+            <div id="resultInfo" class="result-info"></div>
+        </div>
+        
+        <div id="alertError" class="alert alert-error">
+            <h2>❌ Erreur lors de l'upload</h2>
+            <p id="errorMessage"></p>
+        </div>
+        
+        <!-- Formulaire -->
+        <form id="uploadForm">
+            <div class="form-group">
+                <label for="dossier">Dossier de destination (optionnel):</label>
+                <input type="text" id="dossier" name="dossier" placeholder="Ex: archives, documents, etc." style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px;">
+                <small style="color: #666; font-size: 12px; display: block; margin-top: 5px;">Laissez vide pour uploader à la racine</small>
+            </div>
+            
+            <div class="form-group">
+                <label for="fileUpload">Sélectionner un fichier:</label>
+                <div class="file-input-wrapper">
+                    <input type="file" id="fileUpload" name="fileUpload" accept=".csv,.txt,.asp,.zip,.tar,.gz,.gzip,.tgz" required>
+                    <label for="fileUpload" class="file-input-label" id="fileLabel">
+                        <span style="font-size: 48px;">📎</span><br>
+                        <strong>Cliquez pour sélectionner</strong><br>
+                        <span style="font-size: 13px; color: #666;">ou glissez-déposez un fichier ici</span>
+                    </label>
+                </div>
+            </div>
+            <button type="submit" id="submitBtn">📤 Uploader le fichier</button>
+        </form>
+        
+        <!-- Loader -->
+        <div id="loader">
+            <div class="spinner"></div>
+            <p><strong>Upload en cours...</strong></p>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progressBar">0%</div>
+            </div>
+        </div>
+        
+        <!-- Informations -->
+        <div class="info-box">
+            <ul>
+                <li>Formats acceptés: CSV, TXT, ASP, ZIP, TAR, GZ, GZIP, TGZ</li>
+                <li>Taille maximale: 100 MB</li>
+                <li>Le fichier garde son nom original</li>
+                <li>Upload via API ASP</li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        // Configuration de l'API
+        const API_URL = 'upload.asp'; // Chemin vers votre fichier ASP
+        
+        const fileInput = document.getElementById('fileUpload');
+        const fileLabel = document.getElementById('fileLabel');
+        const uploadForm = document.getElementById('uploadForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const loader = document.getElementById('loader');
+        const progressBar = document.getElementById('progressBar');
+        const alertSuccess = document.getElementById('alertSuccess');
+        const alertError = document.getElementById('alertError');
+        const resultInfo = document.getElementById('resultInfo');
+        const errorMessage = document.getElementById('errorMessage');
+        
+        // Mise à jour du label quand un fichier est sélectionné
+        fileInput.addEventListener('change', function() {
+            if (this.files && this.files.length > 0) {
+                const fileName = this.files[0].name;
+                const fileSize = (this.files[0].size / 1024).toFixed(2);
+                fileLabel.innerHTML = `
+                    <span style="font-size: 48px;">✓</span><br>
+                    <strong>${fileName}</strong><br>
+                    <span style="font-size: 13px; color: #666;">Taille: ${fileSize} KB</span>
+                `;
+                fileLabel.className = 'file-input-label has-file';
+            }
+        });
+        
+        // Drag and drop
+        fileLabel.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.style.background = '#e9ecef';
+            this.style.borderColor = '#667eea';
+        });
+        
+        fileLabel.addEventListener('dragleave', function(e) {
+            this.style.background = '#f8f9fa';
+            this.style.borderColor = '#ddd';
+        });
+        
+        fileLabel.addEventListener('drop', function(e) {
+            e.preventDefault();
+            fileInput.files = e.dataTransfer.files;
+            fileInput.dispatchEvent(new Event('change'));
+            this.style.background = '#d4edda';
+            this.style.borderColor = '#28a745';
+        });
+        
+        // Gestion de la soumission du formulaire
+        uploadForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Cacher les alertes
+            alertSuccess.classList.remove('show');
+            alertError.classList.remove('show');
+            
+            // Vérifier qu'un fichier est sélectionné
+            if (!fileInput.files || fileInput.files.length === 0) {
+                showError('Veuillez sélectionner un fichier');
+                return;
+            }
+            
+            // Préparer les données
+            const formData = new FormData();
+            formData.append('fileUpload', fileInput.files[0]);
+            
+            // Ajouter le dossier si renseigné
+            const dossierInput = document.getElementById('dossier');
+            if (dossierInput.value.trim() !== '') {
+                formData.append('dossier', dossierInput.value.trim());
+            };
+            
+            // Afficher le loader
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Upload en cours...';
+            loader.style.display = 'block';
+            
+            // Simuler la progression
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress > 90) progress = 90;
+                progressBar.style.width = progress + '%';
+                progressBar.textContent = Math.round(progress) + '%';
+            }, 200);
+            
+            try {
+                // Appel à l'API
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                // Finaliser la progression
+                clearInterval(progressInterval);
+                progressBar.style.width = '100%';
+                progressBar.textContent = '100%';
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Succès
+                    showSuccess(result);
+                    
+                    // Réinitialiser le formulaire
+                    uploadForm.reset();
+                    fileLabel.innerHTML = `
+                        <span style="font-size: 48px;">📎</span><br>
+                        <strong>Cliquez pour sélectionner</strong><br>
+                        <span style="font-size: 13px; color: #666;">ou glissez-déposez un fichier ici</span>
+                    `;
+                    fileLabel.className = 'file-input-label';
+                } else {
+                    // Erreur
+                    showError(result.error || 'Une erreur est survenue');
+                }
+            } catch (error) {
+                clearInterval(progressInterval);
+                showError('Erreur de connexion à l\'API: ' + error.message);
+            } finally {
+                // Réactiver le bouton et cacher le loader
+                submitBtn.disabled = false;
+                submitBtn.textContent = '📤 Uploader le fichier';
+                loader.style.display = 'none';
+                progressBar.style.width = '0%';
+                progressBar.textContent = '0%';
+            }
+        });
+        
+        // Afficher le message de succès
+        function showSuccess(result) {
+            const data = result.data;
+            resultInfo.innerHTML = `
+                <p><strong>Nom :</strong> ${escapeHtml(data.fileName)}</p>
+                ${data.dossier ? `<p><strong>Dossier :</strong> ${escapeHtml(data.dossier)}</p>` : ''}
+                <p><strong>Taille :</strong> ${escapeHtml(data.fileSizeFormatted)}</p>
+                <p><strong>Emplacement :</strong> ${escapeHtml(data.filePath)}</p>
+                <p><strong>Date :</strong> ${escapeHtml(data.uploadDate)}</p>
+            `;
+            alertSuccess.classList.add('show');
+            
+            // Scroll vers le message
+            alertSuccess.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        
+        // Afficher le message d'erreur
+        function showError(message) {
+            errorMessage.textContent = message;
+            alertError.classList.add('show');
+            
+            // Scroll vers le message
+            alertError.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        
+        // Échapper le HTML pour éviter les XSS
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>

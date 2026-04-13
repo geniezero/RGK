@@ -1,0 +1,394 @@
+<%@ Language=VBScript %>
+<%
+' ========================================
+' API UPLOAD - upload.asp
+' Version robuste et simplifiée
+' ========================================
+Option Explicit
+Response.Buffer = True
+Response.Charset = "UTF-8"
+Response.ContentType = "application/json"
+
+' ========================================
+' CONFIGURATION DYNAMIQUE
+' ========================================
+Dim UPLOAD_PATH, MAX_FILE_SIZE, ALLOWED_EXTENSIONS
+Dim strServerName
+
+strServerName = LCase(Request.ServerVariables("SERVER_NAME"))
+
+If InStr(strServerName, "prod") > 0 Then
+    UPLOAD_PATH = "E:\production\uploads\"
+    MAX_FILE_SIZE = 104857600  ' 100 MB
+Else
+    UPLOAD_PATH = "C:\uploads\"
+    MAX_FILE_SIZE = 104857600  ' 100 MB
+End If
+
+ALLOWED_EXTENSIONS = "csv,txt,asp,zip,tar,gz,gzip,tgz"
+
+' ========================================
+' CORS
+' ========================================
+Response.AddHeader "Access-Control-Allow-Origin", "*"
+Response.AddHeader "Access-Control-Allow-Methods", "POST, OPTIONS"
+Response.AddHeader "Access-Control-Allow-Headers", "Content-Type"
+
+If Request.ServerVariables("REQUEST_METHOD") = "OPTIONS" Then
+    Response.End
+End If
+
+' ========================================
+' TRAITEMENT
+' ========================================
+If Request.ServerVariables("REQUEST_METHOD") = "POST" Then
+    Dim objResult
+    Set objResult = ProcessUpload()
+    
+    If objResult("success") Then
+        Response.Status = "200 OK"
+        Response.Write JsonSuccess(objResult)
+    Else
+        Response.Status = "400 Bad Request"
+        Response.Write JsonError(objResult("error"))
+    End If
+    
+    Set objResult = Nothing
+Else
+    Response.Status = "405 Method Not Allowed"
+    Response.Write JsonError("Seule la méthode POST est autorisée")
+End If
+
+' ========================================
+' FONCTION PRINCIPALE
+' ========================================
+Function ProcessUpload()
+    Dim objDict, objFSO, objStream
+    Dim lngBytesCount, strContentType
+    Dim strBoundary, strFileName, strFileExt, strSavePath
+    Dim strDossier, strFullUploadPath
+    
+    Set objDict = Server.CreateObject("Scripting.Dictionary")
+    Set objFSO = Server.CreateObject("Scripting.FileSystemObject")
+    
+    objDict("success") = False
+    
+    On Error Resume Next
+    
+    ' Vérifier la taille
+    lngBytesCount = Request.TotalBytes
+    
+    If lngBytesCount = 0 Then
+        objDict("error") = "Aucun fichier sélectionné"
+        Set ProcessUpload = objDict
+        Exit Function
+    End If
+    
+    If lngBytesCount > MAX_FILE_SIZE Then
+        objDict("error") = "Fichier trop volumineux. Maximum: " & FormatBytes(MAX_FILE_SIZE)
+        Set ProcessUpload = objDict
+        Exit Function
+    End If
+    
+    ' Créer le stream principal
+    Set objStream = Server.CreateObject("ADODB.Stream")
+    objStream.Type = 1 ' Binaire
+    objStream.Open
+    objStream.Write Request.BinaryRead(lngBytesCount)
+    
+    ' Extraire le boundary depuis Content-Type
+    strContentType = Request.ServerVariables("CONTENT_TYPE")
+    strBoundary = "--" & Mid(strContentType, InStr(strContentType, "boundary=") + 9)
+    
+    ' Convertir en texte SEULEMENT pour lire les headers
+    objStream.Position = 0
+    objStream.Type = 2
+    objStream.Charset = "utf-8"
+    
+    Dim strAllData
+    ' Lire tout pour extraire le champ dossier ET le fichier
+    strAllData = objStream.ReadText()
+    
+    ' Extraire le champ "dossier" si présent
+    strDossier = ExtractFormField(strAllData, "dossier")
+    
+    ' Nettoyer le dossier (sécurité)
+    If strDossier <> "" Then
+        strDossier = SanitizeFileName(strDossier)
+        ' S'assurer qu'il se termine par \
+        If Right(strDossier, 1) <> "\" Then
+            strDossier = strDossier & "\"
+        End If
+    End If
+    
+    ' Construire le chemin complet
+    strFullUploadPath = UPLOAD_PATH & strDossier
+    
+    ' Créer le dossier si nécessaire
+    If Not objFSO.FolderExists(strFullUploadPath) Then
+        objFSO.CreateFolder(strFullUploadPath)
+    End If
+    
+    ' Extraire le nom du fichier
+    strFileName = ExtractFileName(strAllData)
+    
+    If strFileName = "" Or strFileName = "fichier_inconnu.txt" Then
+        objDict("error") = "Impossible d'extraire le nom du fichier"
+        objStream.Close
+        Set ProcessUpload = objDict
+        Exit Function
+    End If
+    
+    ' Nettoyer et valider
+    strFileName = SanitizeFileName(strFileName)
+    strFileExt = LCase(objFSO.GetExtensionName(strFileName))
+    
+    If Not IsExtensionAllowed(strFileExt) Then
+        objDict("error") = "Extension non autorisée. Formats acceptés: " & ALLOWED_EXTENSIONS
+        objStream.Close
+        Set ProcessUpload = objDict
+        Exit Function
+    End If
+    
+    ' Trouver où commencent les données du fichier
+    Dim intFileStart, strDelimiter
+    strDelimiter = vbCrLf & vbCrLf
+    
+    ' Chercher après le nom du fichier
+    intFileStart = InStr(InStr(strAllData, "filename="""), strAllData, strDelimiter)
+    
+    If intFileStart = 0 Then
+        objDict("error") = "Format de requête invalide"
+        objStream.Close
+        Set ProcessUpload = objDict
+        Exit Function
+    End If
+    
+    ' Calculer la position en octets
+    Dim lngStartPos, lngEndPos, lngFileSize
+    ' Position après le double CRLF (en caractères UTF-8)
+    lngStartPos = Len(Left(strAllData, intFileStart + Len(strDelimiter) - 1))
+    
+    ' Retourner en mode binaire
+    objStream.Position = 0
+    objStream.Type = 1
+    
+    ' Avancer jusqu'au début du fichier
+    ' En UTF-8, 1 caractère = 1 à 4 octets, donc on utilise une approche sécurisée
+    Dim binData, strBoundaryBin
+    binData = objStream.Read()
+    
+    ' Chercher le début du fichier (après double CRLF)
+    Dim posStart, posEnd
+    posStart = InStrB(binData, ChrB(13) & ChrB(10) & ChrB(13) & ChrB(10))
+    
+    If posStart = 0 Then
+        objDict("error") = "Impossible de trouver le début du fichier"
+        objStream.Close
+        Set ProcessUpload = objDict
+        Exit Function
+    End If
+    
+    posStart = posStart + 4 ' Sauter le double CRLF
+    
+    ' Chercher la fin (boundary final précédé de CRLF)
+    posEnd = InStrB(posStart, binData, ChrB(13) & ChrB(10) & ChrB(45) & ChrB(45))
+    
+    If posEnd = 0 Then
+        objDict("error") = "Impossible de trouver la fin du fichier"
+        objStream.Close
+        Set ProcessUpload = objDict
+        Exit Function
+    End If
+    
+    posEnd = posEnd - 1
+    
+    ' Extraire les données du fichier
+    lngFileSize = posEnd - posStart + 1
+    
+    Dim objFileStream, fileData
+    Set objFileStream = Server.CreateObject("ADODB.Stream")
+    objFileStream.Type = 1
+    objFileStream.Open
+    
+    ' Extraire uniquement les octets du fichier
+    fileData = MidB(binData, posStart, lngFileSize)
+    objFileStream.Write fileData
+    
+    ' Sauvegarder
+    strSavePath = strFullUploadPath & strFileName
+    objFileStream.SaveToFile strSavePath, 2
+    objFileStream.Close
+    objStream.Close
+    
+    ' Vérifier le fichier sauvegardé
+    If Not objFSO.FileExists(strSavePath) Then
+        objDict("error") = "Erreur lors de la sauvegarde du fichier"
+        Set ProcessUpload = objDict
+        Exit Function
+    End If
+    
+    ' Informations de retour
+    Dim objFile
+    Set objFile = objFSO.GetFile(strSavePath)
+    
+    objDict("success") = True
+    objDict("fileName") = strFileName
+    objDict("dossier") = strDossier
+    objDict("filePath") = strSavePath
+    objDict("fileSize") = objFile.Size
+    objDict("fileSizeFormatted") = FormatBytes(objFile.Size)
+    objDict("uploadDate") = Now()
+    
+    Set objFile = Nothing
+    Set objFileStream = Nothing
+    Set objStream = Nothing
+    Set objFSO = Nothing
+    
+    Set ProcessUpload = objDict
+End Function
+
+' ========================================
+' EXTRAIRE CHAMP DE FORMULAIRE
+' ========================================
+Function ExtractFormField(strData, strFieldName)
+    Dim startPos, endPos, searchStr
+    
+    ' Chercher: name="nomDuChamp"
+    searchStr = "name=""" & strFieldName & """"
+    startPos = InStr(strData, searchStr)
+    
+    If startPos > 0 Then
+        ' Chercher le double CRLF qui suit
+        startPos = InStr(startPos, strData, vbCrLf & vbCrLf)
+        If startPos > 0 Then
+            startPos = startPos + 4
+            
+            ' Chercher le CRLF qui marque la fin de la valeur
+            endPos = InStr(startPos, strData, vbCrLf & "--")
+            If endPos > startPos Then
+                ExtractFormField = Mid(strData, startPos, endPos - startPos)
+            Else
+                ExtractFormField = ""
+            End If
+        Else
+            ExtractFormField = ""
+        End If
+    Else
+        ExtractFormField = ""
+    End If
+End Function
+
+' ========================================
+' EXTRAIRE NOM DE FICHIER
+' ========================================
+Function ExtractFileName(strData)
+    Dim startPos, endPos
+    
+    startPos = InStr(strData, "filename=""")
+    
+    If startPos > 0 Then
+        startPos = startPos + 10
+        endPos = InStr(startPos, strData, """")
+        
+        If endPos > startPos Then
+            ExtractFileName = Mid(strData, startPos, endPos - startPos)
+            
+            ' Enlever le chemin si présent
+            If InStr(ExtractFileName, "\") > 0 Then
+                ExtractFileName = Mid(ExtractFileName, InStrRev(ExtractFileName, "\") + 1)
+            End If
+        Else
+            ExtractFileName = "fichier_inconnu.txt"
+        End If
+    Else
+        ExtractFileName = "fichier_inconnu.txt"
+    End If
+End Function
+
+' ========================================
+' NETTOYER NOM
+' ========================================
+Function SanitizeFileName(strFileName)
+    Dim strClean
+    strClean = strFileName
+    strClean = Replace(strClean, "..", "")
+    strClean = Replace(strClean, "/", "")
+    strClean = Replace(strClean, "\", "")
+    strClean = Replace(strClean, ":", "")
+    strClean = Replace(strClean, "*", "")
+    strClean = Replace(strClean, "?", "")
+    strClean = Replace(strClean, """", "")
+    strClean = Replace(strClean, "<", "")
+    strClean = Replace(strClean, ">", "")
+    strClean = Replace(strClean, "|", "")
+    SanitizeFileName = strClean
+End Function
+
+' ========================================
+' VALIDER EXTENSION
+' ========================================
+Function IsExtensionAllowed(strExt)
+    IsExtensionAllowed = (InStr("," & ALLOWED_EXTENSIONS & ",", "," & strExt & ",") > 0)
+End Function
+
+' ========================================
+' FORMATER TAILLE
+' ========================================
+Function FormatBytes(lngBytes)
+    If lngBytes < 1024 Then
+        FormatBytes = lngBytes & " B"
+    ElseIf lngBytes < 1048576 Then
+        FormatBytes = FormatNumber(lngBytes / 1024, 2) & " KB"
+    Else
+        FormatBytes = FormatNumber(lngBytes / 1048576, 2) & " MB"
+    End If
+End Function
+
+' ========================================
+' JSON SUCCÈS
+' ========================================
+Function JsonSuccess(objData)
+    Dim strJson
+    strJson = "{"
+    strJson = strJson & """success"": true,"
+    strJson = strJson & """message"": ""Fichier uploadé avec succès"","
+    strJson = strJson & """data"": {"
+    strJson = strJson & """fileName"": """ & JsonEscape(objData("fileName")) & ""","
+    strJson = strJson & """dossier"": """ & JsonEscape(objData("dossier")) & ""","
+    strJson = strJson & """filePath"": """ & JsonEscape(objData("filePath")) & ""","
+    strJson = strJson & """fileSize"": " & objData("fileSize") & ","
+    strJson = strJson & """fileSizeFormatted"": """ & objData("fileSizeFormatted") & ""","
+    strJson = strJson & """uploadDate"": """ & objData("uploadDate") & """"
+    strJson = strJson & "}"
+    strJson = strJson & "}"
+    JsonSuccess = strJson
+End Function
+
+' ========================================
+' JSON ERREUR
+' ========================================
+Function JsonError(strMessage)
+    Dim strJson
+    strJson = "{"
+    strJson = strJson & """success"": false,"
+    strJson = strJson & """error"": """ & JsonEscape(strMessage) & """"
+    strJson = strJson & "}"
+    JsonError = strJson
+End Function
+
+' ========================================
+' ÉCHAPPER JSON
+' ========================================
+Function JsonEscape(strText)
+    Dim strResult
+    strResult = strText
+    strResult = Replace(strResult, "\", "\\")
+    strResult = Replace(strResult, """", "\""")
+    strResult = Replace(strResult, vbCrLf, "\n")
+    strResult = Replace(strResult, vbCr, "\n")
+    strResult = Replace(strResult, vbLf, "\n")
+    strResult = Replace(strResult, vbTab, "\t")
+    JsonEscape = strResult
+End Function
+%>
