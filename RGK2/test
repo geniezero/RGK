@@ -1,0 +1,293 @@
+[CmdletBinding()]
+param (
+    [Parameter(Mandatory)]
+    [ValidateSet('QUAL', 'PROD')]
+    [string]$Environnement,
+
+    [Parameter(Mandatory)]
+    [ValidateSet('enable', 'disable')]
+    [string]$TestMode
+)
+
+function Get-Configuration {
+    param (
+        [string]$Environnement
+    )
+
+    # Chemins à adapter.
+    $Configurations = @{
+        QUAL = @{
+            Entree = 'D:\QUAL\Entree'
+            Sortie = 'D:\QUAL\Sortie'
+        }
+        PROD = @{
+            Entree = 'D:\PROD\Entree'
+            Sortie = 'D:\PROD\Sortie'
+        }
+    }
+
+    return $Configurations[$Environnement]
+}
+
+function Invoke-Dechiffrement {
+    [CmdletBinding()]
+    param (
+        [string]$Entree,
+        [string]$Destination,
+        [System.Collections.Generic.List[object]]$Erreurs
+    )
+
+    $ErrorActionPreference = 'Stop'
+    $Gpg = (Get-Command 'gpg.exe' -CommandType Application).Source
+
+    $Fichiers = @(
+        Get-ChildItem -LiteralPath $Entree -File |
+            Where-Object { $_.Extension -in '.gpg', '.gpgp', '.pgp' } |
+            Sort-Object Name
+    )
+
+    if ($Fichiers.Count -eq 0) {
+        Write-Host "Aucun fichier chiffré dans $Entree."
+        return
+    }
+
+    foreach ($Fichier in $Fichiers) {
+        $FichierPartiel = $null
+
+        try {
+            $NomZip = [IO.Path]::GetFileNameWithoutExtension($Fichier.Name)
+
+            if (-not $NomZip.EndsWith(
+                '.zip',
+                [StringComparison]::OrdinalIgnoreCase
+            )) {
+                $NomZip += '.zip'
+            }
+
+            $Cible = Join-Path $Destination $NomZip
+
+            if (Test-Path -LiteralPath $Cible) {
+                throw "Un fichier déchiffré porte déjà ce nom : $NomZip"
+            }
+
+            # Les fichiers incomplets restent hors du répertoire
+            # contenant les ZIP prêts à être traités.
+            $FichierPartiel = Join-Path (
+                Split-Path -Parent $Destination
+            ) (
+                [guid]::NewGuid().ToString('N') + '.part'
+            )
+
+            & $Gpg --batch --no-tty --output $FichierPartiel `
+                --decrypt $Fichier.FullName | Out-Host
+
+            $CodeRetour = $LASTEXITCODE
+
+            if ($CodeRetour -ne 0) {
+                throw "Échec GnuPG : code $CodeRetour."
+            }
+
+            if (-not (Test-Path -LiteralPath $FichierPartiel -PathType Leaf)) {
+                throw "Aucun fichier déchiffré produit."
+            }
+
+            Move-Item -LiteralPath $FichierPartiel -Destination $Cible
+
+            Write-Host "Déchiffré : $($Fichier.Name)"
+        }
+        catch {
+            $Erreurs.Add([pscustomobject]@{
+                Action  = 'Déchiffrement'
+                Fichier = $Fichier.FullName
+                Message = $_.Exception.Message
+            })
+        }
+    }
+}
+
+function Invoke-Archivage {
+    [CmdletBinding()]
+    param (
+        [string]$Entree,
+        [string]$Sortie,
+        [System.Collections.Generic.List[object]]$Erreurs
+    )
+
+    $ErrorActionPreference = 'Stop'
+
+    $Fichiers = @(
+        Get-ChildItem -LiteralPath $Entree -File |
+            Sort-Object Name
+    )
+
+    foreach ($Fichier in $Fichiers) {
+        try {
+            # Sans -Force : aucun écrasement des fichiers existants.
+            Expand-Archive -LiteralPath $Fichier.FullName `
+                           -DestinationPath $Sortie
+
+            Write-Host "Extrait : $($Fichier.Name) -> $Sortie"
+        }
+        catch {
+            $Erreurs.Add([pscustomobject]@{
+                Action  = 'Extraction'
+                Fichier = $Fichier.Name
+                Message = $_.Exception.Message
+            })
+        }
+    }
+}
+
+function Move-ContenuRepertoire {
+    [CmdletBinding()]
+    param (
+        [string]$Entree,
+        [string]$Sortie,
+        [System.Collections.Generic.List[object]]$Erreurs
+    )
+
+    $ErrorActionPreference = 'Stop'
+
+    $Elements = @(
+        Get-ChildItem -LiteralPath $Entree -Force |
+            Sort-Object Name
+    )
+
+    foreach ($Element in $Elements) {
+        try {
+            $Cible = Join-Path $Sortie $Element.Name
+
+            if (Test-Path -LiteralPath $Cible) {
+                throw "La destination existe déjà : $Cible"
+            }
+
+            Move-Item -LiteralPath $Element.FullName -Destination $Cible
+
+            Write-Host "Déplacé : $($Element.Name) -> $Sortie"
+        }
+        catch {
+            $Erreurs.Add([pscustomobject]@{
+                Action  = 'Déplacement'
+                Fichier = $Element.Name
+                Message = $_.Exception.Message
+            })
+        }
+    }
+}
+
+function Main {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory)]
+        [ValidateSet('QUAL', 'PROD')]
+        [string]$Environnement,
+
+        [Parameter(Mandatory)]
+        [ValidateSet('enable', 'disable')]
+        [string]$TestMode
+    )
+
+    $ErrorActionPreference = 'Stop'
+    $Erreurs = [System.Collections.Generic.List[object]]::new()
+    $Temporaire = $null
+    $Etape = 'Initialisation'
+
+    try {
+        $Configuration = Get-Configuration -Environnement $Environnement
+
+        if (-not (Test-Path -LiteralPath $Configuration.Entree -PathType Container)) {
+            throw "Répertoire d'entrée introuvable : $($Configuration.Entree)"
+        }
+
+        $Sortie = Join-Path $Configuration.Sortie (
+            Get-Date -Format 'yyyy-MM-dd'
+        )
+
+        $Temporaire = Join-Path ([IO.Path]::GetTempPath()) (
+            'Dechiffrement-' + [guid]::NewGuid().ToString('N')
+        )
+
+        New-Item -ItemType Directory -Path $Temporaire | Out-Null
+
+        $RepertoireDechiffre = Join-Path $Temporaire 'Dechiffres'
+        New-Item -ItemType Directory -Path $RepertoireDechiffre |
+            Out-Null
+
+        Write-Host "Environnement : $Environnement | TestMode : $TestMode"
+
+        $Etape = 'Lecture et déchiffrement'
+
+        Invoke-Dechiffrement -Entree $Configuration.Entree `
+                            -Destination $RepertoireDechiffre `
+                            -Erreurs $Erreurs
+
+        $FichiersPrets = @(
+            Get-ChildItem -LiteralPath $RepertoireDechiffre -File
+        )
+
+        if ($FichiersPrets.Count -gt 0) {
+            $Etape = 'Création du répertoire de sortie'
+
+            if (-not (Test-Path -LiteralPath $Sortie -PathType Container)) {
+                New-Item -ItemType Directory -Path $Sortie -Force |
+                    Out-Null
+            }
+
+            # La gestion de TestMode se fait uniquement dans Main.
+            if ($TestMode -eq 'enable') {
+                $Etape = 'Archivage'
+
+                Invoke-Archivage -Entree $RepertoireDechiffre `
+                                -Sortie $Sortie `
+                                -Erreurs $Erreurs
+            }
+            else {
+                $Etape = 'Déplacement'
+
+                Move-ContenuRepertoire -Entree $RepertoireDechiffre `
+                                      -Sortie $Sortie `
+                                      -Erreurs $Erreurs
+            }
+        }
+    }
+    catch {
+        $Erreurs.Add([pscustomobject]@{
+            Action  = $Etape
+            Fichier = '-'
+            Message = $_.Exception.Message
+        })
+    }
+    finally {
+        if ($Temporaire) {
+            try {
+                if (Test-Path -LiteralPath $Temporaire) {
+                    Remove-Item -LiteralPath $Temporaire `
+                                -Recurse -Force -ErrorAction Stop
+                }
+            }
+            catch {
+                $Erreurs.Add([pscustomobject]@{
+                    Action  = 'Nettoyage'
+                    Fichier = $Temporaire
+                    Message = $_.Exception.Message
+                })
+            }
+        }
+    }
+
+    if ($Erreurs.Count -gt 0) {
+        Write-Host "`nActions en erreur : $($Erreurs.Count)"
+        $Erreurs |
+            Format-List Action, Fichier, Message |
+            Out-Host
+
+        return 1
+    }
+
+    Write-Host "`nTraitement terminé sans erreur."
+    return 0
+}
+
+# Point d'entrée : les fonctions ci-dessus s'exécutent à partir de cet appel.
+$CodeRetour = Main -Environnement $Environnement -TestMode $TestMode
+exit $CodeRetour
