@@ -134,7 +134,9 @@ Les mois après le mois de référence sont des **prévisions** (ce qui est affe
 def page_assets():
     st.title("Assets — catalogue des ressources")
     st.caption("Saisir le prix et l'unité de facturation : le coût mensuel est calculé. Modifiez directement le tableau puis enregistrez.")
-    t1, t6, t5, t2, t3, t4 = st.tabs(["Catalogue", "Nouvel asset", "Nouvelle instance cloud", "Changer un prix", "Historique des prix", "Importer un CSV"])
+    if "as_msg" in st.session_state:  # toast : ne décale pas la page (sinon les onglets reviennent sur « Catalogue »)
+        st.toast(st.session_state.pop("as_msg"), icon="✅")
+    t1, t6, t2, t3, t4 = st.tabs(["Catalogue", "Nouvel asset", "Changer un prix", "Historique des prix", "Importer un CSV"])
     assets = L.assets_df()
     with t1:
         types = sorted(set(assets.type.dropna()), key=lambda t: (L.liste("type").index(t) if t in L.liste("type") else 99, t))
@@ -143,6 +145,8 @@ def page_assets():
         df = assets.copy() if filtre.startswith("Tous") else assets[assets.type == filtre.rsplit(" (", 1)[0]].copy()
         df["date_effet"] = pd.to_datetime(df.date_effet).dt.date
         df["refac"] = df.refacturation.map(lambda x: L.REFACTURATIONS.get(x if isinstance(x, str) else None, "—"))
+        for col in ("fournisseur", "region"):
+            df[col] = df[col].where(df[col].notna(), "")
         df["lie"] = df.parent_id.where(df.parent_id.notna(), "")
         ed = st.data_editor(
             df[["id", "type", "nom", "fournisseur", "region", "prix", "unite", "cout_mois", "qte_parc", "cout_parc", "vcpu", "ram_go", "gpu",
@@ -213,12 +217,10 @@ def page_assets():
                          hide_index=True)
     with t6:
         form_asset(assets)
-    with t5:
-        form_instance_cloud(assets)
     with t2:
         st.caption("L'ancien prix est conservé dans l'historique : les mois passés restent calculés à l'ancien prix.")
         if assets.empty:
-            st.info("Aucun asset pour l'instant : créez-en dans « Catalogue » (ligne vide en bas du tableau), « Nouvelle instance cloud » ou « Importer un CSV ».")
+            st.info("Aucun asset pour l'instant : créez-en dans « Nouvel asset » ou « Importer un CSV ».")
     with t2:
         if not assets.empty:
           with st.form("prix"):
@@ -250,98 +252,82 @@ def page_assets():
 
 
 def form_asset(assets):
-    st.caption("Une ressource du parc : GPU, serveur, licence, stockage, service… Le coût mensuel est calculé à partir du prix et de l'unité.")
-    with st.form("nouvel_asset", clear_on_submit=True):
-        nid = L.prochain_id("assets", "A-", 3)
-        c = st.columns([.8, 1, 2, 1.3])
-        aid = c[0].text_input("ID", nid)
-        typ = c[1].selectbox("Type", L.liste("type"))
-        nom = c[2].text_input("Nom *", placeholder="ex. GPU H100 80 Go, Licence MLOps (utilisateur)…")
-        fourn = c[3].text_input("Fournisseur")
-        c = st.columns(4)
-        prix = c[0].number_input("Prix unitaire (€) *", min_value=0.0, step=0.01, format="%.3f")
-        unite = c[1].selectbox("Unité de facturation", L.UNITES, index=L.UNITES.index("Mois"))
-        parc = c[2].number_input("Quantité du parc", min_value=0.0, step=1.0, format="%g", help="Unités possédées ou réservées : sert au coût du parc et à l'occupation.")
-        eff = c[3].date_input("Date d'effet", value=date(L.annee(), 1, 1), format="DD/MM/YYYY")
-        with st.expander("Capacités (facultatif)"):
-            c = st.columns(4)
-            vcpu = c[0].number_input("vCPU", min_value=0.0, step=1.0, format="%g")
-            ram = c[1].number_input("RAM (Go)", min_value=0.0, step=1.0, format="%g")
-            gpu = c[2].number_input("GPU", min_value=0.0, step=1.0, format="%g")
-            region = c[3].text_input("Région / site")
-        if st.form_submit_button("💾 Créer l'asset", type="primary"):
-            if not nom.strip():
-                st.error("Le nom est obligatoire.")
-            elif aid.strip() in set(assets.id):
-                st.error(f"L'ID {aid} existe déjà.")
-            else:
-                L.enregistrer_asset(dict(id=aid.strip(), type=typ, nom=nom.strip(), fournisseur=fourn, prix=prix, unite=unite, qte_parc=parc,
-                                         date_effet=L.iso(eff), statut="Actif", vcpu=vcpu or None, ram_go=ram or None, gpu=gpu or None,
-                                         region=region or None))
-                st.success(f"Asset {aid} créé : {nom} · {eur(prix * L.FACTEURS[unite], 2)} / mois par unité.")
-                st.rerun()
-
-
-def form_instance_cloud(assets):
-    st.caption("Une instance cloud (ex. un profil IBM Cloud VPC) : capacités lues dans le nom, prix horaire du contrat, et mode de refacturation.")
-    g, dr = st.columns([1.4, 1], gap="large")
-    with g:
-        c1, c2, c3 = st.columns([1.6, 1.2, 1])
-        nom = c1.text_input("Nom (profil du fournisseur)", "IBM bx3d-128x640", key="ic_nom")
-        fourn = c2.text_input("Fournisseur", "IBM Cloud", key="ic_f")
-        region = c3.text_input("Région", "eu-de", key="ic_r")
-        fl = L.lire_flavor(nom)
+    """Un seul formulaire pour tous les assets ; le type « Instance cloud » affiche en plus la lecture du profil et le mode de refacturation."""
+    st.caption("Une ressource du parc : GPU, serveur, licence, stockage, service, instance cloud… Le coût mensuel est calculé à partir du prix et de l'unité.")
+    types = L.liste("type")
+    k = f"na{st.session_state.get('na_n', 0)}_"  # nouvelles clés après chaque création : le formulaire repart vide
+    c = st.columns([.8, 1.1, 2, 1.3])
+    aid = c[0].text_input("ID", L.prochain_id("assets", "A-", 3), key=k + "id")
+    typ = c[1].selectbox("Type", types, key=k + "type")
+    cloud = typ == "Instance cloud"
+    nom = c[2].text_input("Nom *" if not cloud else "Nom (profil du fournisseur) *", key=k + "nom",
+                          placeholder="ex. IBM bx3d-128x640" if cloud else "ex. GPU H100 80 Go, Licence MLOps (utilisateur)…")
+    fourn = c[3].text_input("Fournisseur", key=k + "f")
+    fl = L.lire_flavor(nom) if cloud else {}
+    if cloud:
         if fl:
             st.caption(f"Lu dans « {fl['profil']} » : famille {fl['famille']}, {fl['vcpu']:g} vCPU, {fl['ram_go']:g} Go de RAM"
                        + (f", {fl['gpu']:g} GPU {fl.get('gpu_modele', '')}" if fl.get("gpu") else "")
                        + (", stockage local (d)" if fl.get("stockage_local") else "") + ". Les valeurs restent modifiables.")
-        else:
-            st.caption("Nom non reconnu : saisissez les capacités.")
-        c = st.columns(5)
-        cle = fl.get("profil", "x")
-        vcpu = c[0].number_input("vCPU", min_value=0.0, step=1.0, format="%g", value=float(fl.get("vcpu", 0)), key=f"ic_v_{cle}")
-        ram = c[1].number_input("RAM (Go)", min_value=0.0, step=1.0, format="%g", value=float(fl.get("ram_go", 0)), key=f"ic_ram_{cle}")
-        sto = c[2].number_input("Stockage local (Go)", min_value=0.0, step=100.0, format="%g", value=0.0, key=f"ic_s_{cle}")
-        gpu = c[3].number_input("GPU", min_value=0.0, step=1.0, format="%g", value=float(fl.get("gpu", 0)), key=f"ic_g_{cle}")
-        res = c[4].number_input("Réseau (Gb/s)", min_value=0.0, step=1.0, format="%g", value=0.0, key=f"ic_n_{cle}")
-        c = st.columns(4)
-        prix = c[0].number_input("Prix unitaire (€)", min_value=0.0, value=0.0, step=0.1, format="%.3f", key="ic_p")
-        unite = c[1].selectbox("Unité", L.UNITES, index=0, key="ic_u")
-        eff = c[2].date_input("Date d'effet", value=date(L.annee(), 1, 1), format="DD/MM/YYYY", key="ic_d")
-        parc = c[3].number_input("Instances (parc)", min_value=0.0, value=1.0, step=1.0, format="%g", key="ic_q")
-        cm = prix * L.FACTEURS[unite]
-        st.markdown(f"{prix:,.3f} € × {L.FACTEURS[unite]:g} = **{eur(cm)} / mois par instance** · parc : {eur(cm * parc)} / mois".replace(",", " "))
-    with dr:
-        modes = ["entiere", "part_vcpu"] + (["part_gpu"] if gpu else [])
-        mode = st.radio("Comment la refacturer ?", modes, key="ic_mode", format_func={
-            "entiere": "À l'instance entière — un client prend une machine complète",
-            "part_vcpu": "À la part, par vCPU — machine partagée entre clients",
-            "part_gpu": "À la part, par GPU — machine partagée entre clients"}.get)
+        elif nom:
+            st.caption("Nom de profil non reconnu : saisissez les capacités.")
+    c = st.columns(4)
+    prix = c[0].number_input("Prix unitaire (€) *", min_value=0.0, step=0.01, format="%.3f", key=k + "p")
+    unite = c[1].selectbox("Unité de facturation", L.UNITES, index=L.UNITES.index("Heure" if cloud else "Mois"), key=f"{k}u_{cloud}")
+    parc = c[2].number_input("Instances (parc)" if cloud else "Quantité du parc", min_value=0.0, value=1.0 if cloud else 0.0, step=1.0, format="%g",
+                             key=f"{k}q_{cloud}", help="Unités possédées ou réservées : sert au coût du parc et à l'occupation.")
+    eff = c[3].date_input("Date d'effet", value=date(L.annee(), 1, 1), format="DD/MM/YYYY", key=k + "d")
+    cle = fl.get("profil", "x")
+    with st.expander("Capacités", expanded=cloud):
+        c = st.columns(6)
+        vcpu = c[0].number_input("vCPU", min_value=0.0, step=1.0, format="%g", value=float(fl.get("vcpu", 0)), key=f"{k}v_{cle}")
+        ram = c[1].number_input("RAM (Go)", min_value=0.0, step=1.0, format="%g", value=float(fl.get("ram_go", 0)), key=f"{k}ram_{cle}")
+        sto = c[2].number_input("Stockage local (Go)", min_value=0.0, step=100.0, format="%g", key=f"{k}s_{cle}")
+        gpu = c[3].number_input("GPU", min_value=0.0, step=1.0, format="%g", value=float(fl.get("gpu", 0)), key=f"{k}g_{cle}")
+        res = c[4].number_input("Réseau (Gb/s)", min_value=0.0, step=1.0, format="%g", key=f"{k}n_{cle}")
+        region = c[5].text_input("Région / site", key=k + "r")
+    cm = prix * L.FACTEURS[unite]
+    prix_txt = f"{prix:,.3f}".replace(",", " ").replace(".", ",")
+    st.markdown(f"{prix_txt} € × {L.FACTEURS[unite]:g} = **{eur(cm, 2)} / mois par {'instance' if cloud else 'unité'}** · "
+                f"coût total du parc : {eur(cm * parc)} / mois")
+    mode, n = None, 0
+    if cloud:
+        g, d_ = st.columns([1, 1.2], gap="large")
+        with g:
+            modes = ["entiere", "part_vcpu"] + (["part_gpu"] if gpu else [])
+            mode = st.radio("Comment la refacturer ?", modes, key=k + "mode", format_func={
+                "entiere": "À l'instance entière — un client prend une machine complète",
+                "part_vcpu": "À la part, par vCPU — machine partagée entre clients",
+                "part_gpu": "À la part, par GPU — machine partagée entre clients"}.get)
         n = vcpu if mode == "part_vcpu" else gpu if mode == "part_gpu" else 0
-        nid = L.prochain_id("assets", "A-", 3)
-        with st.container(border=True):
+        with d_.container(border=True):
             st.markdown("**Sera créé**")
-            lignes = [dict(Asset=f"{nom} ({nid})", Rôle="coût du parc" if mode != "entiere" else "vendu aux clients", **{"Coût / mois": eur(cm)}, Parc=f"{parc:g}")]
+            lignes = [dict(Asset=f"{nom or 'instance'} ({aid})", Rôle="coût du parc" if mode != "entiere" else "vendu aux clients",
+                           **{"Coût / mois": eur(cm)}, Parc=f"{parc:g}")]
             if n:
-                lignes.append(dict(Asset=f"{'vCPU' if mode == 'part_vcpu' else 'GPU'} {L.lire_flavor(nom).get('profil', nom)} (part)", Rôle="vendu aux clients",
+                lignes.append(dict(Asset=f"{'vCPU' if mode == 'part_vcpu' else 'GPU'} {fl.get('profil', nom)} (part)", Rôle="vendu aux clients",
                                    **{"Coût / mois": eur(cm / n, 2)}, Parc=f"{parc * n:g}"))
             st.dataframe(pd.DataFrame(lignes), hide_index=True, use_container_width=True)
-            if n:
-                st.caption(f"Prix de la part = prix de l'instance ÷ {n:g}. Si le prix de l'instance change, la part suit à la même date. "
-                           + (f"Chaque vCPU vendu inclut {ram / vcpu:g} Go de RAM." if mode == "part_vcpu" and vcpu else ""))
-        if st.button("💾 Créer l'instance", type="primary", key="ic_ok"):
-            if not nom.strip() or prix <= 0:
-                st.error("Le nom et le prix sont obligatoires.")
-            elif nom.strip().lower() in set(assets.nom.str.lower()):
-                st.error("Un asset porte déjà ce nom.")
-            elif mode != "entiere" and n <= 0:
-                st.error("Indiquez le nombre de vCPU (ou de GPU) pour vendre à la part.")
-            else:
-                L.enregistrer_asset(dict(id=nid, type="Instance cloud", nom=nom.strip(), fournisseur=fourn, region=region, prix=prix, unite=unite,
-                                         qte_parc=parc, date_effet=L.iso(eff), statut="Actif", vcpu=vcpu or None, ram_go=ram or None,
-                                         stockage_go=sto or None, gpu=gpu, gpu_modele=fl.get("gpu_modele"), reseau_gbs=res or None, refacturation=mode))
-                st.success(f"Instance {nid} créée" + (" avec sa part." if n else "."))
-                st.rerun()
+            st.caption((f"Prix de la part = prix de l'instance ÷ {n:g} ; elle suit les changements de prix de l'instance. "
+                        + (f"Chaque vCPU vendu inclut {ram / vcpu:g} Go de RAM. " if mode == "part_vcpu" and vcpu else "")) if n else
+                       "Le nombre d'instances vendues ne pourra pas dépasser le parc (contrôle de capacité).")
+    if st.button("💾 Créer l'asset", type="primary", key=k + "ok"):
+        if not nom.strip() or prix <= 0:
+            st.error("Le nom et le prix sont obligatoires.")
+        elif aid.strip() in set(assets.id):
+            st.error(f"L'ID {aid} existe déjà.")
+        elif nom.strip().lower() in set(assets.nom.str.lower()):
+            st.error("Un asset porte déjà ce nom.")
+        elif cloud and mode != "entiere" and n <= 0:
+            st.error("Indiquez le nombre de vCPU (ou de GPU) pour vendre à la part.")
+        else:
+            L.enregistrer_asset(dict(id=aid.strip(), type=typ, nom=nom.strip(), fournisseur=fourn, prix=prix, unite=unite, qte_parc=parc,
+                                     date_effet=L.iso(eff), statut="Actif", vcpu=vcpu or None, ram_go=ram or None, stockage_go=sto or None,
+                                     gpu=gpu or None, gpu_modele=fl.get("gpu_modele"), reseau_gbs=res or None, region=region or None,
+                                     refacturation=mode))
+            st.session_state["na_n"] = st.session_state.get("na_n", 0) + 1
+            st.session_state["as_msg"] = f"Asset {aid} créé : {nom}" + (" avec sa part." if n else ".")
+            st.rerun()
 
 
 def bloc_import(quoi):
