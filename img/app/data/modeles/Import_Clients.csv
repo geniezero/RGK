@@ -1,0 +1,41 @@
+﻿ID;Nom du client;Entité;Pays;Responsable;E-mail;Statut;Date entrée
+CL-001;Pricing Lab;R&D;France;C. Martin;pricing.lab@entreprise.example;Actif;01/01/2026
+CL-002;Chatbot Service;Service Client;France;L. Bernard;chatbot.service@entreprise.example;Actif;01/01/2026
+CL-003;Scoring Crédit;Risques;Belgique;A. Peeters;scoring.credit@entreprise.example;Actif;01/01/2026
+CL-004;Data Marketing;Marketing;Espagne;M. García;data.marketing@entreprise.example;Actif;01/01/2026
+CL-005;Audit IA;Finance;France;S. Petit;audit.ia@entreprise.example;Actif;01/03/2026
+CL-006;Vision Qualité;Industrie;Allemagne;J. Müller;vision.qualite@entreprise.example;Actif;01/02/2026
+CL-007;Traduction Auto;Service Client;Belgique;E. Janssens;traduction.auto@entreprise.example;Actif;01/01/2026
+CL-008;Prévisions Ventes;Marketing;Italie;G. Rossi;previsions.ventes@entreprise.example;Actif;01/04/2026
+CL-009;Maintenance Prédictive;Industrie;Allemagne;K. Schmidt;maintenance.predictive@entreprise.example;Actif;01/06/2026
+CL-010;RH Analytics;RH;France;N. Durand;rh.analytics@entreprise.example;Prospect;
+CL-011;Détection Fraude;Risques;Espagne;P. López;detection.fraude@entreprise.example;Actif;01/11/2026
+CL-012;Assistant Juridique;Juridique;France;H. Lefèvre;assistant.juridique@entreprise.example;Actif;01/05/2026
+CL-013;Analyse Contrats;Juridique;Belgique;V. Dubois;analyse.contrats@entreprise.example;Actif;01/07/2026
+CL-014;Recrutement IA;RH;France;I. Moreau;recrutement.ia@entreprise.example;Actif;01/09/2026
+CL-015;Prévision Stocks;Industrie;Allemagne;T. Weber;prevision.stocks@entreprise.example;Actif;01/03/2026
+CL-016;Contrôle Qualité Ligne 3;Industrie;Italie;F. Bianchi;controle.qualite.ligne.3@entreprise.example;Actif;01/04/2026
+CL-017;Segmentation Clients;Marketing;France;A. Girard;segmentation.clients@entreprise.example;Actif;01/02/2026
+CL-018;Recommandation Produits;Marketing;Pays-Bas;D. de Vries;recommandation.produits@entreprise.example;Actif;01/06/2026
+CL-019;Chatbot RH;RH;Espagne;R. Martínez;chatbot.rh@entreprise.example;Actif;01/08/2026
+CL-020;Recherche Documentaire;R&D;France;B. Roux;recherche.documentaire@entreprise.example;Actif;01/01/2026
+CL-021;Modèles de Langage;R&D;Allemagne;M. Fischer;modeles.de.langage@entreprise.example;Actif;01/02/2026
+CL-022;Optimisation Énergie;Industrie;France;J. Fournier;optimisation.energie@entreprise.example;Actif;01/05/2026
+CL-023;Lutte Anti-Blanchiment;Risques;France;C. Lambert;lutte.anti.blanchiment@entreprise.example;Actif;01/03/2026
+CL-024;Scoring Assurance;Risques;Portugal;A. Silva;scoring.assurance@entreprise.example;Actif;01/06/2026
+CL-025;Clôture Comptable;Finance;Belgique;L. Maes;cloture.comptable@entreprise.example;Actif;01/09/2026
+CL-026;Prévision Trésorerie;Finance;France;É. Fontaine;prevision.tresorerie@entreprise.example;Actif;01/04/2026
+CL-027;Support Informatique;IT Interne;France;Y. Mercier;support.informatique@entreprise.example;Actif;01/01/2026
+CL-028;Analyse des Journaux de Sécurité;IT Interne;Pays-Bas;S. Jansen;analyse.des.journaux.de.securite@entreprise.example;Actif;01/07/2026
+CL-029;Transcription Appels;Service Client;Portugal;M. Santos;transcription.appels@entreprise.example;Actif;01/05/2026
+CL-030;Analyse Sentiment;Marketing;Espagne;L. Fernández;analyse.sentiment@entreprise.example;Actif;01/03/2026
+CL-031;Maintenance Flotte;Industrie;Espagne;D. Romero;maintenance.flotte@entreprise.example;Actif;01/10/2026
+CL-032;Traduction Juridique;Juridique;Allemagne;U. Becker;traduction.juridique@entreprise.example;Actif;01/06/2026
+CL-033;Résumé Réunions;IT Interne;Belgique;N. Claes;resume.reunions@entreprise.example;Inactif;01/02/2026
+CL-034;Planification Production;Industrie;Portugal;R. Costa;planification.production@entreprise.example;Actif;01/08/2026
+CL-035;Tarification Dynamique;R&D;Italie;P. Ricci;tarification.dynamique@entreprise.example;Actif;01/04/2026
+CL-036;Contrôle Factures;Finance;Italie;S. Conti;controle.factures@entreprise.example;Actif;01/07/2026
+CL-037;Veille Concurrentielle;Marketing;Belgique;J. Willems;veille.concurrentielle@entreprise.example;Actif;01/05/2026
+CL-038;Agent Service Client;Service Client;Pays-Bas;E. Bakker;agent.service.client@entreprise.example;Actif;01/09/2026
+CL-039;Formation Interne;RH;Belgique;M. Lemmens;formation.interne@entreprise.example;Prospect;
+CL-040;Analyse Sinistres;Risques;Italie;A. Greco;analyse.sinistres@entreprise.example;Prospect;

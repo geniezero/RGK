@@ -1,0 +1,38 @@
+﻿ID;Type;Nom;Fournisseur;Prix unitaire;Unité;Qté parc;Date effet;Statut;vCPU;RAM Go;Stockage Go;GPU;Région;Refacturation
+A-001;Serveur;Serveur GPU HGX (châssis);Constructeur A;1350;Mois;6;01/01/2026;Actif;;;;;;
+A-002;GPU;GPU H100 80 Go;Constructeur A;2,1;Heure;40;01/01/2026;Actif;;;;;;
+A-003;GPU;GPU L40S 48 Go;Constructeur A;0,95;Heure;16;01/01/2026;Actif;;;;;;
+A-004;CPU;vCPU;Constructeur A;0,011;Heure;640;01/07/2026;Actif;;;;;;
+A-005;RAM;Mémoire RAM (Go);Constructeur A;1,2;Mois;6144;01/01/2026;Actif;;;;;;
+A-006;Stockage;Stockage NVMe (To);Fournisseur B;22;Mois;160;01/01/2026;Actif;;;;;;
+A-007;Licence;Licence suite IA (par GPU);Éditeur C;4500;An;56;01/01/2026;Actif;;;;;;
+A-008;Licence;Licence orchestrateur (nœud);Éditeur D;150;Mois;10;01/01/2026;Actif;;;;;;
+A-009;Service;Support niveau 2;Interne;18;Jour;3;01/01/2026;Actif;;;;;;
+A-010;Service;Énergie & hébergement (GPU);Datacenter E;9,5;Jour;56;01/07/2026;Actif;;;;;;
+A-011;Réseau;Port réseau 10 Gb/s;Interne;45;Mois;24;01/01/2026;Actif;;;;;;
+A-012;GPU;GPU A100 80 Go;Constructeur A;1,45;Heure;24;01/01/2026;Actif;;;;;;
+A-013;GPU;GPU H200 141 Go;Constructeur A;2,9;Heure;8;01/09/2026;Actif;;;;;;
+A-014;GPU;GPU L4 24 Go;Constructeur F;0,48;Heure;32;01/01/2026;Actif;;;;;;
+A-015;GPU;Instance GPU MIG 1/7 H100;Constructeur A;0,35;Heure;56;01/03/2026;Actif;;;;;;
+A-016;GPU;GPU V100 32 Go (ancienne génération);Constructeur A;0,6;Heure;0;01/01/2025;Retiré;;;;;;
+A-017;Serveur;Serveur CPU 2×64 cœurs (châssis);Constructeur A;420;Mois;10;01/01/2026;Actif;;;;;;
+A-018;Serveur;Serveur d'inférence 4×L40S (châssis);Constructeur A;780;Mois;4;01/01/2026;Actif;;;;;;
+A-019;CPU;vCPU haute fréquence;Constructeur A;0,018;Heure;256;01/01/2026;Actif;;;;;;
+A-020;RAM;Mémoire RAM haute capacité (Go);Constructeur A;1,45;Mois;2048;01/01/2026;Actif;;;;;;
+A-021;Stockage;Stockage NVMe haute performance (To);Fournisseur B;38;Mois;60;01/01/2026;Actif;;;;;;
+A-022;Stockage;Stockage objet S3 (To);Fournisseur B;9,5;Mois;400;01/01/2026;Actif;;;;;;
+A-023;Stockage;Sauvegarde et archivage (To);Fournisseur B;4,2;Mois;300;01/01/2026;Actif;;;;;;
+A-024;Licence;Licence base de données vectorielle (nœud);Éditeur G;2400;An;12;01/01/2026;Actif;;;;;;
+A-025;Licence;Licence supervision et observabilité (serveur);Éditeur H;35;Mois;30;01/01/2026;Actif;;;;;;
+A-026;Licence;Licence système d'exploitation (serveur);Éditeur I;900;An;30;01/01/2026;Actif;;;;;;
+A-027;Licence;Licence plateforme MLOps (utilisateur);Éditeur J;85;Mois;120;01/01/2026;Actif;;;;;;
+A-028;Service;Support niveau 1;Interne;9;Jour;4;01/01/2026;Actif;;;;;;
+A-029;Service;Support niveau 3 (expert);Interne;45;Jour;2;01/01/2026;Actif;;;;;;
+A-030;Service;Astreinte week-end;Interne;300;Semaine;1;01/01/2026;Actif;;;;;;
+A-031;Service;Énergie & hébergement (serveur CPU);Datacenter E;4,1;Jour;10;01/07/2026;Actif;;;;;;
+A-032;Réseau;Port réseau 25 Gb/s;Interne;85;Mois;16;01/01/2026;Actif;;;;;;
+A-033;Réseau;Lien InfiniBand 100 Gb/s;Interne;260;Mois;8;01/01/2026;Actif;;;;;;
+A-034;Réseau;Adresse IP publique;Opérateur K;3,5;Mois;40;01/01/2026;Actif;;;;;;
+A-035;Instance cloud;IBM bx3d-128x640;IBM Cloud;5,2;Heure;4;01/01/2026;Actif;128;640;;0;eu-de;part vcpu
+A-036;Instance cloud;IBM bx3d-64x320;IBM Cloud;2,6;Heure;2;01/01/2026;Actif;64;320;;0;eu-de;entière
+A-037;Instance cloud;IBM gx3-24x120x1l40s;IBM Cloud;3,1;Heure;3;01/01/2026;Actif;24;120;;1;eu-de;entière

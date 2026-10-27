@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="220" height="48" viewBox="0 0 220 48">
+  <rect x="2" y="6" width="36" height="36" rx="9" fill="#7FD1B9"/>
+  <path d="M11 33V15h4v18zM19.5 33l6.2-18h4.6l6.2 18h-4.2l-1.2-3.8h-6.4L23.5 33zm6-7.2h4.4l-2.2-7z" fill="#0E2F29"/>
+  <text x="48" y="31" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="19" font-weight="700" fill="#FFFFFF">IA Platform</text>
+</svg>
